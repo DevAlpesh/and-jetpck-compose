@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">and-jetpack</string>
+    <string name="txt_logo">Logo</string>
+    <string name="desc_logo">splash logo</string>
+    <string name="desc_splash_logo">Splash Logo</string>
+    <string name="txt_login">Login</string>
+    <string name="text_password_hint">Password</string>
+    <string name="txt_email_hint">Username / Email</string>
+    <string name="desc_visible_password">Visible Password</string>
+    <string name="desc_hidden_password">Hidden Password</string>
+    <string name="txt_dont_have_an_account_yet">Don\'t have an account yet</string>
+    <string name="txt_sign_up">Sign Up</string>
 </resources>
