@@ -1,4 +1,4 @@
-package com.devalpesh.jetpack.presentation.login
+package com.devalpesh.jetpack.presentation.register
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -20,9 +20,9 @@ import com.devalpesh.jetpack.presentation.ui.theme.SpaceLarge
 import com.devalpesh.jetpack.presentation.ui.theme.SpaceMedium
 
 @Composable
-fun LoginScreen(
+fun RegisterScreen(
     navController: NavController,
-    viewModel: LoginViewModel = hiltViewModel()
+    viewModel: RegisterViewModel = hiltViewModel()
 ) {
     Box(
         modifier = Modifier
@@ -51,8 +51,7 @@ fun LoginScreen(
                     viewModel.setUserName(it)
                 },
                 hint = stringResource(id = R.string.txt_email_hint),
-                keyboardType = KeyboardType.Email,
-                error = viewModel.userNameError.value
+                keyboardType = KeyboardType.Email
             )
             Spacer(modifier = Modifier.height(SpaceMedium))
             StandardTextField(
@@ -61,12 +60,7 @@ fun LoginScreen(
                     viewModel.setPassword(it)
                 },
                 hint = stringResource(id = R.string.text_password_hint),
-                keyboardType = KeyboardType.Password,
-                showPasswordToggle = viewModel.showPassword.value,
-                onPasswordToggleClick = {
-                    viewModel.setShowPassword(it)
-                },
-                error = viewModel.passwordError.value
+                keyboardType = KeyboardType.Password
             )
         }
         Text(
