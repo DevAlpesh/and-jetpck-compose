@@ -12,10 +12,6 @@ class LoginViewModel @Inject constructor() : ViewModel() {
     private val _showPassword = mutableStateOf(false)
     val showPassword: State<Boolean> = _showPassword
 
-    fun setShowPassword(showPassword: Boolean) {
-        _showPassword.value = showPassword
-    }
-
     private val _usernameText = mutableStateOf("")
     val usernameText: State<String> = _usernameText
 
@@ -34,20 +30,24 @@ class LoginViewModel @Inject constructor() : ViewModel() {
     private val _passwordError = mutableStateOf("")
     val passwordError: State<String> = _passwordError
 
-    fun setUserName(username: String) {
+    fun setShowPassword(showPassword: Boolean) {
+        _showPassword.value = showPassword
+    }
+
+    fun setUsernameText(username: String) {
         _usernameText.value = username
     }
 
-    fun setPassword(password: String) {
+    fun setPasswordText(password: String) {
         _passwordText.value = password
     }
 
-    fun setPasswordError(passwordError: String) {
-        _passwordError.value = passwordError
+    fun setPasswordError(error: String) {
+        _passwordError.value = error
     }
 
-    fun setUsernameError(usernameError:String){
-        _usernameError.value = usernameError
+    fun setUsernameError(error: String) {
+        _usernameError.value = error
     }
 
     fun setIsUsernameError(isError: Boolean) {

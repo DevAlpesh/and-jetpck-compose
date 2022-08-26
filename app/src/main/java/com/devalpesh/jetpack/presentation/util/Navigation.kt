@@ -1,18 +1,28 @@
 package com.devalpesh.jetpack.presentation.util
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import com.devalpesh.jetpack.presentation.activity.ActivityScreen
+import com.devalpesh.jetpack.presentation.chat.ChatScreen
 import com.devalpesh.jetpack.presentation.login.LoginScreen
+import com.devalpesh.jetpack.presentation.mainfeed.MainFeedScreen
+import com.devalpesh.jetpack.presentation.profile.ProfileScreen
+import com.devalpesh.jetpack.presentation.register.RegisterScreen
 import com.devalpesh.jetpack.presentation.splash.SplashScreen
 
 @Composable
-fun Navigation() {
-    val navController = rememberNavController()
+fun Navigation(
+    navController: NavHostController
+
+) {
     NavHost(
         navController = navController,
-        startDestination = Screen.SplashScreen.route
+        startDestination = Screen.SplashScreen.route,
+        modifier = Modifier.fillMaxSize()
     ) {
         composable(Screen.SplashScreen.route) {
             SplashScreen(navController = navController)
@@ -21,7 +31,19 @@ fun Navigation() {
             LoginScreen(navController = navController)
         }
         composable(Screen.RegisterScreen.route) {
-
+            RegisterScreen(navController = navController)
+        }
+        composable(Screen.MainFeedScreen.route) {
+            MainFeedScreen(navController = navController)
+        }
+        composable(Screen.ChatScreen.route) {
+            ChatScreen(navController = navController)
+        }
+        composable(Screen.ActivityScreen.route) {
+            ActivityScreen(navController = navController)
+        }
+        composable(Screen.ProfileScreen.route) {
+            ProfileScreen(navController = navController)
         }
     }
 }

@@ -17,14 +17,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import com.devalpesh.jetpack.R
 
 @Composable
 fun StandardTextField(
+    modifier: Modifier = Modifier,
     text: String = "",
     hint: String = "",
     maxLength: Int = 40,
-    error: String = "error",
+    error: String = "",
     keyboardType: KeyboardType = KeyboardType.Text,
     showPasswordToggle: Boolean = false,
     onPasswordToggleClick: (Boolean) -> Unit = {},
@@ -34,7 +36,11 @@ fun StandardTextField(
         mutableStateOf(keyboardType == KeyboardType.Password)
     }
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(modifier),
+    ) {
         TextField(
             value = text,
             onValueChange = {
@@ -79,12 +85,15 @@ fun StandardTextField(
                     }
                 }
             },
+            modifier = Modifier.fillMaxWidth()
         )
         if (error.isNotEmpty()) {
             Text(
                 text = error,
-                style = MaterialTheme.typography.body1,
-                color = MaterialTheme.colors.error
+                style = MaterialTheme.typography.body2,
+                color = MaterialTheme.colors.error,
+                textAlign = TextAlign.End,
+                modifier = Modifier.fillMaxWidth()
             )
         }
     }

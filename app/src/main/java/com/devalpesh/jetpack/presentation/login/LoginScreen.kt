@@ -1,6 +1,8 @@
 package com.devalpesh.jetpack.presentation.login
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +20,7 @@ import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.presentation.components.StandardTextField
 import com.devalpesh.jetpack.presentation.ui.theme.SpaceLarge
 import com.devalpesh.jetpack.presentation.ui.theme.SpaceMedium
+import com.devalpesh.jetpack.presentation.util.Screen
 
 @Composable
 fun LoginScreen(
@@ -29,8 +32,8 @@ fun LoginScreen(
             .fillMaxSize()
             .padding(
                 start = SpaceLarge,
-                top = SpaceLarge,
                 end = SpaceLarge,
+                top = SpaceLarge,
                 bottom = 50.dp
             )
     ) {
@@ -38,7 +41,7 @@ fun LoginScreen(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .fillMaxSize()
-                .align(Alignment.Center)
+                .align(Alignment.Center),
         ) {
             Text(
                 text = stringResource(id = R.string.txt_login),
@@ -48,7 +51,7 @@ fun LoginScreen(
             StandardTextField(
                 text = viewModel.usernameText.value,
                 onValueChange = {
-                    viewModel.setUserName(it)
+                    viewModel.setUsernameText(it)
                 },
                 hint = stringResource(id = R.string.txt_email_hint),
                 keyboardType = KeyboardType.Email,
@@ -58,7 +61,7 @@ fun LoginScreen(
             StandardTextField(
                 text = viewModel.passwordText.value,
                 onValueChange = {
-                    viewModel.setPassword(it)
+                    viewModel.setPasswordText(it)
                 },
                 hint = stringResource(id = R.string.text_password_hint),
                 keyboardType = KeyboardType.Password,
@@ -68,6 +71,18 @@ fun LoginScreen(
                 },
                 error = viewModel.passwordError.value
             )
+            Spacer(modifier = Modifier.height(SpaceMedium))
+            Button(
+                onClick = {
+                    navController.navigate(Screen.MainFeedScreen.route)
+                },
+                modifier = Modifier.align(Alignment.End)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.txt_login),
+                    color = MaterialTheme.colors.onPrimary
+                )
+            }
         }
         Text(
             text = buildAnnotatedString {
@@ -84,7 +99,12 @@ fun LoginScreen(
             },
             style = MaterialTheme.typography.body1,
             modifier = Modifier
-                .align(Alignment.BottomCenter),
+                .align(Alignment.BottomCenter)
+                .clickable {
+                    navController.navigate(
+                        Screen.RegisterScreen.route
+                    )
+                },
         )
     }
 }

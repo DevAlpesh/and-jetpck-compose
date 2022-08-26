@@ -10,8 +10,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.devalpesh.jetpack.presentation.components.StandardScaffold
 import com.devalpesh.jetpack.presentation.ui.theme.AndjetpackTheme
 import com.devalpesh.jetpack.presentation.util.Navigation
+import com.devalpesh.jetpack.presentation.util.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,12 +24,25 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AndjetpackTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Navigation()
+                    val navController = rememberNavController()
+                    val navBackStackEntry = navController.currentBackStackEntryAsState()
+
+                    StandardScaffold(
+                        navController = navController,
+                        modifier = Modifier.fillMaxSize(),
+                        showBottomBar = navBackStackEntry.value?.destination?.route in listOf(
+                            Screen.MainFeedScreen.route,
+                            Screen.ChatScreen.route,
+                            Screen.ActivityScreen.route,
+                            Screen.ProfileScreen.route
+                        )
+                    ) {
+                        Navigation(navController)
+                    }
                 }
             }
         }

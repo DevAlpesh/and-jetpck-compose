@@ -10,4 +10,20 @@
     <string name="desc_hidden_password">Hidden Password</string>
     <string name="txt_dont_have_an_account_yet">Don\'t have an account yet</string>
     <string name="txt_sign_up">Sign Up</string>
+    <string name="txt_register">Register</string>
+    <string name="txt_email">Email</string>
+    <string name="txt_username">Username</string>
+    <string name="txt_already_have_an_account">Alerady have an account ?</string>
+    <string name="txt_sign_in">Sign In</string>
+    <string name="txt_unliked">Unliked</string>
+    <string name="txt_like">Like</string>
+    <string name="txt_comment">Comment</string>
+    <string name="txt_share">Share</string>
+    <string name="txt_read_more">Read more.</string>
+    <string name="like_by_x_peoper">Like by %d People</string>
+    <string name="x_comment">%d Comments</string>
+    <string name="txt_home">Home</string>
+    <string name="txt_chat">Chat</string>
+    <string name="txt_notification">Notification</string>
+    <string name="txt_profile">Profile</string>
 </resources>
