@@ -1,5 +1,7 @@
 package com.devalpesh.jetpack.presentation.components
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -27,7 +29,7 @@ import com.devalpesh.jetpack.presentation.ui.theme.SpaceSmall
 @Throws(IllegalArgumentException::class)
 fun RowScope.StandardBottomNavItem(
     modifier: Modifier = Modifier,
-    icon: ImageVector,
+    icon: ImageVector? = null,
     contentDescription: String? = null,
     selected: Boolean = false,
     alertCount: Int? = null,
@@ -39,6 +41,13 @@ fun RowScope.StandardBottomNavItem(
     if (alertCount != null && alertCount <= 0) {
         throw IllegalArgumentException("Alert count can't be negative")
     }
+
+    val lineLength = animateFloatAsState(
+        targetValue = if (selected) 1f else 0f,
+        animationSpec = tween(
+            durationMillis = 300
+        )
+    )
 
     BottomNavigationItem(
         selected = selected,
@@ -61,11 +70,11 @@ fun RowScope.StandardBottomNavItem(
                                     unselectedColor
                                 },
                                 start = Offset(
-                                    size.width / 2f - 15.dp.toPx(),
+                                    size.width / 2f - lineLength.value * 15.dp.toPx(),
                                     size.height
                                 ),
                                 end = Offset(
-                                    size.width / 2f + 15.dp.toPx(),
+                                    size.width / 2f + lineLength.value * 15.dp.toPx(),
                                     size.height
                                 ),
                                 strokeWidth = 2.dp.toPx(),
@@ -74,11 +83,14 @@ fun RowScope.StandardBottomNavItem(
                         }
                     }
             ) {
-                Icon(
-                    modifier = Modifier.align(Alignment.Center),
-                    imageVector = icon,
-                    contentDescription = contentDescription
-                )
+                if (icon != null) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = contentDescription,
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                    )
+                }
                 if (alertCount != null) {
                     val alertText = if (alertCount > 99) {
                         "99+"

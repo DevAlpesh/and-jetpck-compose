@@ -2,20 +2,19 @@ package com.devalpesh.jetpack.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.BottomAppBar
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Message
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.domain.models.BottomNavItem
 import com.devalpesh.jetpack.presentation.util.Screen
 
@@ -24,7 +23,7 @@ import com.devalpesh.jetpack.presentation.util.Screen
 fun StandardScaffold(
     navController: NavController,
     modifier: Modifier = Modifier,
-    showBottomBar : Boolean = true,
+    showBottomBar: Boolean = true,
     bottomNavItem: List<BottomNavItem> = listOf(
         BottomNavItem(
             route = Screen.MainFeedScreen.route,
@@ -36,6 +35,7 @@ fun StandardScaffold(
             icon = Icons.Outlined.Message,
             contentDescription = "Message"
         ),
+        BottomNavItem(route = ""),
         BottomNavItem(
             route = Screen.ActivityScreen.route,
             icon = Icons.Outlined.Notifications,
@@ -47,11 +47,12 @@ fun StandardScaffold(
             contentDescription = "Profile"
         ),
     ),
+    onFabClick: () -> Unit = {},
     content: @Composable () -> Unit
 ) {
     Scaffold(
         bottomBar = {
-            if (showBottomBar){
+            if (showBottomBar) {
                 BottomAppBar(
                     modifier = Modifier.fillMaxWidth(),
                     backgroundColor = MaterialTheme.colors.surface,
@@ -59,20 +60,38 @@ fun StandardScaffold(
                     elevation = 5.dp
                 ) {
                     BottomNavigation {
-                        bottomNavItem.forEachIndexed { i, bottomNavItem ->
+                        bottomNavItem.forEach {
                             StandardBottomNavItem(
-                                icon = bottomNavItem.icon,
-                                contentDescription = bottomNavItem.contentDescription,
-                                selected = bottomNavItem.route == navController.currentDestination?.route,
-                                alertCount = bottomNavItem.alertCount,
+                                icon = it.icon,
+                                contentDescription = it.contentDescription,
+                                selected = it.route == navController.currentDestination?.route,
+                                alertCount = it.alertCount,
+                                enabled = it.icon != null,
                             ) {
-                                navController.navigate(bottomNavItem.route)
+                                if (navController.currentDestination?.route != it.route) {
+                                    navController.navigate(it.route)
+                                }
                             }
                         }
                     }
                 }
             }
         },
+        floatingActionButton = {
+            if (showBottomBar) {
+                FloatingActionButton(
+                    backgroundColor = MaterialTheme.colors.primary,
+                    onClick = onFabClick
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = stringResource(id = R.string.txt_make_post)
+                    )
+                }
+            }
+        },
+        isFloatingActionButtonDocked = true,
+        floatingActionButtonPosition = FabPosition.Center,
         modifier = modifier
     ) {
         content()

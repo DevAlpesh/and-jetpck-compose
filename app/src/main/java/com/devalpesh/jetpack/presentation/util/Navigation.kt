@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.devalpesh.jetpack.presentation.activity.ActivityScreen
 import com.devalpesh.jetpack.presentation.chat.ChatScreen
+import com.devalpesh.jetpack.presentation.createpost.CreatePostScreen
 import com.devalpesh.jetpack.presentation.login.LoginScreen
 import com.devalpesh.jetpack.presentation.mainfeed.MainFeedScreen
 import com.devalpesh.jetpack.presentation.profile.ProfileScreen
@@ -44,6 +45,9 @@ fun Navigation(
         }
         composable(Screen.ProfileScreen.route) {
             ProfileScreen(navController = navController)
+        }
+        composable(Screen.CreatePostScreen.route) {
+            CreatePostScreen(navController = navController)
         }
     }
 }
