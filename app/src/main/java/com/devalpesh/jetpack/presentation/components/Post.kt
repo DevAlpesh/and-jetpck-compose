@@ -39,7 +39,7 @@ import com.devalpesh.jetpack.util.Constants
 @Composable
 fun Post(
     post: Post,
-    profilePictureSize: Dp = 75.dp
+    onPostClick: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -49,10 +49,13 @@ fun Post(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .offset(y = profilePictureSize / 2)
+                .offset(y = ProfilePictureSize / 2)
                 .clip(MaterialTheme.shapes.medium)
                 .shadow(5.dp)
                 .background(MediumGray)
+                .clickable {
+                    onPostClick()
+                }
         ) {
             Image(
                 painterResource(id = R.drawable.kermit),
@@ -127,7 +130,7 @@ fun Post(
             painterResource(id = R.drawable.philipp),
             contentDescription = "Profile Picture",
             modifier = Modifier
-                .size(profilePictureSize)
+                .size(ProfilePictureSize)
                 .clip(CircleShape)
                 .align(Alignment.TopCenter)
         )

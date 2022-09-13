@@ -27,4 +27,7 @@
     <string name="txt_notification">Notification</string>
     <string name="txt_profile">Profile</string>
     <string name="txt_make_post">Make Post</string>
+    <string name="txt_back">Back</string>
+    <string name="txt_your_feed">Your Feed</string>
+    <string name="txt_unlike">Unlike</string>
 </resources>
