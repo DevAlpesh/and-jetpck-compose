@@ -1,20 +1,50 @@
 package com.devalpesh.jetpack.presentation.profile
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavController
+import com.devalpesh.jetpack.R
+import com.devalpesh.jetpack.domain.models.Activity
+import com.devalpesh.jetpack.domain.util.ActivityAction
+import com.devalpesh.jetpack.domain.util.DateFormatUtil
+import com.devalpesh.jetpack.presentation.activity.ActivityItem
 import com.devalpesh.jetpack.presentation.components.StandardScaffold
+import com.devalpesh.jetpack.presentation.components.StandardToolbar
+import com.devalpesh.jetpack.presentation.ui.theme.SpaceMedium
+import kotlin.random.Random
 
 @Composable
 fun ProfileScreen(navController: NavController) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+    Column(
+        modifier = Modifier.fillMaxSize()
     ) {
-        Text(text = "Profile Screen")
+        StandardToolbar(
+            navController = navController,
+            title = {
+                Text(
+                    text = stringResource(id = R.string.txt_your_activity),
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colors.onBackground
+                )
+            },
+            modifier = Modifier.fillMaxWidth(),
+            showBackArrow = false,
+        )
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentPadding = PaddingValues(SpaceMedium)
+        ) {
+            items(20) {
+
+            }
+        }
     }
 }

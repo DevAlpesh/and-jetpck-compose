@@ -30,4 +30,8 @@
     <string name="txt_back">Back</string>
     <string name="txt_your_feed">Your Feed</string>
     <string name="txt_unlike">Unlike</string>
+    <string name="txt_liked">Liked</string>
+    <string name="txt_commented_on">commented on</string>
+    <string name="txt_your_post">your post</string>
+    <string name="txt_your_activity">Your Activity</string>
 </resources>
