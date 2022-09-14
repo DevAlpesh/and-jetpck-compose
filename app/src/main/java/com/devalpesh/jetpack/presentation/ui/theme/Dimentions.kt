@@ -7,4 +7,5 @@ val SpaceMedium = 16.dp
 val SpaceLarge = 24.dp
 
 val ProfilePictureSize = 75.dp
-val ProfilePictureSizeSmall = 30.dp
+val ProfilePictureSizeMedium = 30.dp
+val ProfilePictureSizeLarge = 125.dp

@@ -35,7 +35,7 @@ fun MainFeedScreen(
                 )
             },
             modifier = Modifier.fillMaxWidth(),
-            showBackArrow = true,
+            showBackArrow = false,
             navActions = {
                 IconButton(onClick = {
                     navController.navigate(Screen.SearchScreen.route)

@@ -34,4 +34,13 @@
     <string name="txt_commented_on">commented on</string>
     <string name="txt_your_post">your post</string>
     <string name="txt_your_activity">Your Activity</string>
+    <string name="txt_banner_image">Banner Image</string>
+    <string name="txt_your_profile">Your Profile</string>
+    <string name="txt_profile_image">Profile Image</string>
+    <string name="txt_edit">Edit</string>
+    <string name="txt_followers">Followers</string>
+    <string name="txt_followings">Followings</string>
+    <string name="txt_post">Post</string>
+    <string name="txt_unfollow">Unfollow</string>
+    <string name="txt_follow">Follow</string>
 </resources>
