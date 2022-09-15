@@ -35,22 +35,9 @@ fun ProfileHeaderSection(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .offset(y = -ProfilePictureSizeLarge / 2f),
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.philipp),
-            contentDescription = stringResource(id = R.string.txt_profile_image),
-            modifier = Modifier
-                .size(ProfilePictureSizeLarge)
-                .clip(CircleShape)
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colors.onSurface,
-                    shape = CircleShape
-                )
-        )
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier

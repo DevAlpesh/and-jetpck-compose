@@ -20,6 +20,7 @@ import com.devalpesh.jetpack.util.toPx
 
 @Composable
 fun BannerSection(
+    imageModifier :Modifier = Modifier,
     modifier: Modifier = Modifier,
     iconSize: Dp = 30.dp,
     onGithubClicked: () -> Unit = {},
@@ -30,7 +31,7 @@ fun BannerSection(
         Image(
             painter = painterResource(id = R.drawable.channelart),
             contentDescription = stringResource(id = R.string.txt_banner_image),
-            modifier = Modifier
+            modifier = imageModifier
                 .fillMaxSize()
         )
         Box(

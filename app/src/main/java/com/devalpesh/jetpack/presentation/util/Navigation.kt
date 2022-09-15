@@ -24,7 +24,7 @@ fun Navigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.SplashScreen.route,
+        startDestination = Screen.ProfileScreen.route,
         modifier = Modifier.fillMaxSize()
     ) {
         composable(Screen.SplashScreen.route) {
