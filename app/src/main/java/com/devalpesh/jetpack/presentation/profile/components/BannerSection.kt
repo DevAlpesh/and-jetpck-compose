@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -24,7 +25,8 @@ fun BannerSection(
     modifier: Modifier = Modifier,
     imageModifier: Modifier = Modifier,
     iconSize: Dp = 35.dp,
-    iconModifier : Modifier = Modifier,
+    leftIconModifier: Modifier = Modifier,
+    rightIconModifier: Modifier = Modifier,
     onGitHubClick: () -> Unit = {},
     onInstagramClick: () -> Unit = {},
     onLinkedInClick: () -> Unit = {}
@@ -53,7 +55,7 @@ fun BannerSection(
                 )
         )
         Row(
-            modifier = iconModifier
+            modifier =  leftIconModifier
                 .height(iconSize)
                 .align(Alignment.BottomStart)
                 .padding(SpaceSmall)
@@ -77,8 +79,9 @@ fun BannerSection(
                 modifier = Modifier.height(iconSize)
             )
         }
+
         Row(
-            modifier = iconModifier
+            modifier = rightIconModifier
                 .height(iconSize)
                 .align(Alignment.BottomEnd)
                 .padding(SpaceSmall)

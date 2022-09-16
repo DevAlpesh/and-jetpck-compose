@@ -31,6 +31,7 @@ import com.devalpesh.jetpack.presentation.profile.components.BannerSection
 import com.devalpesh.jetpack.presentation.profile.components.ProfileHeaderSection
 import com.devalpesh.jetpack.presentation.ui.theme.ProfilePictureSizeLarge
 import com.devalpesh.jetpack.presentation.ui.theme.SpaceMedium
+import com.devalpesh.jetpack.presentation.ui.theme.SpaceSmall
 import com.devalpesh.jetpack.presentation.util.Screen
 import com.devalpesh.jetpack.util.toPx
 
@@ -43,11 +44,10 @@ fun ProfileScreen(navController: NavController) {
         mutableStateOf(0f)
     }
 
-    var totalToolbarOffsetY by remember {
-        mutableStateOf(0f)
-    }
-
-
+    val iconHorizontalCenterLength =
+        (LocalConfiguration.current.screenWidthDp.dp.toPx() / 4f -
+                (ProfilePictureSizeLarge / 4f).toPx() -
+                SpaceSmall.toPx()) / 2f
     val iconSizeExpanded = 35.dp
     val toolbarHeightCollapsed = 75.dp
     val imageCollapsedOffsetY = remember {
@@ -150,10 +150,19 @@ fun ProfileScreen(navController: NavController) {
                             maximumValue = bannerHeight
                         )
                     ),
-                iconModifier = Modifier.graphicsLayer {
+                leftIconModifier = Modifier.graphicsLayer {
                     translationY = (1f - expandedRatio) *
                             -iconCollapsedOffsetY.toPx()
-                }
+
+                    translationX = (1f - expandedRatio) *
+                            iconHorizontalCenterLength
+                },
+                rightIconModifier = Modifier.graphicsLayer {
+                    translationY = (1f - expandedRatio) *
+                            -iconCollapsedOffsetY.toPx()
+                    translationX = (1f - expandedRatio) *
+                            -iconHorizontalCenterLength
+                },
             )
             Image(
                 painter = painterResource(id = R.drawable.philipp),
