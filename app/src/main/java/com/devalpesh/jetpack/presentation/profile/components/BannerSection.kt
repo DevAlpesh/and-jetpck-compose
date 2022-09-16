@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
@@ -20,17 +21,21 @@ import com.devalpesh.jetpack.util.toPx
 
 @Composable
 fun BannerSection(
-    imageModifier :Modifier = Modifier,
     modifier: Modifier = Modifier,
-    iconSize: Dp = 30.dp,
-    onGithubClicked: () -> Unit = {},
-    onInstagramClicked: () -> Unit = {},
-    onLinkedInClicked: () -> Unit = {}
+    imageModifier: Modifier = Modifier,
+    iconSize: Dp = 35.dp,
+    iconModifier : Modifier = Modifier,
+    onGitHubClick: () -> Unit = {},
+    onInstagramClick: () -> Unit = {},
+    onLinkedInClick: () -> Unit = {}
 ) {
-    BoxWithConstraints(modifier = modifier) {
+    BoxWithConstraints(
+        modifier = modifier
+    ) {
         Image(
             painter = painterResource(id = R.drawable.channelart),
             contentDescription = stringResource(id = R.string.txt_banner_image),
+            contentScale = ContentScale.Crop,
             modifier = imageModifier
                 .fillMaxSize()
         )
@@ -48,14 +53,15 @@ fun BannerSection(
                 )
         )
         Row(
-            modifier = Modifier
+            modifier = iconModifier
                 .height(iconSize)
                 .align(Alignment.BottomStart)
                 .padding(SpaceSmall)
         ) {
+            Spacer(modifier = Modifier.width(SpaceSmall))
             Image(
                 painter = painterResource(id = R.drawable.ic_js_logo),
-                contentDescription = "JS",
+                contentDescription = "Javscript",
                 modifier = Modifier.height(iconSize)
             )
             Spacer(modifier = Modifier.width(SpaceMedium))
@@ -72,23 +78,23 @@ fun BannerSection(
             )
         }
         Row(
-            modifier = Modifier
+            modifier = iconModifier
                 .height(iconSize)
                 .align(Alignment.BottomEnd)
                 .padding(SpaceSmall)
         ) {
             IconButton(
-                onClick = onGithubClicked,
+                onClick = onGitHubClick,
                 modifier = Modifier.size(iconSize)
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_github_icon_1),
-                    contentDescription = "Github",
+                    contentDescription = "GitHub",
                     modifier = Modifier.size(iconSize)
                 )
             }
             IconButton(
-                onClick = onInstagramClicked,
+                onClick = onInstagramClick,
                 modifier = Modifier.size(iconSize)
             ) {
                 Image(
@@ -98,7 +104,7 @@ fun BannerSection(
                 )
             }
             IconButton(
-                onClick = onLinkedInClicked,
+                onClick = onLinkedInClick,
                 modifier = Modifier.size(iconSize)
             ) {
                 Image(

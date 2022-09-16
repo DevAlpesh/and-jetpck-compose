@@ -4,17 +4,16 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
@@ -33,26 +32,54 @@ import com.devalpesh.jetpack.presentation.profile.components.ProfileHeaderSectio
 import com.devalpesh.jetpack.presentation.ui.theme.ProfilePictureSizeLarge
 import com.devalpesh.jetpack.presentation.ui.theme.SpaceMedium
 import com.devalpesh.jetpack.presentation.util.Screen
+import com.devalpesh.jetpack.util.toPx
 
 @Composable
 fun ProfileScreen(navController: NavController) {
 
-    val toolbarOffsetY by remember {
+    val lazyListState = rememberLazyListState()
+
+    var toolbarOffsetY by remember {
         mutableStateOf(0f)
     }
 
-    val toolbarHeightCollapsed = 56.dp
+    var totalToolbarOffsetY by remember {
+        mutableStateOf(0f)
+    }
+
+
+    val iconSizeExpanded = 35.dp
+    val toolbarHeightCollapsed = 75.dp
+    val imageCollapsedOffsetY = remember {
+        (toolbarHeightCollapsed - ProfilePictureSizeLarge / 2f) / 2f
+    }
+    val iconCollapsedOffsetY = remember {
+        (toolbarHeightCollapsed - iconSizeExpanded) / 2f
+    }
     val bannerHeight = (LocalConfiguration.current.screenWidthDp / 2.5f).dp
     val toolbarHeightExpanded = remember {
         bannerHeight + ProfilePictureSizeLarge
+    }
+    val maxOffset = remember {
+        toolbarHeightExpanded - toolbarHeightCollapsed
+    }
+    var expandedRatio by remember {
+        mutableStateOf(1f)
     }
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
                 val delta = available.y
+                if (delta > 0 && lazyListState.firstVisibleItemIndex != 0) {
+                    return Offset.Zero
+                }
                 val newOffset = toolbarOffsetY + delta
-                
-                return super.onPreScroll(available, source)
+                toolbarOffsetY = newOffset.coerceIn(
+                    minimumValue = -maxOffset.toPx(),
+                    maximumValue = 0f
+                )
+                expandedRatio = ((toolbarOffsetY + maxOffset.toPx()) / maxOffset.toPx())
+                return Offset.Zero
             }
         }
     }
@@ -64,23 +91,27 @@ fun ProfileScreen(navController: NavController) {
     ) {
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
+            state = lazyListState
         ) {
             item {
-                Spacer(modifier = Modifier.height(toolbarHeightExpanded - ProfilePictureSizeLarge / 2f))
+                Spacer(
+                    modifier = Modifier.height(
+                        toolbarHeightExpanded - ProfilePictureSizeLarge / 2f
+                    )
+                )
             }
             item {
                 ProfileHeaderSection(
                     user = User(
                         profilePictureUrl = "",
-                        username = "Alpesh Raval",
-                        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                                "sed do eiusmod tempor incididunt ut labore et dolore magna " +
-                                "aliqua. Maecenas sed enim ut sem viverra aliquet eget sit " +
-                                "amet. Platea dictumst quisque sagittis purus sit amet.",
-                        followerCount = 20,
-                        followingCount = 30,
-                        postCount = 8
+                        username = "Philipp Lackner",
+                        description = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed\n" +
+                                "diam nonumy eirmod tempor invidunt ut labore et dolore \n" +
+                                "magna aliquyam erat, sed diam voluptua",
+                        followerCount = 234,
+                        followingCount = 534,
+                        postCount = 65
                     )
                 )
             }
@@ -91,17 +122,19 @@ fun ProfileScreen(navController: NavController) {
                 )
                 Post(
                     post = Post(
-                        username = "Philip Lackner",
+                        username = "Philipp Lackner",
                         imageUrl = "",
-                        description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
                         profilePictureUrl = "",
+                        description = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed\n" +
+                                "diam nonumy eirmod tempor invidunt ut labore et dolore \n" +
+                                "magna aliquyam erat, sed diam voluptua...",
                         likeCount = 17,
-                        commentCount = 20
+                        commentCount = 7,
                     ),
+                    showProfileImage = false,
                     onPostClick = {
                         navController.navigate(Screen.PostDetailScreen.route)
                     },
-                    showProfileImage = false,
                 )
             }
         }
@@ -110,7 +143,17 @@ fun ProfileScreen(navController: NavController) {
                 .align(Alignment.TopCenter)
         ) {
             BannerSection(
-                modifier = Modifier.height(bannerHeight)
+                modifier = Modifier
+                    .height(
+                        (bannerHeight * expandedRatio).coerceIn(
+                            minimumValue = toolbarHeightCollapsed,
+                            maximumValue = bannerHeight
+                        )
+                    ),
+                iconModifier = Modifier.graphicsLayer {
+                    translationY = (1f - expandedRatio) *
+                            -iconCollapsedOffsetY.toPx()
+                }
             )
             Image(
                 painter = painterResource(id = R.drawable.philipp),
@@ -118,7 +161,15 @@ fun ProfileScreen(navController: NavController) {
                 modifier = Modifier
                     .align(CenterHorizontally)
                     .graphicsLayer {
-                        translationY = -ProfilePictureSizeLarge.toPx() / 2f
+                        translationY = -ProfilePictureSizeLarge.toPx() / 2f -
+                                (1f - expandedRatio) * imageCollapsedOffsetY.toPx()
+                        transformOrigin = TransformOrigin(
+                            pivotFractionX = 0.5f,
+                            pivotFractionY = 0f
+                        )
+                        val scale = 0.5f + expandedRatio * 0.5f
+                        scaleX = scale
+                        scaleY = scale
                     }
                     .size(ProfilePictureSizeLarge)
                     .clip(CircleShape)
@@ -130,4 +181,6 @@ fun ProfileScreen(navController: NavController) {
             )
         }
     }
+
+
 }
