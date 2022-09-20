@@ -10,6 +10,7 @@ import com.devalpesh.jetpack.domain.models.Post
 import com.devalpesh.jetpack.presentation.activity.ActivityScreen
 import com.devalpesh.jetpack.presentation.chat.ChatScreen
 import com.devalpesh.jetpack.presentation.createpost.CreatePostScreen
+import com.devalpesh.jetpack.presentation.editprofile.EditProfileScreen
 import com.devalpesh.jetpack.presentation.login.LoginScreen
 import com.devalpesh.jetpack.presentation.mainfeed.MainFeedScreen
 import com.devalpesh.jetpack.presentation.postdetail.PostDetailScreen
@@ -24,7 +25,7 @@ fun Navigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.ProfileScreen.route,
+        startDestination = Screen.EditProfileScreen.route,
         modifier = Modifier.fillMaxSize()
     ) {
         composable(Screen.SplashScreen.route) {
@@ -47,6 +48,9 @@ fun Navigation(
         }
         composable(Screen.ProfileScreen.route) {
             ProfileScreen(navController = navController)
+        }
+        composable(Screen.EditProfileScreen.route) {
+            EditProfileScreen(navController = navController)
         }
         composable(Screen.CreatePostScreen.route) {
             CreatePostScreen(navController = navController)

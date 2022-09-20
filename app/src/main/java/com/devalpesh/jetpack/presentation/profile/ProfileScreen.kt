@@ -7,7 +7,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -21,7 +22,9 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.domain.models.Post
@@ -36,36 +39,36 @@ import com.devalpesh.jetpack.presentation.util.Screen
 import com.devalpesh.jetpack.util.toPx
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(
+    navController: NavController,
+    viewModel: ProfileViewModel = hiltViewModel(),
+    profilePictureSize : Dp = ProfilePictureSizeLarge
+) {
 
     val lazyListState = rememberLazyListState()
-
-    var toolbarOffsetY by remember {
-        mutableStateOf(0f)
-    }
+    var toolbarOffsetY = viewModel.toolbarOffsetY.value
+    var expandedRatio = viewModel.expandedRatio.value
 
     val iconHorizontalCenterLength =
         (LocalConfiguration.current.screenWidthDp.dp.toPx() / 4f -
-                (ProfilePictureSizeLarge / 4f).toPx() -
+                (profilePictureSize / 4f).toPx() -
                 SpaceSmall.toPx()) / 2f
     val iconSizeExpanded = 35.dp
     val toolbarHeightCollapsed = 75.dp
     val imageCollapsedOffsetY = remember {
-        (toolbarHeightCollapsed - ProfilePictureSizeLarge / 2f) / 2f
+        (toolbarHeightCollapsed - profilePictureSize / 2f) / 2f
     }
     val iconCollapsedOffsetY = remember {
         (toolbarHeightCollapsed - iconSizeExpanded) / 2f
     }
     val bannerHeight = (LocalConfiguration.current.screenWidthDp / 2.5f).dp
     val toolbarHeightExpanded = remember {
-        bannerHeight + ProfilePictureSizeLarge
+        bannerHeight + profilePictureSize
     }
     val maxOffset = remember {
         toolbarHeightExpanded - toolbarHeightCollapsed
     }
-    var expandedRatio by remember {
-        mutableStateOf(1f)
-    }
+
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
@@ -97,7 +100,7 @@ fun ProfileScreen(navController: NavController) {
             item {
                 Spacer(
                     modifier = Modifier.height(
-                        toolbarHeightExpanded - ProfilePictureSizeLarge / 2f
+                        toolbarHeightExpanded - profilePictureSize / 2f
                     )
                 )
             }
@@ -170,7 +173,7 @@ fun ProfileScreen(navController: NavController) {
                 modifier = Modifier
                     .align(CenterHorizontally)
                     .graphicsLayer {
-                        translationY = -ProfilePictureSizeLarge.toPx() / 2f -
+                        translationY = -profilePictureSize.toPx() / 2f -
                                 (1f - expandedRatio) * imageCollapsedOffsetY.toPx()
                         transformOrigin = TransformOrigin(
                             pivotFractionX = 0.5f,
@@ -180,7 +183,7 @@ fun ProfileScreen(navController: NavController) {
                         scaleX = scale
                         scaleY = scale
                     }
-                    .size(ProfilePictureSizeLarge)
+                    .size(profilePictureSize)
                     .clip(CircleShape)
                     .border(
                         width = 1.dp,

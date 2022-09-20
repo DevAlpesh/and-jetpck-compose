@@ -2,6 +2,7 @@ package com.devalpesh.jetpack.presentation.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -10,12 +11,15 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import com.devalpesh.jetpack.R
+import com.devalpesh.jetpack.presentation.ui.theme.IconSizeMedium
 
 @Composable
 fun StandardTextField(
@@ -24,6 +28,12 @@ fun StandardTextField(
     hint: String = "",
     maxLength: Int = 40,
     error: String = "",
+    style: TextStyle = TextStyle(
+        color = MaterialTheme.colors.onBackground
+    ),
+    singleLine : Boolean = true,
+    maxLines : Int = 1,
+    leadingIcon: ImageVector? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
     isPasswordToggleDisplayed: Boolean = keyboardType == KeyboardType.Password,
     showPasswordToggle: Boolean = false,
@@ -42,6 +52,7 @@ fun StandardTextField(
                     onValueChange(it)
                 }
             },
+            textStyle = style,
             placeholder = {
                 Text(
                     text = hint,
@@ -52,14 +63,20 @@ fun StandardTextField(
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType
             ),
-            singleLine = true,
-            visualTransformation = if (!showPasswordToggle && isPasswordToggleDisplayed) {
-                PasswordVisualTransformation()
-            } else {
-                VisualTransformation.None
-            },
-            trailingIcon = {
-                if (isPasswordToggleDisplayed) {
+            singleLine = singleLine,
+            maxLines=maxLines,
+            leadingIcon = if (leadingIcon != null) {
+                {
+                    Icon(
+                        imageVector = leadingIcon,
+                        contentDescription = null,
+                        tint = MaterialTheme.colors.onBackground,
+                        modifier = Modifier.size(IconSizeMedium)
+                    )
+                }
+            } else null,
+            trailingIcon = if (isPasswordToggleDisplayed) {
+                {
                     IconButton(onClick = {
                         onPasswordToggleClick(!showPasswordToggle)
                     }) {
@@ -78,7 +95,13 @@ fun StandardTextField(
                         )
                     }
                 }
+            } else null,
+            visualTransformation = if (!showPasswordToggle && isPasswordToggleDisplayed) {
+                PasswordVisualTransformation()
+            } else {
+                VisualTransformation.None
             },
+
             modifier = Modifier.fillMaxWidth()
         )
         if (error.isNotEmpty()) {
