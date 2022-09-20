@@ -53,7 +53,7 @@ fun Post(
                 .fillMaxWidth()
                 .offset(
                     y = if (showProfileImage) {
-                        ProfilePictureSizeMedium / 2f
+                        ProfilePictureSizeExtraSmall / 2f
                     } else 0.dp
                 )
                 .clip(MaterialTheme.shapes.medium)
@@ -137,7 +137,7 @@ fun Post(
                 painterResource(id = R.drawable.philipp),
                 contentDescription = "Profile Picture",
                 modifier = Modifier
-                    .size(ProfilePictureSizeMedium)
+                    .size(ProfilePictureSizeExtraSmall)
                     .clip(CircleShape)
                     .align(Alignment.TopCenter)
             )

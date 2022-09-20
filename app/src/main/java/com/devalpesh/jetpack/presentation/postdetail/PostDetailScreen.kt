@@ -64,7 +64,7 @@ fun PostDetailScreen(
                         Column(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .offset(y = ProfilePictureSize / 2)
+                                .offset(y = ProfilePictureSizeMedium / 2)
                                 .clip(MaterialTheme.shapes.medium)
                                 .shadow(5.dp)
                                 .background(MediumGray)
@@ -116,7 +116,7 @@ fun PostDetailScreen(
                             painterResource(id = R.drawable.philipp),
                             contentDescription = "Profile Picture",
                             modifier = Modifier
-                                .size(ProfilePictureSize)
+                                .size(ProfilePictureSizeMedium)
                                 .clip(CircleShape)
                                 .align(Alignment.TopCenter)
                         )
@@ -173,7 +173,7 @@ fun Comment(
                         contentDescription = null,
                         modifier = Modifier
                             .clip(CircleShape)
-                            .size(ProfilePictureSizeMedium)
+                            .size(ProfilePictureSizeExtraSmall)
                     )
                     Spacer(modifier = Modifier.width(SpaceSmall))
                     Text(

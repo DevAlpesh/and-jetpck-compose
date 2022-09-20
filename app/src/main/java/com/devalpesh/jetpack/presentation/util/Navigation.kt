@@ -16,6 +16,7 @@ import com.devalpesh.jetpack.presentation.mainfeed.MainFeedScreen
 import com.devalpesh.jetpack.presentation.postdetail.PostDetailScreen
 import com.devalpesh.jetpack.presentation.profile.ProfileScreen
 import com.devalpesh.jetpack.presentation.register.RegisterScreen
+import com.devalpesh.jetpack.presentation.search.SearchScreen
 import com.devalpesh.jetpack.presentation.splash.SplashScreen
 
 @Composable
@@ -25,7 +26,7 @@ fun Navigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.EditProfileScreen.route,
+        startDestination = Screen.LoginScreen.route,
         modifier = Modifier.fillMaxSize()
     ) {
         composable(Screen.SplashScreen.route) {
@@ -54,6 +55,9 @@ fun Navigation(
         }
         composable(Screen.CreatePostScreen.route) {
             CreatePostScreen(navController = navController)
+        }
+        composable(Screen.SearchScreen.route) {
+            SearchScreen(navController = navController)
         }
         composable(Screen.PostDetailScreen.route) {
             PostDetailScreen(

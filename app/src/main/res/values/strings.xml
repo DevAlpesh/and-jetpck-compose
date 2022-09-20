@@ -51,4 +51,9 @@
     <string name="txt_your_bio">Your Bio</string>
     <string name="txt_select_top_3_skills">Select your top 3 skills:</string>
     <string name="txt_save_changes">Save Changes</string>
+    <string name="txt_search_for_user">Search for users</string>
+    <string name="txt_search">Search…</string>
+    <string name="txt_create_new_post">Create a new post</string>
+    <string name="txt_choose_image">Choose Image</string>
+    <string name="txt_description">Description</string>
 </resources>
