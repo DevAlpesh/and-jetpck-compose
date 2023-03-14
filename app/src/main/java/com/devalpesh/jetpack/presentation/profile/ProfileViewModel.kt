@@ -7,23 +7,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor(
+class ProfileViewModel @Inject constructor() : ViewModel() {
 
-) : ViewModel() {
+    private val _toolbarStates = mutableStateOf(ProfileToolbarState())
+    val toolbarStates: State<ProfileToolbarState> = _toolbarStates
 
-    private val _toolbarOffsetY = mutableStateOf(0f)
-    val toolbarOffsetY: State<Float> = _toolbarOffsetY
-
-    private val _expandedRatio = mutableStateOf<Float>(1f)
-    val expandedRatio: State<Float> = _expandedRatio
-
-    fun setExpandedRation(ratio:Float) {
-        _expandedRatio.value = ratio
+    fun setExpandedRation(ratio: Float) {
+        _toolbarStates.value = _toolbarStates.value.copy(expandedRatio = ratio)
     }
 
-
-    fun setToolbarOffsetY(value:Float) {
-        _toolbarOffsetY.value = value
+    fun setToolbarOffsetY(value: Float) {
+        _toolbarStates.value = _toolbarStates.value.copy(toolbarOffsetY = value)
     }
-
 }
