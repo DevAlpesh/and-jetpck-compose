@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,9 +31,10 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
                     val navBackStackEntry = navController.currentBackStackEntryAsState()
-
+                    val scaffoldState = rememberScaffoldState()
                     StandardScaffold(
                         navController = navController,
+                        state = scaffoldState,
                         modifier = Modifier.fillMaxSize(),
                         showBottomBar = navBackStackEntry.value?.destination?.route in listOf(
                             Screen.MainFeedScreen.route,
@@ -44,7 +46,7 @@ class MainActivity : ComponentActivity() {
                             navController.navigate(Screen.CreatePostScreen.route)
                         }
                     ) {
-                        Navigation(navController)
+                        Navigation(navController, scaffoldState)
                     }
                 }
             }

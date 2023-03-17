@@ -1,4 +1,4 @@
-package com.devalpesh.jetpack.feture_search.search
+package com.devalpesh.jetpack.feture_search.presentation.search
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn

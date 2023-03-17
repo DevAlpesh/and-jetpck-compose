@@ -1,6 +1,7 @@
 package com.devalpesh.jetpack.core.presentation.util
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -16,13 +17,13 @@ import com.devalpesh.jetpack.core.presentation.mainfeed.MainFeedScreen
 import com.devalpesh.jetpack.feature_post.presentation.postdetail.PostDetailScreen
 import com.devalpesh.jetpack.feature_profile.presentation.profile.ProfileScreen
 import com.devalpesh.jetpack.feature_auth.presentation.register.RegisterScreen
-import com.devalpesh.jetpack.feture_search.search.SearchScreen
+import com.devalpesh.jetpack.feture_search.presentation.search.SearchScreen
 import com.devalpesh.jetpack.feature_splash.presentation.splash.SplashScreen
 
 @Composable
 fun Navigation(
-    navController: NavHostController
-
+    navController: NavHostController,
+    scaffoldState: ScaffoldState
 ) {
     NavHost(
         navController = navController,
@@ -36,7 +37,7 @@ fun Navigation(
             LoginScreen(navController = navController)
         }
         composable(Screen.RegisterScreen.route) {
-            RegisterScreen(navController = navController)
+            RegisterScreen(navController = navController, scaffoldState = scaffoldState)
         }
         composable(Screen.MainFeedScreen.route) {
             MainFeedScreen(navController = navController)
