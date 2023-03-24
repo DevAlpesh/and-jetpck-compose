@@ -20,6 +20,7 @@ import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.presentation.components.StandardTextField
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceLarge
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
+import com.devalpesh.jetpack.core.presentation.util.UiEvent
 import com.devalpesh.jetpack.core.presentation.util.asString
 import com.devalpesh.jetpack.core.util.Constants
 import com.devalpesh.jetpack.feature_auth.presentation.util.AuthError
@@ -40,7 +41,7 @@ fun RegisterScreen(
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
-                is RegisterViewModel.UiEvent.SnackbarEvent -> {
+                is UiEvent.SnackbarEvent -> {
                     scaffoldState.snackbarHostState.showSnackbar(
                         event.uiText.asString(context),
                         duration = SnackbarDuration.Long
@@ -80,7 +81,7 @@ fun RegisterScreen(
                 keyboardType = KeyboardType.Email,
                 error = when (emailState.error) {
                     is AuthError.FieldEmpty -> {
-                        stringResource(id = R.string.txt_this_field_cant_be_empty)
+                        stringResource(id = R.string.txt_error_field_empty)
                     }
                     is AuthError.InvalidEmail -> {
                         stringResource(id = R.string.txt_not_a_valid_email)
@@ -98,7 +99,7 @@ fun RegisterScreen(
                 keyboardType = KeyboardType.Email,
                 error = when (usernameState.error) {
                     is AuthError.FieldEmpty -> {
-                        stringResource(id = R.string.txt_this_field_cant_be_empty)
+                        stringResource(id = R.string.txt_error_field_empty)
                     }
                     is AuthError.InputTooShort -> {
                         stringResource(
@@ -123,7 +124,7 @@ fun RegisterScreen(
                 },
                 error = when (passwordState.error) {
                     is AuthError.FieldEmpty -> {
-                        stringResource(id = R.string.txt_this_field_cant_be_empty)
+                        stringResource(id = R.string.txt_error_field_empty)
                     }
                     is AuthError.InputTooShort -> {
                         stringResource(

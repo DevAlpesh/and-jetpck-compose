@@ -18,7 +18,7 @@ import com.devalpesh.jetpack.feature_post.presentation.postdetail.PostDetailScre
 import com.devalpesh.jetpack.feature_profile.presentation.profile.ProfileScreen
 import com.devalpesh.jetpack.feature_auth.presentation.register.RegisterScreen
 import com.devalpesh.jetpack.feture_search.presentation.search.SearchScreen
-import com.devalpesh.jetpack.feature_splash.presentation.splash.SplashScreen
+import com.devalpesh.jetpack.feature_auth.presentation.splash.SplashScreen
 
 @Composable
 fun Navigation(
@@ -27,14 +27,17 @@ fun Navigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.LoginScreen.route,
+        startDestination = Screen.SplashScreen.route,
         modifier = Modifier.fillMaxSize()
     ) {
         composable(Screen.SplashScreen.route) {
             SplashScreen(navController = navController)
         }
         composable(Screen.LoginScreen.route) {
-            LoginScreen(navController = navController)
+            LoginScreen(
+                navController = navController,
+                scaffoldState = scaffoldState
+            )
         }
         composable(Screen.RegisterScreen.route) {
             RegisterScreen(navController = navController, scaffoldState = scaffoldState)

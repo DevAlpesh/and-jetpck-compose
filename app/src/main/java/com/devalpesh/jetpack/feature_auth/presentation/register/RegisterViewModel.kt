@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.domain.states.PasswordTextFieldState
 import com.devalpesh.jetpack.core.domain.states.StandardTextFieldStates
+import com.devalpesh.jetpack.core.presentation.util.UiEvent
 import com.devalpesh.jetpack.core.util.Resource
 import com.devalpesh.jetpack.core.util.UiText
 import com.devalpesh.jetpack.feature_auth.domain.use_case.RegisterUseCase
@@ -123,9 +124,4 @@ class RegisterViewModel @Inject constructor(
             }
         }
     }
-
-    sealed class UiEvent {
-        data class SnackbarEvent(val uiText: UiText) : UiEvent()
-    }
-
 }

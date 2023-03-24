@@ -1,4 +1,4 @@
-package com.devalpesh.jetpack.feature_splash.presentation.splash
+package com.devalpesh.jetpack.feature_auth.presentation.splash
 
 import android.view.animation.OvershootInterpolator
 import androidx.compose.animation.core.Animatable
@@ -14,15 +14,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.presentation.util.Screen
+import com.devalpesh.jetpack.core.presentation.util.UiEvent
 import com.devalpesh.jetpack.core.util.Constants
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import timber.log.Timber
 
 @Composable
 fun SplashScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: SplashViewModel = hiltViewModel()
 ) {
     val scale = remember {
         Animatable(0f)
@@ -40,10 +45,25 @@ fun SplashScreen(
                 }
             )
         )
-        delay(Constants.SPLASH_SCREEN_DURATION)
+
+        /*delay(Constants.SPLASH_SCREEN_DURATION)
         navController.navigate(Screen.LoginScreen.route) {
             popUpTo(Screen.SplashScreen.route) {
                 inclusive = true
+            }
+        }*/
+
+    }
+    LaunchedEffect(key1 = true) {
+        Timber.e("Launch effect...")
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    Timber.e("Collect latest...")
+                    navController.popBackStack()
+                    navController.navigate(event.route)
+                }
+                else -> Unit
             }
         }
     }

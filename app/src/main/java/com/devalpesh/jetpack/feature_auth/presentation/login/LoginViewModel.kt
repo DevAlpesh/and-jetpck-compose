@@ -3,59 +3,106 @@ package com.devalpesh.jetpack.feature_auth.presentation.login
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.devalpesh.jetpack.core.domain.states.StandardTextFieldStates
+import com.devalpesh.jetpack.core.presentation.util.Screen
+import com.devalpesh.jetpack.core.presentation.util.UiEvent
+import com.devalpesh.jetpack.core.util.Resource
+import com.devalpesh.jetpack.core.util.UiText
+import com.devalpesh.jetpack.feature_auth.domain.use_case.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor() : ViewModel() {
+class LoginViewModel @Inject constructor(
+    private val loginUseCase: LoginUseCase
+) : ViewModel() {
 
-    private val _showPassword = mutableStateOf(false)
-    val showPassword: State<Boolean> = _showPassword
+    private val _emailStateState =
+        mutableStateOf(StandardTextFieldStates())
+    val emailStateState: State<StandardTextFieldStates> = _emailStateState
 
-    private val _usernameText = mutableStateOf("")
-    val usernameText: State<String> = _usernameText
+    private val _passwordState = mutableStateOf(StandardTextFieldStates())
+    val passwordState: State<StandardTextFieldStates> = this._passwordState
 
-    private val _passwordText = mutableStateOf("")
-    val passwordText: State<String> = _passwordText
+    private val _loginState = mutableStateOf(LoginState())
+    val loginState: State<LoginState> = _loginState
 
-    private val _isUsernameError = mutableStateOf(false)
-    val isUsernameError: State<Boolean> = _isUsernameError
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
-    private val _isPasswordError = mutableStateOf(false)
-    val isPasswordError: State<Boolean> = _isPasswordError
+    fun onEvent(event: LoginEvent) {
+        when (event) {
+            is LoginEvent.EnteredEmail -> {
+                _emailStateState.value = _emailStateState.value.copy(
+                    text = event.email
+                )
+            }
+            is LoginEvent.EnteredPassword -> {
+                _passwordState.value = _passwordState.value.copy(
+                    text = event.password
+                )
+            }
 
-    private val _usernameError = mutableStateOf("")
-    val userNameError: State<String> = _usernameError
+            is LoginEvent.TogglePasswordVisibility -> {
+                _loginState.value = _loginState.value.copy(
+                    isPasswordVisible = !_loginState.value.isPasswordVisible
+                )
+            }
 
-    private val _passwordError = mutableStateOf("")
-    val passwordError: State<String> = _passwordError
-
-    fun setShowPassword(showPassword: Boolean) {
-        _showPassword.value = showPassword
+            LoginEvent.Login -> {
+                login()
+            }
+        }
     }
 
-    fun setUsernameText(username: String) {
-        _usernameText.value = username
-    }
+    private fun login() {
 
-    fun setPasswordText(password: String) {
-        _passwordText.value = password
-    }
+        _emailStateState.value = _emailStateState.value.copy(
+            error = null
+        )
+        _passwordState.value = _passwordState.value.copy(
+            error = null
+        )
 
-    fun setPasswordError(error: String) {
-        _passwordError.value = error
+        _loginState.value = _loginState.value.copy(
+            isLoading = true
+        )
+        viewModelScope.launch {
+            val loginResult = loginUseCase(
+                email = emailStateState.value.text,
+                password = passwordState.value.text
+            )
+            _loginState.value = _loginState.value.copy(
+                isLoading = false
+            )
+            if (loginResult.emailError != null) {
+                _emailStateState.value = _emailStateState.value.copy(
+                    error = loginResult.emailError
+                )
+            }
+            if (loginResult.passwordError != null) {
+                _passwordState.value = _passwordState.value.copy(
+                    error = loginResult.passwordError
+                )
+            }
+            when (loginResult.result) {
+                is Resource.Success -> {
+                    _eventFlow.emit(
+                        UiEvent.Navigate(Screen.MainFeedScreen.route)
+                    )
+                }
+                is Resource.Error -> {
+                    _eventFlow.emit(
+                        UiEvent.SnackbarEvent(
+                            loginResult.result.uiText ?: UiText.unknownError()
+                        )
+                    )
+                }
+            }
+        }
     }
-
-    fun setUsernameError(error: String) {
-        _usernameError.value = error
-    }
-
-    fun setIsUsernameError(isError: Boolean) {
-        _isUsernameError.value = isError
-    }
-
-    fun setIsPasswordError(isError: Boolean) {
-        _isPasswordError.value = isError
-    }
-
 }

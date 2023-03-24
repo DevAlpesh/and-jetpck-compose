@@ -4,10 +4,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -21,12 +24,36 @@ import com.devalpesh.jetpack.core.presentation.components.StandardTextField
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceLarge
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
 import com.devalpesh.jetpack.core.presentation.util.Screen
+import com.devalpesh.jetpack.core.presentation.util.UiEvent
+import com.devalpesh.jetpack.core.presentation.util.asString
+import com.devalpesh.jetpack.feature_auth.presentation.util.AuthError
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun LoginScreen(
     navController: NavController,
+    scaffoldState: ScaffoldState,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
+    val emailState = viewModel.emailStateState.value
+    val passwordState = viewModel.passwordState.value
+    val state = viewModel.loginState.value
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is UiEvent.SnackbarEvent -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.uiText.asString(context)
+                    )
+                }
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.route)
+                }
+            }
+        }
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -49,32 +76,42 @@ fun LoginScreen(
             )
             Spacer(modifier = Modifier.height(SpaceMedium))
             StandardTextField(
-                text = viewModel.usernameText.value,
+                text = emailState.text,
                 onValueChange = {
-                    viewModel.setUsernameText(it)
+                    viewModel.onEvent(LoginEvent.EnteredEmail(it))
                 },
                 hint = stringResource(id = R.string.txt_email_hint),
                 keyboardType = KeyboardType.Email,
-                error = viewModel.userNameError.value
+                error = when (emailState.error) {
+                    is AuthError.FieldEmpty -> {
+                        stringResource(id = R.string.txt_error_field_empty)
+                    }
+                    else -> ""
+                }
             )
             Spacer(modifier = Modifier.height(SpaceMedium))
             StandardTextField(
-                text = viewModel.passwordText.value,
+                text = passwordState.text,
                 onValueChange = {
-                    viewModel.setPasswordText(it)
+                    viewModel.onEvent(LoginEvent.EnteredPassword(it))
                 },
                 hint = stringResource(id = R.string.text_password_hint),
                 keyboardType = KeyboardType.Password,
-                showPasswordToggle = viewModel.showPassword.value,
+                showPasswordToggle = state.isPasswordVisible,
                 onPasswordToggleClick = {
-                    viewModel.setShowPassword(it)
+                    viewModel.onEvent(LoginEvent.TogglePasswordVisibility)
                 },
-                error = viewModel.passwordError.value
+                error = when (passwordState.error) {
+                    is AuthError.FieldEmpty -> {
+                        stringResource(id = R.string.txt_error_field_empty)
+                    }
+                    else -> ""
+                }
             )
             Spacer(modifier = Modifier.height(SpaceMedium))
             Button(
                 onClick = {
-                    navController.navigate(Screen.MainFeedScreen.route)
+                    viewModel.onEvent(LoginEvent.Login)
                 },
                 modifier = Modifier.align(Alignment.End)
             ) {
