@@ -13,7 +13,7 @@ import com.devalpesh.jetpack.feature_chat.presentation.chat.ChatScreen
 import com.devalpesh.jetpack.feature_post.presentation.createpost.CreatePostScreen
 import com.devalpesh.jetpack.feature_profile.presentation.editprofile.EditProfileScreen
 import com.devalpesh.jetpack.feature_auth.presentation.login.LoginScreen
-import com.devalpesh.jetpack.core.presentation.mainfeed.MainFeedScreen
+import com.devalpesh.jetpack.feature_post.presentation.main_feed.MainFeedScreen
 import com.devalpesh.jetpack.feature_post.presentation.postdetail.PostDetailScreen
 import com.devalpesh.jetpack.feature_profile.presentation.profile.ProfileScreen
 import com.devalpesh.jetpack.feature_auth.presentation.register.RegisterScreen

@@ -47,6 +47,7 @@ fun RegisterScreen(
                         duration = SnackbarDuration.Long
                     )
                 }
+                else -> Unit
             }
         }
     }

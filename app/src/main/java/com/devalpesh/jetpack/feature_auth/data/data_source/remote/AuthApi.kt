@@ -1,4 +1,4 @@
-package com.devalpesh.jetpack.feature_auth.data.remote
+package com.devalpesh.jetpack.feature_auth.data.data_source.remote
 
 import com.devalpesh.jetpack.core.data.dto.reponse.BasicApiResponse
 import com.devalpesh.jetpack.feature_auth.data.dto.request.CreateAccountRequest
