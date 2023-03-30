@@ -1,16 +1,14 @@
 package com.devalpesh.jetpack.feature_post.domain.use_case
 
+import androidx.paging.PagingData
 import com.devalpesh.jetpack.core.domain.models.Post
-import com.devalpesh.jetpack.core.util.Resource
 import com.devalpesh.jetpack.feature_post.domain.respository.PostRepository
+import kotlinx.coroutines.flow.Flow
 
 class GetPostForFollowsUseCase(
     private val repository: PostRepository
 ) {
-    suspend operator fun invoke(
-        page: Int,
-        pageSize: Int
-    ): Resource<List<Post>> {
-        return repository.getPostsForFollows(page, pageSize)
+    operator fun invoke(): Flow<PagingData<Post>> {
+        return repository.posts
     }
 }

@@ -24,6 +24,7 @@ object PostModule {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(PostApi.BASE_URL)
+            .client(client)
             .build()
             .create(PostApi::class.java)
     }

@@ -9,16 +9,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.devalpesh.jetpack.core.domain.models.Post
 import com.devalpesh.jetpack.feature_activity.presentation.activity.ActivityScreen
+import com.devalpesh.jetpack.feature_auth.presentation.login.LoginScreen
+import com.devalpesh.jetpack.feature_auth.presentation.register.RegisterScreen
+import com.devalpesh.jetpack.feature_auth.presentation.splash.SplashScreen
 import com.devalpesh.jetpack.feature_chat.presentation.chat.ChatScreen
 import com.devalpesh.jetpack.feature_post.presentation.createpost.CreatePostScreen
-import com.devalpesh.jetpack.feature_profile.presentation.editprofile.EditProfileScreen
-import com.devalpesh.jetpack.feature_auth.presentation.login.LoginScreen
 import com.devalpesh.jetpack.feature_post.presentation.main_feed.MainFeedScreen
 import com.devalpesh.jetpack.feature_post.presentation.postdetail.PostDetailScreen
+import com.devalpesh.jetpack.feature_profile.presentation.editprofile.EditProfileScreen
 import com.devalpesh.jetpack.feature_profile.presentation.profile.ProfileScreen
-import com.devalpesh.jetpack.feature_auth.presentation.register.RegisterScreen
 import com.devalpesh.jetpack.feture_search.presentation.search.SearchScreen
-import com.devalpesh.jetpack.feature_auth.presentation.splash.SplashScreen
 
 @Composable
 fun Navigation(
@@ -43,7 +43,7 @@ fun Navigation(
             RegisterScreen(navController = navController, scaffoldState = scaffoldState)
         }
         composable(Screen.MainFeedScreen.route) {
-            MainFeedScreen(navController = navController)
+            MainFeedScreen(navController = navController, scaffoldState = scaffoldState)
         }
         composable(Screen.ChatScreen.route) {
             ChatScreen(navController = navController)
@@ -75,7 +75,7 @@ fun Navigation(
                             "specimen book. It has survived not only five centuries, but also the leap into " +
                             "electronic typesetting, remaining essentially unchanged. It was popularised in" +
                             " the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, " +
-                            "and more recently with desktop publishing software like Aldus PageMaker including " +
+                            "and more rec ently with desktop publishing software like Aldus PageMaker including " +
                             "versions of Lorem Ipsum.",
                     profilePictureUrl = "",
                     likeCount = 17,

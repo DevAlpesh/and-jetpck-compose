@@ -51,11 +51,9 @@ fun Post(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .offset(
-                    y = if (showProfileImage) {
-                        ProfilePictureSizeExtraSmall / 2f
-                    } else 0.dp
-                )
+                .offset(y = if (showProfileImage) {
+                    ProfilePictureSizeMedium / 2f
+                } else 0.dp)
                 .clip(MaterialTheme.shapes.medium)
                 .shadow(5.dp)
                 .background(MediumGray)
@@ -137,7 +135,7 @@ fun Post(
                 painterResource(id = R.drawable.philipp),
                 contentDescription = "Profile Picture",
                 modifier = Modifier
-                    .size(ProfilePictureSizeExtraSmall)
+                    .size(ProfilePictureSizeMedium)
                     .clip(CircleShape)
                     .align(Alignment.TopCenter)
             )
