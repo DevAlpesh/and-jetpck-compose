@@ -1,13 +1,17 @@
 package com.devalpesh.jetpack.di
 
+import android.content.Context
 import com.devalpesh.jetpack.feature_post.data.data_source.remote.PostApi
 import com.devalpesh.jetpack.feature_post.data.repository.PostRepositoryImpl
 import com.devalpesh.jetpack.feature_post.domain.respository.PostRepository
+import com.devalpesh.jetpack.feature_post.domain.use_case.CreatePostUseCase
 import com.devalpesh.jetpack.feature_post.domain.use_case.GetPostForFollowsUseCase
 import com.devalpesh.jetpack.feature_post.domain.use_case.PostUseCases
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -31,15 +35,20 @@ object PostModule {
 
     @Provides
     @Singleton
-    fun providePostRepository(api: PostApi): PostRepository {
-        return PostRepositoryImpl(api)
+    fun providePostRepository(
+        api: PostApi,
+        gson: Gson,
+        @ApplicationContext appContext: Context
+    ): PostRepository {
+        return PostRepositoryImpl(api, gson, appContext)
     }
 
     @Provides
     @Singleton
     fun providePostUseCases(repository: PostRepository): PostUseCases {
         return PostUseCases(
-            getPostsForFollowsUseCase = GetPostForFollowsUseCase(repository)
+            getPostsForFollowsUseCase = GetPostForFollowsUseCase(repository),
+            createPostUseCase = CreatePostUseCase(repository)
         )
     }
 }

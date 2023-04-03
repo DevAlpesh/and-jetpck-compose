@@ -5,6 +5,7 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.devalpesh.jetpack.BuildConfig
 import com.devalpesh.jetpack.core.util.Constants
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -49,6 +50,12 @@ object AppModule {
                 }
             }
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideGson() : Gson{
+        return Gson()
     }
 
 }

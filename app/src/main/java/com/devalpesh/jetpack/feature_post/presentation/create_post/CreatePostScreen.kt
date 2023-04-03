@@ -1,5 +1,7 @@
-package com.devalpesh.jetpack.feature_post.presentation.createpost
+package com.devalpesh.jetpack.feature_post.presentation.create_post
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,13 +21,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.devalpesh.jetpack.R
-import com.devalpesh.jetpack.core.domain.states.StandardTextFieldStates
 import com.devalpesh.jetpack.core.presentation.components.StandardTextField
 import com.devalpesh.jetpack.core.presentation.components.StandardToolbar
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceLarge
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
-import com.devalpesh.jetpack.feature_post.presentation.postdetail.CreatePostViewModel
 import com.devalpesh.jetpack.feature_post.presentation.util.PostDescriptionError
 
 @Composable
@@ -33,6 +33,13 @@ fun CreatePostScreen(
     navController: NavController,
     viewModel: CreatePostViewModel = hiltViewModel()
 ) {
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) {
+        viewModel.onEvent(CreatePostEvent.PickImage(it))
+    }
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -62,7 +69,7 @@ fun CreatePostScreen(
                         shape = MaterialTheme.shapes.medium
                     )
                     .clickable {
-
+                        galleryLauncher.launch("image/*")
                     },
                 contentAlignment = Alignment.Center
             ) {
@@ -85,14 +92,16 @@ fun CreatePostScreen(
                     else -> ""
                 },
                 onValueChange = {
-                    viewModel.setDescriptionState(
-                        StandardTextFieldStates(text = it)
+                    viewModel.onEvent(
+                        CreatePostEvent.EnteredDescription(it)
                     )
                 }
             )
             Spacer(modifier = Modifier.height(SpaceLarge))
             Button(
-                onClick = {},
+                onClick = {
+                    viewModel.onEvent(CreatePostEvent.PostImage)
+                },
                 modifier = Modifier.align(Alignment.End)
             ) {
                 Text(
