@@ -66,4 +66,5 @@
     <string name="txt_error_oops_something_went_wrong">Oops! Something went wrong. Please try again.</string>
     <string name="txt_success_registration">Successfully registered an account. You can login now.</string>
     <string name="txt_error_file_not_found">Opps! File could not be found</string>
+    <string name="txt_desc_post_image">Post Image</string>
 </resources>

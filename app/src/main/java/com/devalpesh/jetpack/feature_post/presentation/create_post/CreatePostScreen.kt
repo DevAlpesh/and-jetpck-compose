@@ -2,6 +2,7 @@ package com.devalpesh.jetpack.feature_post.presentation.create_post
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,17 +16,21 @@ import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.presentation.components.StandardTextField
 import com.devalpesh.jetpack.core.presentation.components.StandardToolbar
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceLarge
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
+import com.devalpesh.jetpack.core.presentation.util.CropActivityResultContract
 import com.devalpesh.jetpack.feature_post.presentation.util.PostDescriptionError
 
 @Composable
@@ -34,10 +39,18 @@ fun CreatePostScreen(
     viewModel: CreatePostViewModel = hiltViewModel()
 ) {
 
+    val imageUri = viewModel.chosenImageUri.value
+
+    val cropActivityLauncher  = rememberLauncherForActivityResult(
+        contract = CropActivityResultContract(viewModel.destUri),
+    ){
+        viewModel.onEvent(CreatePostEvent.CropImage(it))
+    }
+
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) {
-        viewModel.onEvent(CreatePostEvent.PickImage(it))
+        cropActivityLauncher.launch(it)
     }
 
     Column(
@@ -78,6 +91,16 @@ fun CreatePostScreen(
                     contentDescription = stringResource(id = R.string.txt_choose_image),
                     tint = MaterialTheme.colors.onBackground
                 )
+                imageUri?.let { uri ->
+                    Image(
+                        painter = rememberAsyncImagePainter(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(uri)
+                                .build()
+                        ), contentDescription = stringResource(id = R.string.txt_desc_post_image),
+                        modifier = Modifier.matchParentSize()
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(SpaceMedium))
             StandardTextField(
