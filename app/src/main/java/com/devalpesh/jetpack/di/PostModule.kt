@@ -1,6 +1,5 @@
 package com.devalpesh.jetpack.di
 
-import android.content.Context
 import com.devalpesh.jetpack.feature_post.data.data_source.remote.PostApi
 import com.devalpesh.jetpack.feature_post.data.repository.PostRepositoryImpl
 import com.devalpesh.jetpack.feature_post.domain.respository.PostRepository
@@ -11,7 +10,6 @@ import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -37,10 +35,9 @@ object PostModule {
     @Singleton
     fun providePostRepository(
         api: PostApi,
-        gson: Gson,
-        @ApplicationContext appContext: Context
+        gson: Gson
     ): PostRepository {
-        return PostRepositoryImpl(api, gson, appContext)
+        return PostRepositoryImpl(api, gson)
     }
 
     @Provides

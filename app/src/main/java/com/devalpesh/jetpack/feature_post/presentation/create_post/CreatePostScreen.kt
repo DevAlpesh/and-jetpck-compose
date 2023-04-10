@@ -1,5 +1,6 @@
 package com.devalpesh.jetpack.feature_post.presentation.create_post
 
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,6 +34,8 @@ import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
 import com.devalpesh.jetpack.core.presentation.util.CropActivityResultContract
 import com.devalpesh.jetpack.feature_post.presentation.util.PostDescriptionError
+import java.io.File
+import java.util.*
 
 @Composable
 fun CreatePostScreen(
@@ -41,15 +45,16 @@ fun CreatePostScreen(
 
     val imageUri = viewModel.chosenImageUri.value
 
-    val cropActivityLauncher  = rememberLauncherForActivityResult(
-        contract = CropActivityResultContract(viewModel.destUri),
-    ){
+    val cropActivityLauncher = rememberLauncherForActivityResult(
+        contract = CropActivityResultContract(),
+    ) {
         viewModel.onEvent(CreatePostEvent.CropImage(it))
     }
 
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) {
+        viewModel.onEvent(CreatePostEvent.PickImage(it))
         cropActivityLauncher.launch(it)
     }
 
@@ -76,6 +81,7 @@ fun CreatePostScreen(
                 modifier = Modifier
                     .aspectRatio(16f / 9f)
                     .fillMaxWidth()
+                    .clip(MaterialTheme.shapes.medium)
                     .border(
                         width = 1.dp,
                         color = MaterialTheme.colors.onBackground,
