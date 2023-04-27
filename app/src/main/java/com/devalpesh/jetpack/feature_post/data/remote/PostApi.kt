@@ -1,4 +1,4 @@
-package com.devalpesh.jetpack.feature_post.data.data_source.remote
+package com.devalpesh.jetpack.feature_post.data.remote
 
 import com.devalpesh.jetpack.core.data.dto.reponse.BasicApiResponse
 import com.devalpesh.jetpack.core.domain.models.Post

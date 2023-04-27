@@ -5,8 +5,10 @@ import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.devalpesh.jetpack.core.domain.models.Post
 import com.devalpesh.jetpack.feature_activity.presentation.activity.ActivityScreen
 import com.devalpesh.jetpack.feature_auth.presentation.login.LoginScreen
@@ -51,14 +53,23 @@ fun Navigation(
         composable(Screen.ActivityScreen.route) {
             ActivityScreen(navController = navController)
         }
-        composable(Screen.ProfileScreen.route) {
+        composable(
+            route = Screen.ProfileScreen.route + "?userId={userId}",
+            arguments = listOf(
+                navArgument(name = "userId") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) {
             ProfileScreen(navController = navController)
         }
         composable(Screen.EditProfileScreen.route) {
             EditProfileScreen(navController = navController)
         }
         composable(Screen.CreatePostScreen.route) {
-            CreatePostScreen(navController = navController)
+            CreatePostScreen(navController = navController, scaffoldState = scaffoldState)
         }
         composable(Screen.SearchScreen.route) {
             SearchScreen(navController = navController)

@@ -11,9 +11,9 @@ import com.devalpesh.jetpack.core.util.Constants
 import com.devalpesh.jetpack.core.util.Resource
 import com.devalpesh.jetpack.core.util.SimpleResources
 import com.devalpesh.jetpack.core.util.UiText
-import com.devalpesh.jetpack.feature_post.data.data_source.paging.PostSource
-import com.devalpesh.jetpack.feature_post.data.data_source.remote.PostApi
-import com.devalpesh.jetpack.feature_post.data.data_source.remote.request.CreatePostRequest
+import com.devalpesh.jetpack.feature_post.data.paging.PostSource
+import com.devalpesh.jetpack.feature_post.data.remote.PostApi
+import com.devalpesh.jetpack.feature_post.data.remote.request.CreatePostRequest
 import com.devalpesh.jetpack.feature_post.domain.respository.PostRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow

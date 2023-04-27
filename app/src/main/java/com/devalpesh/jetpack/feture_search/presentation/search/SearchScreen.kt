@@ -23,7 +23,6 @@ import com.devalpesh.jetpack.core.presentation.ui.theme.IconSizeMedium
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceLarge
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
 import com.devalpesh.jetpack.core.domain.states.StandardTextFieldStates
-import com.devalpesh.jetpack.feature_profile.presentation.util.EditProfileError
 
 @Composable
 fun SearchScreen(
@@ -62,6 +61,7 @@ fun SearchScreen(
                 items(10) {
                     UserProfileItem(
                         user = User(
+                            userId = "64256b2053c75f35112e590e",
                             profilePictureUrl = "",
                             username = "Philipp Lackner",
                             description = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed\n" +

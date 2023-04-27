@@ -2,7 +2,12 @@ package com.devalpesh.jetpack.feature_profile.presentation.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
@@ -30,13 +35,13 @@ import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.domain.models.Post
 import com.devalpesh.jetpack.core.domain.models.User
 import com.devalpesh.jetpack.core.presentation.components.Post
-import com.devalpesh.jetpack.feature_profile.presentation.profile.components.BannerSection
-import com.devalpesh.jetpack.feature_profile.presentation.profile.components.ProfileHeaderSection
 import com.devalpesh.jetpack.core.presentation.ui.theme.ProfilePictureSizeLarge
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
 import com.devalpesh.jetpack.core.presentation.util.Screen
 import com.devalpesh.jetpack.core.util.toPx
+import com.devalpesh.jetpack.feature_profile.presentation.profile.components.BannerSection
+import com.devalpesh.jetpack.feature_profile.presentation.profile.components.ProfileHeaderSection
 
 @Composable
 fun ProfileScreen(
@@ -68,6 +73,7 @@ fun ProfileScreen(
         toolbarHeightExpanded - toolbarHeightCollapsed
     }
 
+    val state = viewModel.state.value
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
@@ -106,18 +112,19 @@ fun ProfileScreen(
                 )
             }
             item {
-                ProfileHeaderSection(
-                    user = User(
-                        profilePictureUrl = "",
-                        username = "Philipp Lackner",
-                        description = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed\n" +
-                                "diam nonumy eirmod tempor invidunt ut labore et dolore \n" +
-                                "magna aliquyam erat, sed diam voluptua",
-                        followerCount = 234,
-                        followingCount = 534,
-                        postCount = 65
+                state.profile?.let { profile ->
+                    ProfileHeaderSection(
+                        user = User(
+                            userId = profile.userId,
+                            profilePictureUrl = "",
+                            username = profile.username,
+                            description = profile.bio,
+                            followerCount = profile.followerCount,
+                            followingCount = profile.followingCount,
+                            postCount = profile.postCount
+                        )
                     )
-                )
+                }
             }
             items(20) {
                 Spacer(

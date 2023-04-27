@@ -6,9 +6,9 @@ import com.devalpesh.jetpack.core.util.Constants
 import com.devalpesh.jetpack.core.util.Resource
 import com.devalpesh.jetpack.core.util.SimpleResources
 import com.devalpesh.jetpack.core.util.UiText
-import com.devalpesh.jetpack.feature_auth.data.data_source.remote.request.CreateAccountRequest
-import com.devalpesh.jetpack.feature_auth.data.data_source.remote.request.LoginRequest
-import com.devalpesh.jetpack.feature_auth.data.data_source.remote.AuthApi
+import com.devalpesh.jetpack.feature_auth.data.remote.request.CreateAccountRequest
+import com.devalpesh.jetpack.feature_auth.data.remote.request.LoginRequest
+import com.devalpesh.jetpack.feature_auth.data.remote.AuthApi
 import com.devalpesh.jetpack.feature_auth.domain.repository.AuthRepository
 import retrofit2.HttpException
 import java.io.IOException

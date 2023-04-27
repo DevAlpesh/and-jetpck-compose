@@ -41,7 +41,7 @@ fun LoginScreen(
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
-                is UiEvent.SnackbarEvent -> {
+                is UiEvent.ShowSnackbar -> {
                     scaffoldState.snackbarHostState.showSnackbar(
                         message = event.uiText.asString(context)
                     )
@@ -49,6 +49,7 @@ fun LoginScreen(
                 is UiEvent.Navigate -> {
                     navController.navigate(event.route)
                 }
+                is UiEvent.NavigateUp -> null
             }
         }
     }

@@ -1,9 +1,9 @@
-package com.devalpesh.jetpack.feature_auth.data.data_source.remote
+package com.devalpesh.jetpack.feature_auth.data.remote
 
 import com.devalpesh.jetpack.core.data.dto.reponse.BasicApiResponse
-import com.devalpesh.jetpack.feature_auth.data.data_source.remote.request.CreateAccountRequest
-import com.devalpesh.jetpack.feature_auth.data.data_source.remote.request.LoginRequest
-import com.devalpesh.jetpack.feature_auth.data.data_source.remote.response.AuthResponse
+import com.devalpesh.jetpack.feature_auth.data.remote.request.CreateAccountRequest
+import com.devalpesh.jetpack.feature_auth.data.remote.request.LoginRequest
+import com.devalpesh.jetpack.feature_auth.data.remote.response.AuthResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
