@@ -1,8 +1,15 @@
-package com.devalpesh.jetpack.feature_profile.presentation.editprofile
+package com.devalpesh.jetpack.feature_profile.presentation.edit_profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -22,7 +29,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -31,8 +37,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.devalpesh.jetpack.R
-import com.devalpesh.jetpack.core.domain.states.StandardTextFieldStates
 import com.devalpesh.jetpack.core.presentation.components.Chip
 import com.devalpesh.jetpack.core.presentation.components.StandardTextField
 import com.devalpesh.jetpack.core.presentation.components.StandardToolbar
@@ -42,7 +48,6 @@ import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
 import com.devalpesh.jetpack.feature_profile.presentation.util.EditProfileError
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.MainAxisAlignment
-import kotlin.random.Random
 
 @Composable
 fun EditProfileScreen(
@@ -50,7 +55,7 @@ fun EditProfileScreen(
     profilePictureSize: Dp = ProfilePictureSizeLarge,
     viewModel: EditProfileViewModel = hiltViewModel()
 ) {
-
+    val profileState = viewModel.profileState.value
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -75,8 +80,12 @@ fun EditProfileScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             BannerEditSection(
-                bannerImage = painterResource(id = R.drawable.channelart),
-                profileImage = painterResource(id = R.drawable.philipp),
+                bannerImage = rememberAsyncImagePainter(
+                    profileState.profile?.bannerUrl
+                ),
+                profileImage = rememberAsyncImagePainter(
+                    profileState.profile?.profilePictureUrl
+                ),
                 profilePictureSize = profilePictureSize,
             )
             Column(
@@ -93,11 +102,12 @@ fun EditProfileScreen(
                         is EditProfileError.FieldEmpty -> stringResource(
                             id = R.string.txt_error_field_empty
                         )
+
                         else -> ""
                     },
                     onValueChange = {
-                        viewModel.setUsernameState(
-                            StandardTextFieldStates(text = it)
+                        viewModel.onEvent(
+                            EditProfileEvent.EnteredUsername(it)
                         )
                     },
                     leadingIcon = Icons.Default.Person
@@ -111,11 +121,12 @@ fun EditProfileScreen(
                         is EditProfileError.FieldEmpty -> stringResource(
                             id = R.string.txt_error_field_empty
                         )
+
                         else -> ""
                     },
                     onValueChange = {
-                        viewModel.setUsernameState(
-                            StandardTextFieldStates(text = it)
+                        viewModel.onEvent(
+                            EditProfileEvent.EnteredGithubUrl(it)
                         )
                     },
                     leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_github_icon_1)
@@ -129,11 +140,12 @@ fun EditProfileScreen(
                         is EditProfileError.FieldEmpty -> stringResource(
                             id = R.string.txt_error_field_empty
                         )
+
                         else -> ""
                     },
                     onValueChange = {
-                        viewModel.setInstagramTextFieldState(
-                            StandardTextFieldStates(text = it)
+                        viewModel.onEvent(
+                            EditProfileEvent.EnteredInstagramUrl(it)
                         )
                     },
                     leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_instagram_glyph_1)
@@ -147,11 +159,12 @@ fun EditProfileScreen(
                         is EditProfileError.FieldEmpty -> stringResource(
                             id = R.string.txt_error_field_empty
                         )
+
                         else -> ""
                     },
                     onValueChange = {
-                        viewModel.setLinkedInTextFieldState(
-                            StandardTextFieldStates(text = it)
+                        viewModel.onEvent(
+                            EditProfileEvent.EnteredLinkedInUrl(it)
                         )
                     },
                     leadingIcon = ImageVector.vectorResource(id = R.drawable.ic_linkedin_icon_1)
@@ -168,11 +181,12 @@ fun EditProfileScreen(
                         is EditProfileError.FieldEmpty -> stringResource(
                             id = R.string.txt_error_field_empty
                         )
+
                         else -> ""
                     },
                     onValueChange = {
-                        viewModel.setBioState(
-                            StandardTextFieldStates(text = it)
+                        viewModel.onEvent(
+                            EditProfileEvent.EnteredBio(it)
                         )
                     },
                     leadingIcon = Icons.Default.Description
@@ -191,20 +205,10 @@ fun EditProfileScreen(
                     mainAxisSpacing = SpaceMedium,
                     crossAxisSpacing = SpaceMedium
                 ) {
-                    listOf(
-                        "Kotlin",
-                        "JavaScript",
-                        "Assembly",
-                        "C++",
-                        "C",
-                        "C#",
-                        "Dart",
-                        "TypeScript",
-                        "Python",
-                    ).forEach {
+                    viewModel.skills.value.skills.forEach {
                         Chip(
-                            text = it,
-                            selected = Random.nextInt(2) == 0,
+                            text = it.name,
+                            selected = it in viewModel.skills.value.selectedSkills,
                         )
                     }
                 }

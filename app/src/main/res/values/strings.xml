@@ -70,4 +70,6 @@
     <string name="txt_post_created">Post created successfully.</string>
     <string name="txt_error_description_blank">Description can\'t be empty</string>
     <string name="txt_error_no_image_picked">Please pick an image</string>
+    <string name="txt_error_couldnt_load_profile">Opps! Couldn\'t load profile</string>
+    <string name="txt_error_couldnt_load_skills">"Opps! Couldn't load skills. "</string>
 </resources>

@@ -44,7 +44,7 @@ fun ProfileStates(
             number = user.postCount,
             text = stringResource(id = R.string.txt_post)
         )
-        if (isOwnProfile) {
+        if (!isOwnProfile) {
             Spacer(modifier = Modifier.width(SpaceLarge))
             Button(
                 onClick = onFollowClick,

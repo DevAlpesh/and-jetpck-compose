@@ -1,6 +1,7 @@
 package com.devalpesh.jetpack.di
 
 import com.devalpesh.jetpack.feature_profile.data.remote.ProfileApi
+import com.devalpesh.jetpack.feature_profile.data.repository.GetSkillUseCase
 import com.devalpesh.jetpack.feature_profile.data.repository.ProfileRepositoryImpl
 import com.devalpesh.jetpack.feature_profile.domain.repository.ProfileRepository
 import com.devalpesh.jetpack.feature_profile.domain.use_case.GetProfileUseCase
@@ -40,7 +41,8 @@ object ProfileModule {
     @Singleton
     fun provideProfileUserCases(repository: ProfileRepository): ProfileUseCases {
         return ProfileUseCases(
-            getProfile = GetProfileUseCase(repository)
+            getProfile = GetProfileUseCase(repository),
+            getSkills = GetSkillUseCase(repository)
         )
     }
 }

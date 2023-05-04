@@ -18,7 +18,7 @@ import com.devalpesh.jetpack.feature_chat.presentation.chat.ChatScreen
 import com.devalpesh.jetpack.feature_post.presentation.create_post.CreatePostScreen
 import com.devalpesh.jetpack.feature_post.presentation.main_feed.MainFeedScreen
 import com.devalpesh.jetpack.feature_post.presentation.postdetail.PostDetailScreen
-import com.devalpesh.jetpack.feature_profile.presentation.editprofile.EditProfileScreen
+import com.devalpesh.jetpack.feature_profile.presentation.edit_profile.EditProfileScreen
 import com.devalpesh.jetpack.feature_profile.presentation.profile.ProfileScreen
 import com.devalpesh.jetpack.feture_search.presentation.search.SearchScreen
 
@@ -65,7 +65,14 @@ fun Navigation(
         ) {
             ProfileScreen(navController = navController, scaffoldState = scaffoldState)
         }
-        composable(Screen.EditProfileScreen.route) {
+        composable(
+            route = Screen.EditProfileScreen.route+ "/{userId}",
+            arguments = listOf(
+                navArgument(name = "userId") {
+                    type = NavType.StringType
+                }
+            )
+        ) {
             EditProfileScreen(navController = navController)
         }
         composable(Screen.CreatePostScreen.route) {

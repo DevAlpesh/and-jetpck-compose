@@ -23,10 +23,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
 import com.devalpesh.jetpack.core.util.toPx
+import com.devalpesh.jetpack.feature_profile.domain.model.Skill
 
 @Composable
 fun BannerSection(
@@ -35,7 +35,7 @@ fun BannerSection(
     iconSize: Dp = 35.dp,
     leftIconModifier: Modifier = Modifier,
     rightIconModifier: Modifier = Modifier,
-    topSkillUrls: List<String> = emptyList(),
+    topSkills: List<Skill> = emptyList(),
     bannerUrl: String? = null,
     shouldShowGithub: Boolean = false,
     shouldShowInstagram: Boolean = false,
@@ -73,13 +73,11 @@ fun BannerSection(
                 .align(Alignment.BottomStart)
                 .padding(SpaceSmall)
         ) {
-            topSkillUrls.forEach { skillUrl ->
+            topSkills.forEach { skillUrl ->
                 Spacer(modifier = Modifier.width(SpaceSmall))
                 Image(
-                    painter = rememberImagePainter(
-                        data = skillUrl, builder = {
-                            crossfade(true)
-                        }
+                    painter = rememberAsyncImagePainter(
+                        skillUrl.imageUrl
                     ),
                     contentDescription = null,
                     modifier = Modifier.height(iconSize)
