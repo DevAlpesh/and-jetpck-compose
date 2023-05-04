@@ -1,6 +1,12 @@
 package com.devalpesh.jetpack.feture_search.presentation.search
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -16,13 +22,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.domain.models.User
+import com.devalpesh.jetpack.core.domain.states.StandardTextFieldStates
 import com.devalpesh.jetpack.core.presentation.components.StandardTextField
 import com.devalpesh.jetpack.core.presentation.components.StandardToolbar
 import com.devalpesh.jetpack.core.presentation.components.UserProfileItem
 import com.devalpesh.jetpack.core.presentation.ui.theme.IconSizeMedium
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceLarge
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
-import com.devalpesh.jetpack.core.domain.states.StandardTextFieldStates
+import com.devalpesh.jetpack.core.presentation.util.Screen
 
 @Composable
 fun SearchScreen(
@@ -61,7 +68,7 @@ fun SearchScreen(
                 items(10) {
                     UserProfileItem(
                         user = User(
-                            userId = "64256b2053c75f35112e590e",
+                            userId = "644f924fcaee957d0f992dc3",
                             profilePictureUrl = "",
                             username = "Philipp Lackner",
                             description = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed\n" +
@@ -76,6 +83,11 @@ fun SearchScreen(
                                 imageVector = Icons.Default.PersonAdd,
                                 contentDescription = null,
                                 modifier = Modifier.size(IconSizeMedium)
+                            )
+                        },
+                        onActionItemClick = {
+                            navController.navigate(
+                                Screen.ProfileScreen.route+"?userId=644f924fcaee957d0f992dc3"
                             )
                         }
                     )

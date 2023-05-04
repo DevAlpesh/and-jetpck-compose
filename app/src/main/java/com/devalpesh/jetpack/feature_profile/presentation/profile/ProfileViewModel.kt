@@ -13,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,17 +58,16 @@ class ProfileViewModel @Inject constructor(
             _state.value = state.value.copy(
                 isLoading = true
             )
-            val result = profileUseCases.getProfile(userId)
-            when (result) {
+            when (val result = profileUseCases.getProfile(userId)) {
                 is Resource.Success -> {
-                    _state.value.copy(
+                    _state.value = _state.value.copy(
                         profile = result.data,
                         isLoading = false
                     )
                 }
 
                 is Resource.Error -> {
-                    _state.value.copy(
+                    _state.value = _state.value.copy(
                         isLoading = false
                     )
                     _eventFlow.emit(

@@ -40,7 +40,7 @@ object ProfileModule {
     @Singleton
     fun provideProfileUserCases(repository: ProfileRepository): ProfileUseCases {
         return ProfileUseCases(
-            getProfileUseCase = GetProfileUseCase(repository)
+            getProfile = GetProfileUseCase(repository)
         )
     }
 }

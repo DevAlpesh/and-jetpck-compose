@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
@@ -35,18 +36,19 @@ fun BannerSection(
     leftIconModifier: Modifier = Modifier,
     rightIconModifier: Modifier = Modifier,
     topSkillUrls: List<String> = emptyList(),
+    bannerUrl: String? = null,
     shouldShowGithub: Boolean = false,
     shouldShowInstagram: Boolean = false,
     shouldShowLinkedIn: Boolean = false,
     onGitHubClick: () -> Unit = {},
     onInstagramClick: () -> Unit = {},
-    onLinkedInClick: () -> Unit = {}
+    onLinkedInClick: () -> Unit = {},
 ) {
     BoxWithConstraints(
         modifier = modifier
     ) {
         Image(
-            painter = painterResource(id = R.drawable.channelart),
+            painter = rememberAsyncImagePainter(bannerUrl),
             contentDescription = stringResource(id = R.string.txt_banner_image),
             contentScale = ContentScale.Crop,
             modifier = imageModifier
