@@ -85,10 +85,13 @@ fun SearchScreen(
                                 modifier = Modifier.size(IconSizeMedium)
                             )
                         },
-                        onActionItemClick = {
+                        onItemClick = {
                             navController.navigate(
                                 Screen.ProfileScreen.route+"?userId=644f924fcaee957d0f992dc3"
                             )
+                        },
+                        onActionItemClick = {
+
                         }
                     )
                     Spacer(modifier = Modifier.height(SpaceMedium))

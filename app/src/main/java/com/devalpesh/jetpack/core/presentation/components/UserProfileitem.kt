@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -22,11 +23,13 @@ import com.devalpesh.jetpack.core.presentation.ui.theme.ProfilePictureSizeSmall
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun UserProfileItem(
     user: User,
     modifier: Modifier = Modifier,
     actionIcon: @Composable () -> Unit = {},
+    onItemClick: () -> Unit = {},
     onActionItemClick: () -> Unit = {}
 ) {
 
@@ -34,6 +37,7 @@ fun UserProfileItem(
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
         elevation = 5.dp,
+        onClick = onItemClick
     ) {
         Row(
             modifier = Modifier
