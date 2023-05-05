@@ -1,7 +1,10 @@
 package com.devalpesh.jetpack.feature_profile.presentation.edit_profile
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,19 +19,23 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -45,22 +52,71 @@ import com.devalpesh.jetpack.core.presentation.components.StandardToolbar
 import com.devalpesh.jetpack.core.presentation.ui.theme.ProfilePictureSizeLarge
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceLarge
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
+import com.devalpesh.jetpack.core.presentation.util.CropActivityResultContract
+import com.devalpesh.jetpack.core.presentation.util.UiEvent
+import com.devalpesh.jetpack.core.presentation.util.asString
 import com.devalpesh.jetpack.feature_profile.presentation.util.EditProfileError
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.MainAxisAlignment
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun EditProfileScreen(
+    scaffoldState: ScaffoldState,
     navController: NavController,
     profilePictureSize: Dp = ProfilePictureSizeLarge,
     viewModel: EditProfileViewModel = hiltViewModel()
 ) {
+
     val profileState = viewModel.profileState.value
+
+    val cropProfilePictureLauncher = rememberLauncherForActivityResult(
+        contract = CropActivityResultContract(1f, 1f),
+    ) {
+        viewModel.onEvent(EditProfileEvent.CropProfilePicture(it))
+    }
+
+    val cropBannerImageLauncher = rememberLauncherForActivityResult(
+        contract = CropActivityResultContract(5f, 2f),
+    ) {
+        viewModel.onEvent(EditProfileEvent.CropBannerImage(it))
+    }
+
+    val profilePictureGalleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) {
+        cropProfilePictureLauncher.launch(it)
+    }
+
+    val bannerImageGalleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) {
+        cropBannerImageLauncher.launch(it)
+    }
+
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is UiEvent.ShowSnackbar -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.uiText.asString(context)
+                    )
+                }
+
+                else -> Unit
+            }
+        }
+    }
+
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         StandardToolbar(navController = navController, showBackArrow = true, navActions = {
-            IconButton(onClick = { }) {
+            IconButton(onClick = {
+                viewModel.onEvent(EditProfileEvent.UpdateProfile)
+            }) {
                 Icon(
                     imageVector = Icons.Default.Check,
                     contentDescription = stringResource(id = R.string.txt_save_changes),
@@ -87,6 +143,12 @@ fun EditProfileScreen(
                     profileState.profile?.profilePictureUrl
                 ),
                 profilePictureSize = profilePictureSize,
+                onBannerClick = {
+                    bannerImageGalleryLauncher.launch("image/*")
+                },
+                onProfilePictureClick = {
+                    profilePictureGalleryLauncher.launch("image/*")
+                }
             )
             Column(
                 modifier = Modifier
@@ -222,7 +284,7 @@ fun BannerEditSection(
     bannerImage: Painter,
     profileImage: Painter,
     onBannerClick: () -> Unit = {},
-    onProfileImageClick: () -> Unit = {},
+    onProfilePictureClick: () -> Unit = {},
     profilePictureSize: Dp = ProfilePictureSizeLarge
 ) {
     val bannerHeight = (LocalConfiguration.current.screenWidthDp / 2.5f).dp
@@ -234,9 +296,11 @@ fun BannerEditSection(
         Image(
             painter = bannerImage,
             contentDescription = null,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(bannerHeight)
+                .clickable { onBannerClick() }
         )
         Image(
             painter = profileImage,
@@ -248,6 +312,7 @@ fun BannerEditSection(
                 .border(
                     width = 1.dp, color = MaterialTheme.colors.onSurface, shape = CircleShape
                 )
+                .clickable { onProfilePictureClick() }
         )
     }
 }

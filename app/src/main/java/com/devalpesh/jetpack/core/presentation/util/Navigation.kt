@@ -73,7 +73,10 @@ fun Navigation(
                 }
             )
         ) {
-            EditProfileScreen(navController = navController)
+            EditProfileScreen(
+                scaffoldState = scaffoldState,
+                navController = navController
+            )
         }
         composable(Screen.CreatePostScreen.route) {
             CreatePostScreen(navController = navController, scaffoldState = scaffoldState)

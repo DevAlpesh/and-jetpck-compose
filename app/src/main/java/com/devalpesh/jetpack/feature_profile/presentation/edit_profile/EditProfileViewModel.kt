@@ -1,5 +1,6 @@
 package com.devalpesh.jetpack.feature_profile.presentation.edit_profile
 
+import android.net.Uri
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
@@ -10,6 +11,7 @@ import com.devalpesh.jetpack.core.domain.states.StandardTextFieldStates
 import com.devalpesh.jetpack.core.presentation.util.UiEvent
 import com.devalpesh.jetpack.core.util.Resource
 import com.devalpesh.jetpack.core.util.UiText
+import com.devalpesh.jetpack.feature_profile.domain.model.UpdateProfileData
 import com.devalpesh.jetpack.feature_profile.domain.use_case.ProfileUseCases
 import com.devalpesh.jetpack.feature_profile.presentation.profile.ProfileState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -48,6 +50,12 @@ class EditProfileViewModel @Inject constructor(
 
     private val _profileState = mutableStateOf(ProfileState())
     val profileState: State<ProfileState> = _profileState
+
+    private val _bannerUri = mutableStateOf<Uri?>(null)
+    val bannerUri: State<Uri?> = _bannerUri
+
+    private val _profilePictureUri = mutableStateOf<Uri?>(null)
+    val profilePictureUri: State<Uri?> = _profilePictureUri
 
     init {
         savedStateHandle.get<String>("userId")?.let { userId ->
@@ -133,6 +141,33 @@ class EditProfileViewModel @Inject constructor(
         }
     }
 
+    private fun updateProfile() {
+        viewModelScope.launch {
+            val result = profileUseCases.updateProfile(
+                updateProfileData = UpdateProfileData(
+                    username = usernameState.value.text,
+                    bio = bioState.value.text,
+                    githubUrl = githubTextFieldState.value.text,
+                    instagramUrl = instagramTextFieldState.value.text,
+                    linkedInUrl = linkedInTextFieldState.value.text,
+                    skills = skills.value.selectedSkills
+                ),
+                profilePictureUri = profilePictureUri.value,
+                bannerUri = bannerUri.value
+            )
+
+            when (result) {
+                is Resource.Success -> {
+                    _eventFlow.emit(UiEvent.ShowSnackbar(UiText.StringResource(R.string.txt_msg_update_profile)))
+                }
+
+                is Resource.Error -> {
+                    _eventFlow.emit(UiEvent.ShowSnackbar(result.uiText ?: UiText.unknownError()))
+                }
+            }
+        }
+    }
+
     fun onEvent(event: EditProfileEvent) {
         when (event) {
             is EditProfileEvent.EnteredUsername -> {
@@ -166,11 +201,11 @@ class EditProfileViewModel @Inject constructor(
             }
 
             is EditProfileEvent.CropProfilePicture -> {
-
+                _profilePictureUri.value = event.uri
             }
 
             is EditProfileEvent.CropBannerImage -> {
-
+                _bannerUri.value = event.uri
             }
 
             is EditProfileEvent.SetSkillSelected -> {
@@ -178,8 +213,10 @@ class EditProfileViewModel @Inject constructor(
             }
 
             is EditProfileEvent.UpdateProfile -> {
-
+                updateProfile()
             }
         }
     }
+
+
 }

@@ -72,4 +72,6 @@
     <string name="txt_error_no_image_picked">Please pick an image</string>
     <string name="txt_error_couldnt_load_profile">Opps! Couldn\'t load profile</string>
     <string name="txt_error_couldnt_load_skills">"Opps! Couldn't load skills. "</string>
+    <string name="txt_error_username_empty">The username can\'t be empty.</string>
+    <string name="txt_msg_update_profile">Successfully updated profile</string>
 </resources>

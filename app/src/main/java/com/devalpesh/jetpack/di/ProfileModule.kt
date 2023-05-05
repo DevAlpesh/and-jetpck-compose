@@ -6,6 +6,8 @@ import com.devalpesh.jetpack.feature_profile.data.repository.ProfileRepositoryIm
 import com.devalpesh.jetpack.feature_profile.domain.repository.ProfileRepository
 import com.devalpesh.jetpack.feature_profile.domain.use_case.GetProfileUseCase
 import com.devalpesh.jetpack.feature_profile.domain.use_case.ProfileUseCases
+import com.devalpesh.jetpack.feature_profile.domain.use_case.UpdateProfileUseCase
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,8 +35,8 @@ object ProfileModule {
 
     @Provides
     @Singleton
-    fun provideProfileRepository(api: ProfileApi): ProfileRepository {
-        return ProfileRepositoryImpl(api)
+    fun provideProfileRepository(api: ProfileApi, gson: Gson): ProfileRepository {
+        return ProfileRepositoryImpl(api, gson)
     }
 
     @Provides
@@ -42,7 +44,8 @@ object ProfileModule {
     fun provideProfileUserCases(repository: ProfileRepository): ProfileUseCases {
         return ProfileUseCases(
             getProfile = GetProfileUseCase(repository),
-            getSkills = GetSkillUseCase(repository)
+            getSkills = GetSkillUseCase(repository),
+            updateProfile = UpdateProfileUseCase(repository)
         )
     }
 }
