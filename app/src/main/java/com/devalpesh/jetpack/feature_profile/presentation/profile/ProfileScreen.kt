@@ -209,9 +209,9 @@ fun ProfileScreen(
                                 -iconHorizontalCenterLength
                     },
                     topSkills = profile.topSkills,
-                    shouldShowGithub = profile.githubUrl != null,
-                    shouldShowInstagram = profile.instagramUrl != null,
-                    shouldShowLinkedIn = profile.linkedInUrl != null,
+                    shouldShowGithub = !profile.githubUrl.isNullOrBlank(),
+                    shouldShowInstagram = !profile.instagramUrl.isNullOrBlank(),
+                    shouldShowLinkedIn = !profile.linkedInUrl.isNullOrBlank(),
                     bannerUrl = profile.bannerUrl
                 )
                 Image(

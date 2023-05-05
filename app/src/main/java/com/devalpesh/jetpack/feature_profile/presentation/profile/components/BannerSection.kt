@@ -18,11 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
+import coil.decode.SvgDecoder
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
 import com.devalpesh.jetpack.core.util.toPx
@@ -73,11 +76,16 @@ fun BannerSection(
                 .align(Alignment.BottomStart)
                 .padding(SpaceSmall)
         ) {
-            topSkills.forEach { skillUrl ->
+            topSkills.forEach { skill ->
                 Spacer(modifier = Modifier.width(SpaceSmall))
                 Image(
                     painter = rememberAsyncImagePainter(
-                        skillUrl.imageUrl
+                        model = skill.imageUrl,
+                        imageLoader = ImageLoader.Builder(LocalContext.current)
+                            .components {
+                                add(SvgDecoder.Factory())
+                            }
+                            .build()
                     ),
                     contentDescription = null,
                     modifier = Modifier.height(iconSize)
