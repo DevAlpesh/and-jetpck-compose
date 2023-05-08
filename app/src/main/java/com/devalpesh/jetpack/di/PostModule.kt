@@ -1,6 +1,6 @@
 package com.devalpesh.jetpack.di
 
-import com.devalpesh.jetpack.feature_post.data.remote.PostApi
+import com.devalpesh.jetpack.core.data.remote.PostApi
 import com.devalpesh.jetpack.feature_post.data.repository.PostRepositoryImpl
 import com.devalpesh.jetpack.feature_post.domain.respository.PostRepository
 import com.devalpesh.jetpack.feature_post.domain.use_case.CreatePostUseCase

@@ -2,14 +2,15 @@ package com.devalpesh.jetpack.feature_post.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.devalpesh.jetpack.core.data.remote.PostApi
 import com.devalpesh.jetpack.core.domain.models.Post
 import com.devalpesh.jetpack.core.util.Constants
-import com.devalpesh.jetpack.feature_post.data.remote.PostApi
 import retrofit2.HttpException
 import java.io.IOException
 
 class PostSource(
-    private val api: PostApi
+    private val api: PostApi,
+    private val source: Source
 ) : PagingSource<Int, Post>() {
 
     private var currentPage = 0
@@ -17,10 +18,18 @@ class PostSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Post> {
         return try {
             val nextPage = params.key ?: currentPage
-            val posts = api.getPostsForFollows(
-                page = nextPage,
-                pageSize = Constants.PAGE_SIZE_POST
-            )
+            val posts = when (source) {
+                is Source.Follows -> api.getPostsForFollows(
+                    page = nextPage,
+                    pageSize = Constants.PAGE_SIZE_POST
+                )
+
+                is Source.Profile -> api.getPostForProfile(
+                    userId = source.userId,
+                    page = nextPage,
+                    pageSize = Constants.PAGE_SIZE_POST
+                )
+            }
 
             LoadResult.Page(
                 data = posts,
@@ -36,5 +45,10 @@ class PostSource(
 
     override fun getRefreshKey(state: PagingState<Int, Post>): Int? {
         return state.anchorPosition
+    }
+
+    sealed class Source {
+        data class Profile(val userId: String) : Source()
+        object Follows : Source()
     }
 }

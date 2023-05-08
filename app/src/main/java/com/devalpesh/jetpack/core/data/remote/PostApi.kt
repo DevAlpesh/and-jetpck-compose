@@ -1,9 +1,8 @@
-package com.devalpesh.jetpack.feature_post.data.remote
+package com.devalpesh.jetpack.core.data.remote
 
 import com.devalpesh.jetpack.core.data.dto.reponse.BasicApiResponse
 import com.devalpesh.jetpack.core.domain.models.Post
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.http.*
 
 interface PostApi {
@@ -14,6 +13,12 @@ interface PostApi {
         @Query("pageSize") pageSize: Int
     ): List<Post>
 
+    @GET("/api/user/post")
+    suspend fun getPostForProfile(
+        @Query("userId") userId : String,
+        @Query("page") page: Int,
+        @Query("pageSize") pageSize: Int
+    ): List<Post>
 
     @Multipart
     @POST("api/post/create")

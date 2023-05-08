@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.devalpesh.jetpack.core.presentation.util.UiEvent
 import com.devalpesh.jetpack.core.util.Resource
 import com.devalpesh.jetpack.core.util.UiText
@@ -13,7 +14,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,11 +31,11 @@ class ProfileViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    init {
-        /*savedStateHandle.get<String>("userId")?.let { userId ->
-            getProfile(userId)
-        }*/
-    }
+
+    val posts = profileUseCases.getPostsForProfile(
+        savedStateHandle.get<String>("userId") ?: ""
+    ).cachedIn(viewModelScope)
+
 
     fun setExpandedRation(ratio: Float) {
         _toolbarStates.value = _toolbarStates.value.copy(expandedRatio = ratio)
@@ -77,6 +77,10 @@ class ProfileViewModel @Inject constructor(
                     )
                 }
             }
+        }
+        viewModelScope.launch {
+            val posts = profileUseCases.getPostsForProfile(userId)
+
         }
     }
 }

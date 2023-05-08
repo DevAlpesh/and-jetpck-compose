@@ -1,9 +1,11 @@
 package com.devalpesh.jetpack.di
 
+import com.devalpesh.jetpack.core.data.remote.PostApi
 import com.devalpesh.jetpack.feature_profile.data.remote.ProfileApi
 import com.devalpesh.jetpack.feature_profile.data.repository.GetSkillUseCase
 import com.devalpesh.jetpack.feature_profile.data.repository.ProfileRepositoryImpl
 import com.devalpesh.jetpack.feature_profile.domain.repository.ProfileRepository
+import com.devalpesh.jetpack.feature_profile.domain.use_case.GetPostForProfileUseCase
 import com.devalpesh.jetpack.feature_profile.domain.use_case.GetProfileUseCase
 import com.devalpesh.jetpack.feature_profile.domain.use_case.ProfileUseCases
 import com.devalpesh.jetpack.feature_profile.domain.use_case.SetSkillSelectedUseCase
@@ -36,8 +38,12 @@ object ProfileModule {
 
     @Provides
     @Singleton
-    fun provideProfileRepository(api: ProfileApi, gson: Gson): ProfileRepository {
-        return ProfileRepositoryImpl(api, gson)
+    fun provideProfileRepository(
+        profileApi: ProfileApi,
+        postApi: PostApi,
+        gson: Gson
+    ): ProfileRepository {
+        return ProfileRepositoryImpl(profileApi, postApi, gson)
     }
 
     @Provides
@@ -47,7 +53,8 @@ object ProfileModule {
             getProfile = GetProfileUseCase(repository),
             getSkills = GetSkillUseCase(repository),
             updateProfile = UpdateProfileUseCase(repository),
-            setSkillSelected = SetSkillSelectedUseCase()
+            setSkillSelected = SetSkillSelectedUseCase(),
+            getPostsForProfile = GetPostForProfileUseCase(repository)
         )
     }
 }

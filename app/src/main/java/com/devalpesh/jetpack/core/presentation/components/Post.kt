@@ -3,7 +3,18 @@ package com.devalpesh.jetpack.core.presentation.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -20,7 +31,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -31,9 +41,15 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.domain.models.Post
-import com.devalpesh.jetpack.core.presentation.ui.theme.*
+import com.devalpesh.jetpack.core.presentation.ui.theme.HintGray
+import com.devalpesh.jetpack.core.presentation.ui.theme.MediumGray
+import com.devalpesh.jetpack.core.presentation.ui.theme.ProfilePictureSizeMedium
+import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
+import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
+import com.devalpesh.jetpack.core.presentation.ui.theme.TextWhite
 import com.devalpesh.jetpack.core.util.Constants
 
 @Composable
@@ -51,9 +67,11 @@ fun Post(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .offset(y = if (showProfileImage) {
-                    ProfilePictureSizeMedium / 2f
-                } else 0.dp)
+                .offset(
+                    y = if (showProfileImage) {
+                        ProfilePictureSizeMedium / 2f
+                    } else 0.dp
+                )
                 .clip(MaterialTheme.shapes.medium)
                 .shadow(5.dp)
                 .background(MediumGray)
@@ -62,8 +80,12 @@ fun Post(
                 }
         ) {
             Image(
-                painterResource(id = R.drawable.kermit),
-                contentDescription = "Post Image"
+                painter = rememberAsyncImagePainter(
+                    model = post.imageUrl
+                ),
+                contentDescription = "Post Image",
+                modifier = Modifier
+                    .aspectRatio(16f / 9f)
             )
             Column(
                 modifier = Modifier
@@ -132,7 +154,7 @@ fun Post(
         }
         if (showProfileImage) {
             Image(
-                painterResource(id = R.drawable.philipp),
+                painter = rememberAsyncImagePainter(model = post.profilePictureUrl),
                 contentDescription = "Profile Picture",
                 modifier = Modifier
                     .size(ProfilePictureSizeMedium)

@@ -12,7 +12,7 @@ import com.devalpesh.jetpack.core.util.Resource
 import com.devalpesh.jetpack.core.util.SimpleResources
 import com.devalpesh.jetpack.core.util.UiText
 import com.devalpesh.jetpack.feature_post.data.paging.PostSource
-import com.devalpesh.jetpack.feature_post.data.remote.PostApi
+import com.devalpesh.jetpack.core.data.remote.PostApi
 import com.devalpesh.jetpack.feature_post.data.remote.request.CreatePostRequest
 import com.devalpesh.jetpack.feature_post.domain.respository.PostRepository
 import com.google.gson.Gson
@@ -29,7 +29,7 @@ class PostRepositoryImpl(
 
     override val posts: Flow<PagingData<Post>>
         get() = Pager(PagingConfig(pageSize = Constants.PAGE_SIZE_POST)) {
-            PostSource(api)
+            PostSource(api,PostSource.Source.Follows)
         }.flow
 
     override suspend fun createPost(
