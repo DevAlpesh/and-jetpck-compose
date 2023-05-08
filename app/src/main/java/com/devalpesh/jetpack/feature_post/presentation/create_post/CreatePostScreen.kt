@@ -35,7 +35,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.devalpesh.jetpack.R
@@ -55,7 +54,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun CreatePostScreen(
-    navController: NavController,
+    navigateUp: () -> Unit = {},
     scaffoldState: ScaffoldState,
     viewModel: CreatePostViewModel = hiltViewModel()
 ) {
@@ -63,7 +62,7 @@ fun CreatePostScreen(
     val imageUri = viewModel.chosenImageUri.value
 
     val cropActivityLauncher = rememberLauncherForActivityResult(
-        contract = CropActivityResultContract(16f,9f),
+        contract = CropActivityResultContract(16f, 9f),
     ) {
         viewModel.onEvent(CreatePostEvent.CropImage(it))
     }
@@ -89,7 +88,7 @@ fun CreatePostScreen(
                 }
 
                 is UiEvent.NavigateUp -> {
-                    navController.navigateUp()
+                    navigateUp()
                 }
 
                 else -> null
@@ -101,7 +100,7 @@ fun CreatePostScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         StandardToolbar(
-            navController = navController,
+            navigateUp = navigateUp,
             showBackArrow = true,
             title = {
                 Text(

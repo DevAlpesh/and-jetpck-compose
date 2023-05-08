@@ -1,8 +1,18 @@
 package com.devalpesh.jetpack.feature_auth.presentation.login
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -16,7 +26,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.presentation.components.StandardTextField
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceLarge
@@ -29,7 +38,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun LoginScreen(
-    navController: NavController,
+    onNavigate: (String) -> Unit = {},
     scaffoldState: ScaffoldState,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
@@ -46,9 +55,11 @@ fun LoginScreen(
                         message = event.uiText.asString(context)
                     )
                 }
+
                 is UiEvent.Navigate -> {
-                    navController.navigate(event.route)
+                    onNavigate(event.route)
                 }
+
                 is UiEvent.NavigateUp -> null
             }
         }
@@ -85,6 +96,7 @@ fun LoginScreen(
                     is AuthError.FieldEmpty -> {
                         stringResource(id = R.string.txt_error_field_empty)
                     }
+
                     else -> ""
                 }
             )
@@ -104,6 +116,7 @@ fun LoginScreen(
                     is AuthError.FieldEmpty -> {
                         stringResource(id = R.string.txt_error_field_empty)
                     }
+
                     else -> ""
                 }
             )
@@ -140,7 +153,7 @@ fun LoginScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .clickable {
-                    navController.navigate(
+                    onNavigate(
                         Screen.RegisterScreen.route
                     )
                 },

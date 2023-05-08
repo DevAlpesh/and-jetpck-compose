@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
@@ -28,7 +27,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MainFeedScreen(
-    navController: NavController,
+    navigateUp: () -> Unit = {},
+    onNavigate: (String) -> Unit = {},
     scaffoldState: ScaffoldState,
     viewModel: MainFeedViewModel = hiltViewModel()
 ) {
@@ -41,7 +41,7 @@ fun MainFeedScreen(
         modifier = Modifier.fillMaxWidth()
     ) {
         StandardToolbar(
-            navController = navController,
+            navigateUp = navigateUp,
             title = {
                 Text(
                     text = stringResource(id = R.string.txt_your_feed),
@@ -53,7 +53,7 @@ fun MainFeedScreen(
             showBackArrow = false,
             navActions = {
                 IconButton(onClick = {
-                    navController.navigate(Screen.SearchScreen.route)
+                    onNavigate(Screen.SearchScreen.route)
                 }) {
                     Icon(
                         imageVector = Icons.Default.Search,
@@ -79,7 +79,7 @@ fun MainFeedScreen(
                             commentCount = post?.commentCount ?: 0
                         ),
                         onPostClick = {
-                            navController.navigate(Screen.PostDetailScreen.route)
+                            onNavigate(Screen.PostDetailScreen.route)
                         }
                     )
                 }
@@ -95,12 +95,15 @@ fun MainFeedScreen(
                         loadState.refresh !is LoadState.Loading -> {
                             viewModel.onEvent(MainFeedEvent.LoadedPage)
                         }
+
                         loadState.append is LoadState.Loading -> {
                             viewModel.onEvent(MainFeedEvent.LoadMorePosts)
                         }
+
                         loadState.append is LoadState.NotLoading -> {
                             viewModel.onEvent(MainFeedEvent.LoadedPage)
                         }
+
                         loadState.append is LoadState.Error -> {
                             scope.launch {
                                 scaffoldState.snackbarHostState.showSnackbar(

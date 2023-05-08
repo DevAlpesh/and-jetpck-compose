@@ -13,7 +13,7 @@ import androidx.navigation.NavController
 import com.devalpesh.jetpack.core.presentation.components.StandardScaffold
 
 @Composable
-fun ChatScreen(navController: NavController) {
+fun ChatScreen() {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center

@@ -33,25 +33,37 @@ fun Navigation(
         modifier = Modifier.fillMaxSize()
     ) {
         composable(Screen.SplashScreen.route) {
-            SplashScreen(navController = navController)
+            SplashScreen(
+                onPopBackStack = navController::popBackStack,
+                onNavigate = navController::navigate
+            )
         }
         composable(Screen.LoginScreen.route) {
             LoginScreen(
-                navController = navController,
+                onNavigate = navController::navigate,
                 scaffoldState = scaffoldState
             )
         }
         composable(Screen.RegisterScreen.route) {
-            RegisterScreen(navController = navController, scaffoldState = scaffoldState)
+            RegisterScreen(
+                onPopBackStack = navController::popBackStack,
+                scaffoldState = scaffoldState
+            )
         }
         composable(Screen.MainFeedScreen.route) {
-            MainFeedScreen(navController = navController, scaffoldState = scaffoldState)
+            MainFeedScreen(
+                navigateUp = navController::navigateUp,
+                onNavigate = navController::navigate,
+                scaffoldState = scaffoldState
+            )
         }
         composable(Screen.ChatScreen.route) {
-            ChatScreen(navController = navController)
+            ChatScreen()
         }
         composable(Screen.ActivityScreen.route) {
-            ActivityScreen(navController = navController)
+            ActivityScreen(
+                navigateUp = navController::navigateUp
+            )
         }
         composable(
             route = Screen.ProfileScreen.route + "?userId={userId}",
@@ -63,10 +75,14 @@ fun Navigation(
                 }
             )
         ) {
-            ProfileScreen(navController = navController, scaffoldState = scaffoldState)
+            ProfileScreen(
+                userId = it.arguments?.getString("userId") ?: "",
+                onNavigate = navController::navigate,
+                scaffoldState = scaffoldState
+            )
         }
         composable(
-            route = Screen.EditProfileScreen.route+ "/{userId}",
+            route = Screen.EditProfileScreen.route + "/{userId}",
             arguments = listOf(
                 navArgument(name = "userId") {
                     type = NavType.StringType
@@ -75,18 +91,24 @@ fun Navigation(
         ) {
             EditProfileScreen(
                 scaffoldState = scaffoldState,
-                navController = navController
+                navigateUp = navController::navigateUp
             )
         }
         composable(Screen.CreatePostScreen.route) {
-            CreatePostScreen(navController = navController, scaffoldState = scaffoldState)
+            CreatePostScreen(
+                navigateUp = navController::navigateUp,
+                scaffoldState = scaffoldState
+            )
         }
         composable(Screen.SearchScreen.route) {
-            SearchScreen(navController = navController)
+            SearchScreen(
+                navigateUp = navController::navigateUp,
+                onNavigate = navController::navigate
+            )
         }
         composable(Screen.PostDetailScreen.route) {
             PostDetailScreen(
-                navController = navController,
+                navigateUp = navController::navigateUp,
                 post = Post(
                     username = "Philip Lackner",
                     imageUrl = "",

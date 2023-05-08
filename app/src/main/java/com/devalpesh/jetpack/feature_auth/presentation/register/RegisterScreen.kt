@@ -1,8 +1,19 @@
 package com.devalpesh.jetpack.feature_auth.presentation.register
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -15,7 +26,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.presentation.components.StandardTextField
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceLarge
@@ -28,7 +38,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun RegisterScreen(
-    navController: NavController,
+    onPopBackStack: () -> Unit = {},
     viewModel: RegisterViewModel = hiltViewModel(),
     scaffoldState: ScaffoldState
 ) {
@@ -47,6 +57,7 @@ fun RegisterScreen(
                         duration = SnackbarDuration.Long
                     )
                 }
+
                 else -> Unit
             }
         }
@@ -84,9 +95,11 @@ fun RegisterScreen(
                     is AuthError.FieldEmpty -> {
                         stringResource(id = R.string.txt_error_field_empty)
                     }
+
                     is AuthError.InvalidEmail -> {
                         stringResource(id = R.string.txt_not_a_valid_email)
                     }
+
                     else -> ""
                 }
             )
@@ -102,12 +115,14 @@ fun RegisterScreen(
                     is AuthError.FieldEmpty -> {
                         stringResource(id = R.string.txt_error_field_empty)
                     }
+
                     is AuthError.InputTooShort -> {
                         stringResource(
                             id = R.string.txt_input_too_sort,
                             Constants.MIN_USERNAME_LENGTH
                         )
                     }
+
                     else -> ""
                 }
             )
@@ -127,15 +142,18 @@ fun RegisterScreen(
                     is AuthError.FieldEmpty -> {
                         stringResource(id = R.string.txt_error_field_empty)
                     }
+
                     is AuthError.InputTooShort -> {
                         stringResource(
                             id = R.string.txt_input_too_sort,
                             Constants.MIN_PASSWORD_LENGTH
                         )
                     }
+
                     is AuthError.InvalidPassword -> {
                         stringResource(id = R.string.txt_invalid_password)
                     }
+
                     else -> ""
                 }
             )
@@ -173,7 +191,7 @@ fun RegisterScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .clickable {
-                    navController.popBackStack()
+                    onPopBackStack()
                 },
         )
     }

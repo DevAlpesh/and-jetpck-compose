@@ -6,6 +6,7 @@ import com.devalpesh.jetpack.feature_profile.data.repository.ProfileRepositoryIm
 import com.devalpesh.jetpack.feature_profile.domain.repository.ProfileRepository
 import com.devalpesh.jetpack.feature_profile.domain.use_case.GetProfileUseCase
 import com.devalpesh.jetpack.feature_profile.domain.use_case.ProfileUseCases
+import com.devalpesh.jetpack.feature_profile.domain.use_case.SetSkillSelectedUseCase
 import com.devalpesh.jetpack.feature_profile.domain.use_case.UpdateProfileUseCase
 import com.google.gson.Gson
 import dagger.Module
@@ -45,7 +46,8 @@ object ProfileModule {
         return ProfileUseCases(
             getProfile = GetProfileUseCase(repository),
             getSkills = GetSkillUseCase(repository),
-            updateProfile = UpdateProfileUseCase(repository)
+            updateProfile = UpdateProfileUseCase(repository),
+            setSkillSelected = SetSkillSelectedUseCase()
         )
     }
 }

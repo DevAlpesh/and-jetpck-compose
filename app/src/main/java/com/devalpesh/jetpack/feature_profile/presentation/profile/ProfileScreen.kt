@@ -32,7 +32,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.domain.models.Post
@@ -51,7 +50,8 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun ProfileScreen(
-    navController: NavController,
+    userId: String,
+    onNavigate: (String) -> Unit = {},
     scaffoldState: ScaffoldState,
     viewModel: ProfileViewModel = hiltViewModel(),
     profilePictureSize: Dp = ProfilePictureSizeLarge
@@ -104,6 +104,7 @@ fun ProfileScreen(
     val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
+        viewModel.getProfile(userId)
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is UiEvent.ShowSnackbar -> {
@@ -154,7 +155,7 @@ fun ProfileScreen(
                         ),
                         isOwnProfile = profile.isOwnProfile,
                         onEditClick = {
-                            navController.navigate(Screen.EditProfileScreen.route + "/${profile.userId}")
+                            onNavigate(Screen.EditProfileScreen.route + "/${profile.userId}")
                         }
                     )
                 }
@@ -177,7 +178,7 @@ fun ProfileScreen(
                     ),
                     showProfileImage = false,
                     onPostClick = {
-                        navController.navigate(Screen.PostDetailScreen.route)
+                        onNavigate(Screen.PostDetailScreen.route)
                     },
                 )
             }

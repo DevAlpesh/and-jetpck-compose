@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.domain.models.User
 import com.devalpesh.jetpack.core.domain.states.StandardTextFieldStates
@@ -33,12 +32,14 @@ import com.devalpesh.jetpack.core.presentation.util.Screen
 
 @Composable
 fun SearchScreen(
-    navController: NavController, viewModel: SearchViewModel = hiltViewModel()
+    navigateUp: () -> Unit = {},
+    onNavigate: (String) -> Unit = {},
+    viewModel: SearchViewModel = hiltViewModel()
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
     ) {
-        StandardToolbar(navController = navController, showBackArrow = true, title = {
+        StandardToolbar(navigateUp = navigateUp, showBackArrow = true, title = {
             Text(
                 text = stringResource(id = R.string.txt_search_for_user),
                 fontWeight = FontWeight.Bold,
@@ -86,8 +87,8 @@ fun SearchScreen(
                             )
                         },
                         onItemClick = {
-                            navController.navigate(
-                                Screen.ProfileScreen.route+"?userId=644f924fcaee957d0f992dc3"
+                            onNavigate(
+                                Screen.ProfileScreen.route + "?userId=644f924fcaee957d0f992dc3"
                             )
                         },
                         onActionItemClick = {

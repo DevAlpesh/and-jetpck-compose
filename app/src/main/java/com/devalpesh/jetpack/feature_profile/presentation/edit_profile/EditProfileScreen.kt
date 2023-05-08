@@ -43,7 +43,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.presentation.components.Chip
@@ -63,7 +62,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun EditProfileScreen(
     scaffoldState: ScaffoldState,
-    navController: NavController,
+    navigateUp: () -> Unit = {},
     profilePictureSize: Dp = ProfilePictureSizeLarge,
     viewModel: EditProfileViewModel = hiltViewModel()
 ) {
@@ -105,6 +104,10 @@ fun EditProfileScreen(
                     )
                 }
 
+                is UiEvent.NavigateUp -> {
+                    navigateUp()
+                }
+
                 else -> Unit
             }
         }
@@ -113,7 +116,7 @@ fun EditProfileScreen(
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        StandardToolbar(navController = navController, showBackArrow = true, navActions = {
+        StandardToolbar(navigateUp = navigateUp, showBackArrow = true, navActions = {
             IconButton(onClick = {
                 viewModel.onEvent(EditProfileEvent.UpdateProfile)
             }) {
@@ -137,10 +140,11 @@ fun EditProfileScreen(
         ) {
             BannerEditSection(
                 bannerImage = rememberAsyncImagePainter(
-                    profileState.profile?.bannerUrl
+                    model = viewModel.bannerUri.value ?: profileState.profile?.bannerUrl
                 ),
                 profileImage = rememberAsyncImagePainter(
-                    profileState.profile?.profilePictureUrl
+                    model = viewModel.profilePictureUri.value
+                        ?: profileState.profile?.profilePictureUrl
                 ),
                 profilePictureSize = profilePictureSize,
                 onBannerClick = {
@@ -267,10 +271,13 @@ fun EditProfileScreen(
                     mainAxisSpacing = SpaceMedium,
                     crossAxisSpacing = SpaceMedium
                 ) {
-                    viewModel.skills.value.skills.forEach {
+                    viewModel.skills.value.skills.forEach { skill ->
                         Chip(
-                            text = it.name,
-                            selected = it in viewModel.skills.value.selectedSkills,
+                            text = skill.name,
+                            selected = skill in viewModel.skills.value.selectedSkills,
+                            onChipClick = {
+                                viewModel.onEvent(EditProfileEvent.SetSkillSelected(skill))
+                            }
                         )
                     }
                 }

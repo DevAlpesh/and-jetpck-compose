@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.devalpesh.jetpack.R
 
 /**
@@ -21,7 +20,7 @@ import com.devalpesh.jetpack.R
 @Composable
 fun StandardToolbar(
     modifier: Modifier = Modifier,
-    navController: NavController,
+    navigateUp: () -> Unit = {},
     showBackArrow: Boolean = true,
     navActions: @Composable RowScope.() -> Unit = {},
     title: @Composable () -> Unit,
@@ -32,7 +31,7 @@ fun StandardToolbar(
         navigationIcon = if (showBackArrow) {
             {
                 IconButton(onClick = {
-                    navController.navigateUp()
+                    navigateUp()
                 }) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,

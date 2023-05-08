@@ -18,7 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.domain.models.Comment
 import com.devalpesh.jetpack.core.domain.models.Post
@@ -28,14 +27,14 @@ import com.devalpesh.jetpack.core.presentation.ui.theme.*
 
 @Composable
 fun PostDetailScreen(
-    navController: NavController,
+    navigateUp: () -> Unit = {},
     post: Post
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         StandardToolbar(
-            navController = navController,
+            navigateUp = navigateUp,
             title = {
                 Text(
                     text = stringResource(id = R.string.txt_your_feed),

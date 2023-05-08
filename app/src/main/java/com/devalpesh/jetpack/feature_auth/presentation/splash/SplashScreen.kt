@@ -15,18 +15,15 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.devalpesh.jetpack.R
-import com.devalpesh.jetpack.core.presentation.util.Screen
 import com.devalpesh.jetpack.core.presentation.util.UiEvent
-import com.devalpesh.jetpack.core.util.Constants
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import timber.log.Timber
 
 @Composable
 fun SplashScreen(
-    navController: NavController,
+    onPopBackStack: () -> Unit = {},
+    onNavigate: (String) -> Unit = {},
     viewModel: SplashViewModel = hiltViewModel()
 ) {
     val scale = remember {
@@ -60,9 +57,10 @@ fun SplashScreen(
             when (event) {
                 is UiEvent.Navigate -> {
                     Timber.e("Collect latest...")
-                    navController.popBackStack()
-                    navController.navigate(event.route)
+                    onPopBackStack()
+                    onNavigate(event.route)
                 }
+
                 else -> Unit
             }
         }

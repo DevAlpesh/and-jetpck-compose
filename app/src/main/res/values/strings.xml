@@ -74,4 +74,8 @@
     <string name="txt_error_couldnt_load_skills">"Opps! Couldn't load skills. "</string>
     <string name="txt_error_username_empty">The username can\'t be empty.</string>
     <string name="txt_msg_update_profile">Successfully updated profile</string>
+    <string name="txt_error_msg_max_skills_selected">You can only have %s top skills at a time.</string>
+    <string name="txt_error_github_url">This is not a valid Github URL</string>
+    <string name="txt_error_instagram_url">This is not valid instagram URL!</string>
+    <string name="txt_error_linked_in_url">This is not valid LinkedIn URL!</string>
 </resources>
