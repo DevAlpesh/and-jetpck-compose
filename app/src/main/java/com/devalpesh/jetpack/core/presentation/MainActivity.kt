@@ -11,6 +11,8 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.fragment.app.FragmentManager.BackStackEntry
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.devalpesh.jetpack.core.presentation.components.StandardScaffold
@@ -36,12 +38,7 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         state = scaffoldState,
                         modifier = Modifier.fillMaxSize(),
-                        showBottomBar = navBackStackEntry.value?.destination?.route in listOf(
-                            Screen.MainFeedScreen.route,
-                            Screen.ChatScreen.route,
-                            Screen.ActivityScreen.route,
-                            Screen.ProfileScreen.route
-                        ),
+                        showBottomBar = shouldShowBottomBar(navBackStackEntry.value),
                         onFabClick = {
                             navController.navigate(Screen.CreatePostScreen.route)
                         }
@@ -54,15 +51,14 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
+private fun shouldShowBottomBar(backStackEntry: NavBackStackEntry?) : Boolean{
+    val doesRouteMatch = backStackEntry?.destination?.route in listOf(
+        Screen.MainFeedScreen.route,
+        Screen.ChatScreen.route,
+        Screen.ActivityScreen.route,
+    )
+    val isOwnProfile = backStackEntry?.destination?.route == "${Screen.ProfileScreen.route}?userId={userId}" &&
+            backStackEntry.arguments?.getString("userId")==null
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    AndjetpackTheme {
-        Greeting("Android")
-    }
+    return doesRouteMatch || isOwnProfile
 }

@@ -6,9 +6,9 @@ import com.devalpesh.jetpack.core.util.Constants
 import com.devalpesh.jetpack.core.util.Resource
 import com.devalpesh.jetpack.core.util.SimpleResources
 import com.devalpesh.jetpack.core.util.UiText
+import com.devalpesh.jetpack.feature_auth.data.remote.AuthApi
 import com.devalpesh.jetpack.feature_auth.data.remote.request.CreateAccountRequest
 import com.devalpesh.jetpack.feature_auth.data.remote.request.LoginRequest
-import com.devalpesh.jetpack.feature_auth.data.remote.AuthApi
 import com.devalpesh.jetpack.feature_auth.domain.repository.AuthRepository
 import retrofit2.HttpException
 import java.io.IOException
@@ -48,9 +48,10 @@ class AuthRepositoryImpl(
         return try {
             val response = api.login(request)
             if (response.success) {
-                response.data?.token?.let { token ->
+                response.data?.let { authResponse ->
                     sharedPreferences.edit()
-                        .putString(Constants.KEY_JWT_TOKEN, token)
+                        .putString(Constants.KEY_JWT_TOKEN, authResponse.token)
+                        .putString(Constants.KEY_USER_ID, authResponse.userId)
                         .apply()
                 }
                 Resource.Success(Unit)

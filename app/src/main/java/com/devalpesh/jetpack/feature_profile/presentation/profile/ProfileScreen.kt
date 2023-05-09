@@ -39,6 +39,7 @@ import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.domain.models.Post
 import com.devalpesh.jetpack.core.domain.models.User
 import com.devalpesh.jetpack.core.presentation.components.Post
+import com.devalpesh.jetpack.core.presentation.components.StandardToolbar
 import com.devalpesh.jetpack.core.presentation.ui.theme.ProfilePictureSizeLarge
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
@@ -52,9 +53,9 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun ProfileScreen(
-    userId: String,
-    onNavigate: (String) -> Unit = {},
     scaffoldState: ScaffoldState,
+    userId: String? = null,
+    onNavigate: (String) -> Unit = {},
     viewModel: ProfileViewModel = hiltViewModel(),
     profilePictureSize: Dp = ProfilePictureSizeLarge
 ) {

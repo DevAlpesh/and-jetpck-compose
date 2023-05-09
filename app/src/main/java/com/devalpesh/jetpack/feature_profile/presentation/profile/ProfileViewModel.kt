@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.devalpesh.jetpack.core.domain.use_case.GetOwnUserIdUseCase
 import com.devalpesh.jetpack.core.presentation.util.UiEvent
 import com.devalpesh.jetpack.core.util.Resource
 import com.devalpesh.jetpack.core.util.UiText
@@ -19,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val profileUseCases: ProfileUseCases,
+    private val getOwnUserId: GetOwnUserIdUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -33,7 +35,7 @@ class ProfileViewModel @Inject constructor(
 
 
     val posts = profileUseCases.getPostsForProfile(
-        savedStateHandle.get<String>("userId") ?: ""
+        savedStateHandle.get<String>("userId") ?: getOwnUserId()
     ).cachedIn(viewModelScope)
 
 
@@ -53,12 +55,14 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun getProfile(userId: String) {
+    fun getProfile(userId: String?) {
         viewModelScope.launch {
             _state.value = state.value.copy(
                 isLoading = true
             )
-            when (val result = profileUseCases.getProfile(userId)) {
+            when (val result = profileUseCases.getProfile(
+                userId?: getOwnUserId()
+            )) {
                 is Resource.Success -> {
                     _state.value = _state.value.copy(
                         profile = result.data,
@@ -77,10 +81,6 @@ class ProfileViewModel @Inject constructor(
                     )
                 }
             }
-        }
-        viewModelScope.launch {
-            val posts = profileUseCases.getPostsForProfile(userId)
-
         }
     }
 }

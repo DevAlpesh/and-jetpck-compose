@@ -1,12 +1,18 @@
 package com.devalpesh.jetpack.core.presentation.components
 
-import androidx.compose.foundation.layout.RowScope
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.BottomAppBar
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.FabPosition
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Message
 import androidx.compose.material.icons.outlined.Notifications
@@ -14,7 +20,6 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.devalpesh.jetpack.R
@@ -22,6 +27,7 @@ import com.devalpesh.jetpack.core.domain.models.BottomNavItem
 import com.devalpesh.jetpack.core.presentation.util.Screen
 
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun StandardScaffold(
     navController: NavController,
@@ -39,7 +45,7 @@ fun StandardScaffold(
             icon = Icons.Outlined.Message,
             contentDescription = "Message"
         ),
-        BottomNavItem(route = ""),
+        BottomNavItem(route = "-"),
         BottomNavItem(
             route = Screen.ActivityScreen.route,
             icon = Icons.Outlined.Notifications,
@@ -64,16 +70,18 @@ fun StandardScaffold(
                     elevation = 5.dp
                 ) {
                     BottomNavigation {
-                        bottomNavItem.forEach {
+                        bottomNavItem.forEachIndexed { i, bottomNavItem ->
                             StandardBottomNavItem(
-                                icon = it.icon,
-                                contentDescription = it.contentDescription,
-                                selected = it.route == navController.currentDestination?.route,
-                                alertCount = it.alertCount,
-                                enabled = it.icon != null,
+                                icon = bottomNavItem.icon,
+                                contentDescription = bottomNavItem.contentDescription,
+                                selected = navController.currentDestination?.route?.startsWith(
+                                    bottomNavItem.route
+                                ) == true,
+                                alertCount = bottomNavItem.alertCount,
+                                enabled = bottomNavItem.icon != null,
                             ) {
-                                if (navController.currentDestination?.route != it.route) {
-                                    navController.navigate(it.route)
+                                if (navController.currentDestination?.route != bottomNavItem.route) {
+                                    navController.navigate(bottomNavItem.route)
                                 }
                             }
                         }
