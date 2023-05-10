@@ -33,10 +33,8 @@ class UpdateProfileUseCase(
         }
 
 
-        println("Url :${updateProfileData.instagramUrl}")
         val isValidInstagramUrl =
             ProfileConstants.INSTAGRAM_PROFILE_REGEX.matches(updateProfileData.instagramUrl)
-        println("Valid :$isValidInstagramUrl")
 
         if (!isValidInstagramUrl) {
             return Resource.Error(

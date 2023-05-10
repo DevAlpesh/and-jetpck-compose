@@ -39,7 +39,6 @@ import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.domain.models.Post
 import com.devalpesh.jetpack.core.domain.models.User
 import com.devalpesh.jetpack.core.presentation.components.Post
-import com.devalpesh.jetpack.core.presentation.components.StandardToolbar
 import com.devalpesh.jetpack.core.presentation.ui.theme.ProfilePictureSizeLarge
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
@@ -158,6 +157,7 @@ fun ProfileScreen(
                             followingCount = profile.followingCount,
                             postCount = profile.postCount
                         ),
+                        isFollowing = profile.isFollowing,
                         isOwnProfile = profile.isOwnProfile,
                         onEditClick = {
                             onNavigate(Screen.EditProfileScreen.route + "/${profile.userId}")

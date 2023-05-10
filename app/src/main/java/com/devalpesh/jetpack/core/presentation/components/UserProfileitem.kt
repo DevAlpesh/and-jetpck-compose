@@ -12,11 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.devalpesh.jetpack.R
+import coil.compose.rememberAsyncImagePainter
 import com.devalpesh.jetpack.core.domain.models.User
 import com.devalpesh.jetpack.core.presentation.ui.theme.IconSizeMedium
 import com.devalpesh.jetpack.core.presentation.ui.theme.ProfilePictureSizeSmall
@@ -50,7 +49,7 @@ fun UserProfileItem(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Image(
-                painter = painterResource(id = R.drawable.philipp),
+                painter = rememberAsyncImagePainter(model = user.profilePictureUrl),
                 contentDescription = null,
                 modifier = Modifier
                     .size(ProfilePictureSizeSmall)

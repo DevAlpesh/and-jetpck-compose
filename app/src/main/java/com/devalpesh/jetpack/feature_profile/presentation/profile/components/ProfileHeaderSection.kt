@@ -1,6 +1,14 @@
 package com.devalpesh.jetpack.feature_profile.presentation.profile.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -16,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.domain.models.User
-import com.devalpesh.jetpack.core.presentation.ui.theme.ProfilePictureSizeLarge
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceLarge
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
@@ -26,6 +33,7 @@ fun ProfileHeaderSection(
     user: User,
     modifier: Modifier = Modifier,
     isOwnProfile: Boolean = true,
+    isFollowing: Boolean = true,
     onEditClick: () -> Unit = {}
 ) {
     Column(
@@ -73,7 +81,8 @@ fun ProfileHeaderSection(
         Spacer(modifier = Modifier.height(SpaceLarge))
         ProfileStates(
             user = user,
-            isOwnProfile = isOwnProfile
+            isOwnProfile = isOwnProfile,
+            isFollowing = isFollowing
         )
     }
 }

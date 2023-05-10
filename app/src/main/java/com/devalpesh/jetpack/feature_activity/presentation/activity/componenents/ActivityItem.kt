@@ -1,4 +1,4 @@
-package com.devalpesh.jetpack.presentation.activity
+package com.devalpesh.jetpack.feature_activity.presentation.activity.componenents
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

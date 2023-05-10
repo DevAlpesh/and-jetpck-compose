@@ -9,12 +9,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.domain.models.Activity
 import com.devalpesh.jetpack.core.domain.util.ActivityAction
 import com.devalpesh.jetpack.core.domain.util.DateFormatUtil
-import com.devalpesh.jetpack.presentation.activity.ActivityItem
+import com.devalpesh.jetpack.feature_activity.presentation.activity.componenents.ActivityItem
 import com.devalpesh.jetpack.core.presentation.components.StandardToolbar
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
 import kotlin.random.Random

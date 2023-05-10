@@ -8,12 +8,14 @@ import androidx.paging.PagingData
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.data.remote.PostApi
 import com.devalpesh.jetpack.core.domain.models.Post
+import com.devalpesh.jetpack.core.domain.models.UserItem
 import com.devalpesh.jetpack.core.util.Constants
 import com.devalpesh.jetpack.core.util.Resource
 import com.devalpesh.jetpack.core.util.SimpleResources
 import com.devalpesh.jetpack.core.util.UiText
 import com.devalpesh.jetpack.feature_post.data.paging.PostSource
 import com.devalpesh.jetpack.feature_profile.data.remote.ProfileApi
+import com.devalpesh.jetpack.feature_profile.data.remote.request.FollowUpdateRequest
 import com.devalpesh.jetpack.feature_profile.domain.model.Profile
 import com.devalpesh.jetpack.feature_profile.domain.model.Skill
 import com.devalpesh.jetpack.feature_profile.domain.model.UpdateProfileData
@@ -111,6 +113,69 @@ class ProfileRepositoryImpl(
             if (response.success) {
                 Resource.Success(Unit)
             } else {
+                response.message?.let { msg ->
+                    Resource.Error(UiText.DynamicString(msg))
+                } ?: Resource.Error(UiText.StringResource(R.string.txt_error_unknow))
+            }
+        } catch (e: IOException) {
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.txt_error_couldnt_reach_server)
+            )
+        } catch (e: HttpException) {
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.txt_error_oops_something_went_wrong)
+            )
+        }
+    }
+
+    override suspend fun searchUser(query: String): Resource<List<UserItem>> {
+        return try {
+            val response = profileApi.searchUser(query)
+            Resource.Success(
+                data = response.map { it.toUserItem() }
+            )
+        } catch (e: IOException) {
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.txt_error_couldnt_reach_server)
+            )
+        } catch (e: HttpException) {
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.txt_error_oops_something_went_wrong)
+            )
+        }
+    }
+
+    override suspend fun followUser(userId: String): SimpleResources {
+        return try {
+            val response = profileApi.followUser(
+                request = FollowUpdateRequest(userId)
+            )
+            if (response.success){
+                Resource.Success(Unit)
+            }else{
+                response.message?.let { msg ->
+                    Resource.Error(UiText.DynamicString(msg))
+                } ?: Resource.Error(UiText.StringResource(R.string.txt_error_unknow))
+            }
+        } catch (e: IOException) {
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.txt_error_couldnt_reach_server)
+            )
+        } catch (e: HttpException) {
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.txt_error_oops_something_went_wrong)
+            )
+        }
+    }
+
+    override suspend fun unfollowUser(userId: String): SimpleResources {
+        return try {
+            val response = profileApi.unfollowUser(
+                userId = userId
+            )
+            if (response.success){
+                Resource.Success(Unit)
+            }else{
                 response.message?.let { msg ->
                     Resource.Error(UiText.DynamicString(msg))
                 } ?: Resource.Error(UiText.StringResource(R.string.txt_error_unknow))

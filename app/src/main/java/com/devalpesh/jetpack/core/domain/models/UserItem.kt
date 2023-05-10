@@ -1,4 +1,4 @@
-package com.devalpesh.jetpack.feature_profile.domain.model
+package com.devalpesh.jetpack.core.domain.models
 
 data class UserItem(
     val userId : String,

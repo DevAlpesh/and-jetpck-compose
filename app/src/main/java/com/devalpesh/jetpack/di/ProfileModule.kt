@@ -8,7 +8,9 @@ import com.devalpesh.jetpack.feature_profile.domain.repository.ProfileRepository
 import com.devalpesh.jetpack.feature_profile.domain.use_case.GetPostForProfileUseCase
 import com.devalpesh.jetpack.feature_profile.domain.use_case.GetProfileUseCase
 import com.devalpesh.jetpack.feature_profile.domain.use_case.ProfileUseCases
+import com.devalpesh.jetpack.feature_profile.domain.use_case.SearchUserUseCase
 import com.devalpesh.jetpack.feature_profile.domain.use_case.SetSkillSelectedUseCase
+import com.devalpesh.jetpack.feature_profile.domain.use_case.ToggleFollowStateForUserUseCase
 import com.devalpesh.jetpack.feature_profile.domain.use_case.UpdateProfileUseCase
 import com.google.gson.Gson
 import dagger.Module
@@ -54,7 +56,9 @@ object ProfileModule {
             getSkills = GetSkillUseCase(repository),
             updateProfile = UpdateProfileUseCase(repository),
             setSkillSelected = SetSkillSelectedUseCase(),
-            getPostsForProfile = GetPostForProfileUseCase(repository)
+            getPostsForProfile = GetPostForProfileUseCase(repository),
+            searchUser = SearchUserUseCase(repository),
+            toggleFollowStateForUser = ToggleFollowStateForUserUseCase(repository)
         )
     }
 }
