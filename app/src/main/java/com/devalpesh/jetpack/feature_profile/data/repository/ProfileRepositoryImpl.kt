@@ -13,6 +13,7 @@ import com.devalpesh.jetpack.core.util.Constants
 import com.devalpesh.jetpack.core.util.Resource
 import com.devalpesh.jetpack.core.util.SimpleResources
 import com.devalpesh.jetpack.core.util.UiText
+import com.devalpesh.jetpack.core.data.paging.ActivitySource
 import com.devalpesh.jetpack.feature_post.data.paging.PostSource
 import com.devalpesh.jetpack.feature_profile.data.remote.ProfileApi
 import com.devalpesh.jetpack.feature_profile.data.remote.request.FollowUpdateRequest
@@ -34,11 +35,11 @@ class ProfileRepositoryImpl(
 ) : ProfileRepository {
 
     override fun getPostPaged(userId: String): Flow<PagingData<Post>> {
-        return Pager(PagingConfig(pageSize = Constants.PAGE_SIZE_POST)) {
+        return Pager(PagingConfig(pageSize = Constants.DEFAULT_PAGE_SIZE)) {
             PostSource(postApi, PostSource.Source.Profile(userId))
         }.flow
     }
-
+//644f924fcaee957d0f992dc3
     override suspend fun getProfile(userId: String): Resource<Profile> {
         return try {
             val response = profileApi.getProfile(userId)

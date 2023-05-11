@@ -1,4 +1,4 @@
-package com.devalpesh.jetpack.feature_activity.presentation.activity.componenents
+package com.devalpesh.jetpack.feature_activity.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.domain.models.Activity
-import com.devalpesh.jetpack.core.domain.util.ActivityAction
+import com.devalpesh.jetpack.core.domain.util.ActivityType
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
 
 @Composable
@@ -40,25 +40,31 @@ fun ActivityItem(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val fillerText = when (activity.actionType) {
-                is ActivityAction.LikedPost -> {
+            val fillerText = when (activity.activityType) {
+                is ActivityType.LikedPost -> {
                     stringResource(id = R.string.txt_liked)
                 }
-                is ActivityAction.CommentedOnPost -> {
+                is ActivityType.CommentedOnPost -> {
                     stringResource(id = R.string.txt_commented_on)
                 }
-                is ActivityAction.FollowedYou -> {
+                is ActivityType.FollowedUser -> {
                     stringResource(id = R.string.txt_followed_you)
                 }
+                is ActivityType.LikedComment -> {
+                    stringResource(id = R.string.txt_liked)
+                }
             }
-            val actionText = when (activity.actionType) {
-                is ActivityAction.LikedPost -> {
+            val actionText = when (activity.activityType) {
+                is ActivityType.LikedPost -> {
                     stringResource(id = R.string.txt_your_post)
                 }
-                is ActivityAction.CommentedOnPost -> {
+                is ActivityType.CommentedOnPost -> {
                     stringResource(id = R.string.txt_your_post)
                 }
-                is ActivityAction.FollowedYou -> ""
+                is ActivityType.FollowedUser -> ""
+                is ActivityType.LikedComment -> {
+                    stringResource(id = R.string.txt_your_comment)
+                }
             }
             Text(
                 text = buildAnnotatedString {

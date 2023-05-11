@@ -10,7 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.devalpesh.jetpack.core.domain.models.Post
-import com.devalpesh.jetpack.feature_activity.presentation.activity.ActivityScreen
+import com.devalpesh.jetpack.feature_activity.presentation.ActivityScreen
 import com.devalpesh.jetpack.feature_auth.presentation.login.LoginScreen
 import com.devalpesh.jetpack.feature_auth.presentation.register.RegisterScreen
 import com.devalpesh.jetpack.feature_auth.presentation.splash.SplashScreen
