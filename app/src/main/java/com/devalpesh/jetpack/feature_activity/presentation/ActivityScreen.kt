@@ -25,6 +25,7 @@ import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
 @Composable
 fun ActivityScreen(
     navigateUp: () -> Unit = {},
+    onNavigate: (String) -> Unit = {},
     viewModel: ActivityViewModel = hiltViewModel()
 ) {
 
@@ -64,6 +65,7 @@ fun ActivityScreen(
                                 activityType = activity.activityType,
                                 formattedTime = activity.formattedTime
                             ),
+                            onNavigate = onNavigate
                         )
                     }
                 }

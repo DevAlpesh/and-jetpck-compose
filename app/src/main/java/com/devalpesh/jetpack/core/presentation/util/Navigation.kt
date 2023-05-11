@@ -62,7 +62,8 @@ fun Navigation(
         }
         composable(Screen.ActivityScreen.route) {
             ActivityScreen(
-                navigateUp = navController::navigateUp
+                navigateUp = navController::navigateUp,
+                onNavigate = navController::navigate
             )
         }
         composable(
