@@ -9,7 +9,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.devalpesh.jetpack.core.domain.models.Post
 import com.devalpesh.jetpack.feature_activity.presentation.ActivityScreen
 import com.devalpesh.jetpack.feature_auth.presentation.login.LoginScreen
 import com.devalpesh.jetpack.feature_auth.presentation.register.RegisterScreen
@@ -17,7 +16,7 @@ import com.devalpesh.jetpack.feature_auth.presentation.splash.SplashScreen
 import com.devalpesh.jetpack.feature_chat.presentation.chat.ChatScreen
 import com.devalpesh.jetpack.feature_post.presentation.create_post.CreatePostScreen
 import com.devalpesh.jetpack.feature_post.presentation.main_feed.MainFeedScreen
-import com.devalpesh.jetpack.feature_post.presentation.postdetail.PostDetailScreen
+import com.devalpesh.jetpack.feature_post.presentation.post_detail.PostDetailScreen
 import com.devalpesh.jetpack.feature_profile.presentation.edit_profile.EditProfileScreen
 import com.devalpesh.jetpack.feature_profile.presentation.profile.ProfileScreen
 import com.devalpesh.jetpack.feature_profile.presentation.search.SearchScreen
@@ -107,25 +106,17 @@ fun Navigation(
                 onNavigate = navController::navigate
             )
         }
-        composable(Screen.PostDetailScreen.route) {
-            PostDetailScreen(
-                navigateUp = navController::navigateUp,
-                post = Post(
-                    username = "Philip Lackner",
-                    imageUrl = "",
-                    description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry" +
-                            ". Lorem Ipsum has been the industry's standard dummy text ever since the 1500s," +
-                            " when an unknown printer took a galley of type and scrambled it to make a type " +
-                            "specimen book. It has survived not only five centuries, but also the leap into " +
-                            "electronic typesetting, remaining essentially unchanged. It was popularised in" +
-                            " the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, " +
-                            "and more rec ently with desktop publishing software like Aldus PageMaker including " +
-                            "versions of Lorem Ipsum.",
-                    profilePictureUrl = "",
-                    likeCount = 17,
-                    commentCount = 20
-                )
+        composable(
+            route = Screen.PostDetailScreen.route+"/{postId}",
+            arguments = listOf(
+                navArgument(
+                    name = "postId"
+                ){
+                    type = NavType.StringType
+                }
             )
+        ) {
+            PostDetailScreen(navigateUp = navController::navigateUp)
         }
     }
 }

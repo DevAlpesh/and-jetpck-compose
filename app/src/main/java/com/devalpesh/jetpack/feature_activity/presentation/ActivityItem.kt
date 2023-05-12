@@ -118,7 +118,7 @@ fun ActivityItem(
                         end = offset
                     ).firstOrNull()?.let {annotaion->
                         onNavigate(
-                            Screen.PostDetailScreen.route + "?postId=${activity.parentId}"
+                            Screen.PostDetailScreen.route + "/${activity.parentId}"
                         )
                     }
                 }

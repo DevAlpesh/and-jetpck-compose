@@ -1,11 +1,29 @@
-package com.devalpesh.jetpack.feature_post.presentation.postdetail
+package com.devalpesh.jetpack.feature_post.presentation.post_detail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
@@ -13,23 +31,30 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.domain.models.Comment
-import com.devalpesh.jetpack.core.domain.models.Post
 import com.devalpesh.jetpack.core.presentation.components.ActionRow
 import com.devalpesh.jetpack.core.presentation.components.StandardToolbar
-import com.devalpesh.jetpack.core.presentation.ui.theme.*
+import com.devalpesh.jetpack.core.presentation.ui.theme.MediumGray
+import com.devalpesh.jetpack.core.presentation.ui.theme.ProfilePictureSizeExtraSmall
+import com.devalpesh.jetpack.core.presentation.ui.theme.ProfilePictureSizeMedium
+import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceLarge
+import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
+import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
 
 @Composable
 fun PostDetailScreen(
     navigateUp: () -> Unit = {},
-    post: Post
+    viewModel: PostDetailsViewModel = hiltViewModel()
 ) {
+
+    val state = viewModel.state.value
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -68,62 +93,70 @@ fun PostDetailScreen(
                                 .shadow(5.dp)
                                 .background(MediumGray)
                         ) {
-                            Image(
-                                painterResource(id = R.drawable.kermit),
-                                contentDescription = "Post Image",
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(SpaceLarge)
-                            ) {
-                                ActionRow(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    onLikeClick = {
-
-                                    },
-                                    onCommentClick = {
-
-                                    },
-                                    onShareClick = {
-
-                                    },
-                                    onUsernameClick = {
-
-                                    },
-                                    username = "Philip Lackner",
+                            state.post?.let { post ->
+                                Image(
+                                    rememberAsyncImagePainter(model = post.imageUrl),
+                                    contentDescription = "Post Image",
+                                    modifier = Modifier
+                                        .aspectRatio(16f / 9f)
                                 )
-                                Spacer(modifier = Modifier.height(SpaceSmall))
-                                Text(
-                                    text = post.description,
-                                    style = MaterialTheme.typography.body2,
-                                )
-                                Spacer(modifier = Modifier.height(SpaceMedium))
-                                Text(
-                                    text = stringResource(
-                                        id = R.string.like_by_x_peoper,
-                                        post.likeCount
-                                    ),
-                                    fontWeight = FontWeight.Bold,
-                                    style = MaterialTheme.typography.body2,
-                                    fontSize = 16.sp,
-                                )
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(SpaceLarge)
+                                ) {
+                                    ActionRow(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        onLikeClick = {
+
+                                        },
+                                        onCommentClick = {
+
+                                        },
+                                        onShareClick = {
+
+                                        },
+                                        onUsernameClick = {
+
+                                        },
+                                        username = "post.username",
+                                    )
+                                    Spacer(modifier = Modifier.height(SpaceSmall))
+                                    Text(
+                                        text = post.description,
+                                        style = MaterialTheme.typography.body2,
+                                    )
+                                    Spacer(modifier = Modifier.height(SpaceMedium))
+                                    Text(
+                                        text = stringResource(
+                                            id = R.string.like_by_x_peoper,
+                                            post.likeCount
+                                        ),
+                                        fontWeight = FontWeight.Bold,
+                                        style = MaterialTheme.typography.body2,
+                                        fontSize = 16.sp,
+                                    )
+                                }
                             }
                         }
                         Image(
-                            painterResource(id = R.drawable.philipp),
+                            rememberAsyncImagePainter(model = state.post?.profilePictureUrl),
                             contentDescription = "Profile Picture",
                             modifier = Modifier
                                 .size(ProfilePictureSizeMedium)
                                 .clip(CircleShape)
                                 .align(Alignment.TopCenter)
                         )
+                        if (state.isLoadingPost) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.align(Alignment.Center)
+                            )
+                        }
                     }
                 }
                 Spacer(modifier = Modifier.height(SpaceLarge))
             }
-            items(20) {
+            items(state.comments) { comment ->
                 Comment(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -131,22 +164,17 @@ fun PostDetailScreen(
                             horizontal = SpaceLarge,
                             vertical = SpaceSmall
                         ),
-                    comment = Comment(
-                        username = "Philip Lackner $it",
-                        comment = "Lorem Ipsum is simply dummy text of the printing and typesetting industry\" +\n" +
-                                "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
-                    )
+                    comment = comment
                 )
             }
         }
     }
-
 }
 
 @Composable
 fun Comment(
     modifier: Modifier,
-    comment: Comment = Comment(),
+    comment: Comment,
     onLikeClick: (Boolean) -> Unit = {}
 ) {
     Card(
@@ -168,7 +196,7 @@ fun Comment(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.philipp),
+                        painter = rememberAsyncImagePainter(model = comment.profileImageUrl),
                         contentDescription = null,
                         modifier = Modifier
                             .clip(CircleShape)
@@ -183,7 +211,7 @@ fun Comment(
                     )
                 }
                 Text(
-                    text = "2 days ago",
+                    text = comment.formattedTime,
                     color = MaterialTheme.colors.onBackground,
                     style = MaterialTheme.typography.body2
                 )
@@ -208,6 +236,9 @@ fun Comment(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Favorite,
+                        tint = if (comment.isLiked) {
+                            MaterialTheme.colors.primary
+                        } else MaterialTheme.colors.onBackground,
                         contentDescription = if (comment.isLiked) {
                             stringResource(id = R.string.txt_unlike)
                         } else {
@@ -228,28 +259,3 @@ fun Comment(
         }
     }
 }
-
-
-/*
-@Preview
-@Composable
-fun PostDetailPreview() {
-    PostDetailScreen(
-        navController = rememberNavController(),
-        post = Post(
-            username = "Philip Lackner",
-            imageUrl = "",
-            description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry" +
-                    ". Lorem Ipsum has been the industry's standard dummy text ever since the 1500s," +
-                    " when an unknown printer took a galley of type and scrambled it to make a type " +
-                    "specimen book. It has survived not only five centuries, but also the leap into " +
-                    "electronic typesetting, remaining essentially unchanged. It was popularised in" +
-                    " the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, " +
-                    "and more recently with desktop publishing software like Aldus PageMaker including " +
-                    "versions of Lorem Ipsum.",
-            profilePictureUrl = "",
-            likeCount = 17,
-            commentCount = 20
-        )
-    )
-}*/

@@ -5,7 +5,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
@@ -71,6 +76,7 @@ fun MainFeedScreen(
                 items(posts) { post ->
                     Post(
                         post = Post(
+                            id = post?.id ?: "",
                             username = post?.username ?: "",
                             imageUrl = post?.imageUrl ?: "",
                             description = post?.description ?: "",
@@ -79,7 +85,7 @@ fun MainFeedScreen(
                             commentCount = post?.commentCount ?: 0
                         ),
                         onPostClick = {
-                            onNavigate(Screen.PostDetailScreen.route)
+                            onNavigate(Screen.PostDetailScreen.route + "/${post?.id}")
                         }
                     )
                 }

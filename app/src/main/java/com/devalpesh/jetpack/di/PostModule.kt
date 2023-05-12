@@ -4,6 +4,8 @@ import com.devalpesh.jetpack.core.data.remote.PostApi
 import com.devalpesh.jetpack.feature_post.data.repository.PostRepositoryImpl
 import com.devalpesh.jetpack.feature_post.domain.respository.PostRepository
 import com.devalpesh.jetpack.feature_post.domain.use_case.CreatePostUseCase
+import com.devalpesh.jetpack.feature_post.domain.use_case.GetCommentsForPostUseCase
+import com.devalpesh.jetpack.feature_post.domain.use_case.GetPostDetailsUseCase
 import com.devalpesh.jetpack.feature_post.domain.use_case.GetPostForFollowsUseCase
 import com.devalpesh.jetpack.feature_post.domain.use_case.PostUseCases
 import com.google.gson.Gson
@@ -45,7 +47,9 @@ object PostModule {
     fun providePostUseCases(repository: PostRepository): PostUseCases {
         return PostUseCases(
             getPostsForFollowsUseCase = GetPostForFollowsUseCase(repository),
-            createPostUseCase = CreatePostUseCase(repository)
+            createPostUseCase = CreatePostUseCase(repository),
+            getPostDetails = GetPostDetailsUseCase(repository),
+            getCommentsForPost = GetCommentsForPostUseCase(repository)
         )
     }
 }

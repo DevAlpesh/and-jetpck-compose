@@ -6,13 +6,13 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.devalpesh.jetpack.R
+import com.devalpesh.jetpack.core.data.remote.PostApi
+import com.devalpesh.jetpack.core.domain.models.Comment
 import com.devalpesh.jetpack.core.domain.models.Post
 import com.devalpesh.jetpack.core.util.Constants
 import com.devalpesh.jetpack.core.util.Resource
 import com.devalpesh.jetpack.core.util.SimpleResources
 import com.devalpesh.jetpack.core.util.UiText
-import com.devalpesh.jetpack.core.data.paging.ActivitySource
-import com.devalpesh.jetpack.core.data.remote.PostApi
 import com.devalpesh.jetpack.feature_post.data.paging.PostSource
 import com.devalpesh.jetpack.feature_post.data.remote.request.CreatePostRequest
 import com.devalpesh.jetpack.feature_post.domain.respository.PostRepository
@@ -60,6 +60,42 @@ class PostRepositoryImpl(
                     Resource.Error(UiText.DynamicString(msg))
                 } ?: Resource.Error(UiText.StringResource(R.string.txt_error_unknow))
             }
+        } catch (e: IOException) {
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.txt_error_couldnt_reach_server)
+            )
+        } catch (e: HttpException) {
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.txt_error_oops_something_went_wrong)
+            )
+        }
+    }
+
+    override suspend fun getPostDetails(postId: String): Resource<Post> {
+        return try {
+            val response = api.getPostDetails(postId = postId)
+            if (response.success) {
+                Resource.Success(response.data)
+            } else {
+                response.message?.let { msg ->
+                    Resource.Error(UiText.DynamicString(msg))
+                } ?: Resource.Error(UiText.StringResource(R.string.txt_error_unknow))
+            }
+        } catch (e: IOException) {
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.txt_error_couldnt_reach_server)
+            )
+        } catch (e: HttpException) {
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.txt_error_oops_something_went_wrong)
+            )
+        }
+    }
+
+    override suspend fun getCommentsForPost(postId: String): Resource<List<Comment>> {
+        return try {
+            val comments = api.getCommentsForPost(postId = postId).map { it.toComment() }
+            Resource.Success(comments)
         } catch (e: IOException) {
             Resource.Error(
                 uiText = UiText.StringResource(R.string.txt_error_couldnt_reach_server)

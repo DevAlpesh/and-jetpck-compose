@@ -106,7 +106,7 @@ fun Post(
                     onUsernameClick = {
 
                     },
-                    username = "Philip Lackner",
+                    username = post.username,
                 )
                 Spacer(modifier = Modifier.height(SpaceSmall))
                 Text(
