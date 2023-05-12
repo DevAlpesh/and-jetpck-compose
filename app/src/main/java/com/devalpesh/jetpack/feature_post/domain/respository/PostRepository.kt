@@ -18,4 +18,6 @@ interface PostRepository {
 
     suspend fun getCommentsForPost(postId: String) : Resource<List<Comment>>
 
+    suspend fun createComment(postId : String,comment:String) : SimpleResources
+
 }

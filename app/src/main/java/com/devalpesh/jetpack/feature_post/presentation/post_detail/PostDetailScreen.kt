@@ -2,7 +2,6 @@ package com.devalpesh.jetpack.feature_post.presentation.post_detail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,23 +13,24 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -38,23 +38,43 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.devalpesh.jetpack.R
-import com.devalpesh.jetpack.core.domain.models.Comment
 import com.devalpesh.jetpack.core.presentation.components.ActionRow
+import com.devalpesh.jetpack.core.presentation.components.StandardTextField
 import com.devalpesh.jetpack.core.presentation.components.StandardToolbar
 import com.devalpesh.jetpack.core.presentation.ui.theme.MediumGray
-import com.devalpesh.jetpack.core.presentation.ui.theme.ProfilePictureSizeExtraSmall
 import com.devalpesh.jetpack.core.presentation.ui.theme.ProfilePictureSizeMedium
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceLarge
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
+import com.devalpesh.jetpack.core.presentation.util.UiEvent
+import com.devalpesh.jetpack.core.presentation.util.asString
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun PostDetailScreen(
+    scaffoldState: ScaffoldState,
     navigateUp: () -> Unit = {},
     viewModel: PostDetailsViewModel = hiltViewModel()
 ) {
 
     val state = viewModel.state.value
+    val commentTextFieldState = viewModel.commentTextStateFieldState.value
+
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is UiEvent.ShowSnackbar -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.uiText.asString(context)
+                    )
+                }
+                else -> {}
+            }
+        }
+    }
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -67,12 +87,13 @@ fun PostDetailScreen(
                     color = MaterialTheme.colors.onBackground
                 )
             },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth(),
             showBackArrow = true,
         )
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
+                .weight(1f)
                 .background(MaterialTheme.colors.surface),
         ) {
             item {
@@ -83,7 +104,7 @@ fun PostDetailScreen(
                 ) {
                     Spacer(modifier = Modifier.height(SpaceLarge))
                     Box(
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier
                     ) {
                         Column(
                             modifier = Modifier
@@ -168,94 +189,47 @@ fun PostDetailScreen(
                 )
             }
         }
-    }
-}
-
-@Composable
-fun Comment(
-    modifier: Modifier,
-    comment: Comment,
-    onLikeClick: (Boolean) -> Unit = {}
-) {
-    Card(
-        modifier = modifier,
-        elevation = 5.dp,
-        shape = MaterialTheme.shapes.medium,
-        backgroundColor = MaterialTheme.colors.onSurface
-    ) {
-        Column(
+        Row(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(SpaceMedium)
+                .fillMaxWidth()
+                .background(MaterialTheme.colors.surface)
+                .padding(SpaceLarge),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(
-                        painter = rememberAsyncImagePainter(model = comment.profileImageUrl),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .size(ProfilePictureSizeExtraSmall)
-                    )
-                    Spacer(modifier = Modifier.width(SpaceSmall))
-                    Text(
-                        text = comment.username,
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.body2,
-                        color = MaterialTheme.colors.onBackground
-                    )
-                }
-                Text(
-                    text = comment.formattedTime,
-                    color = MaterialTheme.colors.onBackground,
-                    style = MaterialTheme.typography.body2
+            StandardTextField(
+                text = commentTextFieldState.text,
+                onValueChange = {
+                    viewModel.onEvent(PostDetailsEvent.EnteredComment(it))
+                },
+                modifier = Modifier
+                    .weight(1f),
+                backgroundColor = MaterialTheme.colors.background,
+                hint = stringResource(id = R.string.txt_enter_comment)
+            )
+
+            if (viewModel.commentState.value.isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(horizontal = 12.dp)
+                        .size(24.dp),
+                    strokeWidth = 2.dp
                 )
-            }
-            Spacer(modifier = Modifier.height(SpaceMedium))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = comment.comment,
-                    style = MaterialTheme.typography.body2,
-                    color = MaterialTheme.colors.onBackground,
-                    modifier = Modifier.weight(9f)
-                )
-                Spacer(modifier = Modifier.width(SpaceSmall))
+            } else {
                 IconButton(
                     onClick = {
-                        onLikeClick(comment.isLiked)
-                    },
-                    modifier = Modifier.weight(1f)
-                ) {
+                        viewModel.onEvent(PostDetailsEvent.Comment)
+                    }) {
                     Icon(
-                        imageVector = Icons.Default.Favorite,
-                        tint = if (comment.isLiked) {
+                        imageVector = Icons.Default.Send,
+                        contentDescription = stringResource(id = R.string.txt_icon_send),
+                        tint = if (commentTextFieldState.error == null) {
                             MaterialTheme.colors.primary
-                        } else MaterialTheme.colors.onBackground,
-                        contentDescription = if (comment.isLiked) {
-                            stringResource(id = R.string.txt_unlike)
                         } else {
-                            stringResource(id = R.string.txt_like)
+                            MaterialTheme.colors.background
                         }
                     )
                 }
             }
-
-            Spacer(modifier = Modifier.height(SpaceMedium))
-
-            Text(
-                text = stringResource(id = R.string.like_by_x_peoper, comment.likeCount),
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.body2,
-                color = MaterialTheme.colors.onBackground
-            )
         }
     }
 }

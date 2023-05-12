@@ -14,9 +14,11 @@ import com.devalpesh.jetpack.core.util.Resource
 import com.devalpesh.jetpack.core.util.SimpleResources
 import com.devalpesh.jetpack.core.util.UiText
 import com.devalpesh.jetpack.feature_post.data.paging.PostSource
+import com.devalpesh.jetpack.feature_post.data.remote.request.CreateCommentRequest
 import com.devalpesh.jetpack.feature_post.data.remote.request.CreatePostRequest
 import com.devalpesh.jetpack.feature_post.domain.respository.PostRepository
 import com.google.gson.Gson
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -96,6 +98,33 @@ class PostRepositoryImpl(
         return try {
             val comments = api.getCommentsForPost(postId = postId).map { it.toComment() }
             Resource.Success(comments)
+        } catch (e: IOException) {
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.txt_error_couldnt_reach_server)
+            )
+        } catch (e: HttpException) {
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.txt_error_oops_something_went_wrong)
+            )
+        }
+    }
+
+    override suspend fun createComment(postId: String, comment: String): SimpleResources {
+        return try {
+            delay(3000L)
+            val response = api.createComment(
+                CreateCommentRequest(
+                    comment = comment,
+                    postId = postId
+                )
+            )
+            if (response.success) {
+                Resource.Success(response.data)
+            } else {
+                response.message?.let { msg ->
+                    Resource.Error(UiText.DynamicString(msg))
+                } ?: Resource.Error(UiText.StringResource(R.string.txt_error_unknow))
+            }
         } catch (e: IOException) {
             Resource.Error(
                 uiText = UiText.StringResource(R.string.txt_error_couldnt_reach_server)

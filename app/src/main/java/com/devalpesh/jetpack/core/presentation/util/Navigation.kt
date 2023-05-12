@@ -116,7 +116,10 @@ fun Navigation(
                 }
             )
         ) {
-            PostDetailScreen(navigateUp = navController::navigateUp)
+            PostDetailScreen(
+                navigateUp = navController::navigateUp,
+                scaffoldState = scaffoldState
+            )
         }
     }
 }
