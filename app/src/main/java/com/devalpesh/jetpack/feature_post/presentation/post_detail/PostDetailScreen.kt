@@ -70,6 +70,7 @@ fun PostDetailScreen(
                         message = event.uiText.asString(context)
                     )
                 }
+
                 else -> {}
             }
         }
@@ -129,7 +130,7 @@ fun PostDetailScreen(
                                     ActionRow(
                                         modifier = Modifier.fillMaxWidth(),
                                         onLikeClick = {
-
+                                            viewModel.onEvent(PostDetailsEvent.LikePost)
                                         },
                                         onCommentClick = {
 
@@ -140,7 +141,8 @@ fun PostDetailScreen(
                                         onUsernameClick = {
 
                                         },
-                                        username = "post.username",
+                                        username = post.username,
+                                        isLiked = post.isLiked
                                     )
                                     Spacer(modifier = Modifier.height(SpaceSmall))
                                     Text(
@@ -185,7 +187,10 @@ fun PostDetailScreen(
                             horizontal = SpaceLarge,
                             vertical = SpaceSmall
                         ),
-                    comment = comment
+                    comment = comment,
+                    onLikeClick = {
+                        viewModel.onEvent(PostDetailsEvent.LikeComment(comment.id))
+                    }
                 )
             }
         }

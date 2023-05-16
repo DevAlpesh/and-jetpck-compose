@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.devalpesh.jetpack.R
@@ -85,18 +84,29 @@ fun Comment(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = comment.comment,
-                    style = MaterialTheme.typography.body2,
-                    color = MaterialTheme.colors.onBackground,
-                    modifier = Modifier.weight(9f)
-                )
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = comment.comment,
+                        style = MaterialTheme.typography.body2,
+                        color = MaterialTheme.colors.onBackground,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.width(SpaceMedium))
+                    Text(
+                        text = stringResource(id = R.string.like_by_x_peoper, comment.likeCount),
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.body2,
+                        color = MaterialTheme.colors.onBackground,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+
                 Spacer(modifier = Modifier.width(SpaceSmall))
                 IconButton(
                     onClick = {
                         onLikeClick(comment.isLiked)
                     },
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.fillMaxHeight()
                 ) {
                     Icon(
                         imageVector = Icons.Default.Favorite,
@@ -111,15 +121,7 @@ fun Comment(
                     )
                 }
             }
-
             Spacer(modifier = Modifier.height(SpaceMedium))
-
-            Text(
-                text = stringResource(id = R.string.like_by_x_peoper, comment.likeCount),
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.body2,
-                color = MaterialTheme.colors.onBackground
-            )
         }
     }
 }

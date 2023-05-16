@@ -9,6 +9,7 @@ import com.devalpesh.jetpack.feature_post.domain.use_case.GetCommentsForPostUseC
 import com.devalpesh.jetpack.feature_post.domain.use_case.GetPostDetailsUseCase
 import com.devalpesh.jetpack.feature_post.domain.use_case.GetPostForFollowsUseCase
 import com.devalpesh.jetpack.feature_post.domain.use_case.PostUseCases
+import com.devalpesh.jetpack.feature_post.domain.use_case.ToggleLikeForParentUserUseCase
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -51,7 +52,8 @@ object PostModule {
             createPostUseCase = CreatePostUseCase(repository),
             getPostDetails = GetPostDetailsUseCase(repository),
             getCommentsForPost = GetCommentsForPostUseCase(repository),
-            createComment = CreateCommentUseCase(repository)
+            createComment = CreateCommentUseCase(repository),
+            toggleLikeForParent = ToggleLikeForParentUserUseCase(repository)
         )
     }
 }

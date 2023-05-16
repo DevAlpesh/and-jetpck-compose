@@ -188,7 +188,7 @@ fun EngagementButton(
             Icon(
                 imageVector = Icons.Filled.Favorite,
                 tint = if (isLiked) {
-                    Color.Red
+                    MaterialTheme.colors.primary
                 } else {
                     TextWhite
                 },

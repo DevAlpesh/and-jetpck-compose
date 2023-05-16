@@ -82,7 +82,9 @@ fun MainFeedScreen(
                             description = post?.description ?: "",
                             profilePictureUrl = post?.profilePictureUrl ?: "",
                             likeCount = post?.likeCount ?: 0,
-                            commentCount = post?.commentCount ?: 0
+                            commentCount = post?.commentCount ?: 0,
+                            userId = post?.userId ?: "",
+                            isLiked = post?.isLiked ?: false
                         ),
                         onPostClick = {
                             onNavigate(Screen.PostDetailScreen.route + "/${post?.id}")

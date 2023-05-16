@@ -4,7 +4,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -31,9 +36,9 @@ fun StandardTextField(
     style: TextStyle = TextStyle(
         color = MaterialTheme.colors.onBackground
     ),
-    backgroundColor : Color = MaterialTheme.colors.surface,
-    singleLine : Boolean = true,
-    maxLines : Int = 1,
+    backgroundColor: Color = MaterialTheme.colors.surface,
+    singleLine: Boolean = true,
+    maxLines: Int = 1,
     leadingIcon: ImageVector? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
     isPasswordToggleDisplayed: Boolean = keyboardType == KeyboardType.Password,
@@ -68,7 +73,7 @@ fun StandardTextField(
                 keyboardType = keyboardType
             ),
             singleLine = singleLine,
-            maxLines=maxLines,
+            maxLines = maxLines,
             leadingIcon = if (leadingIcon != null) {
                 {
                     Icon(

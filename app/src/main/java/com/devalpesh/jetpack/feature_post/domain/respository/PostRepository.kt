@@ -20,4 +20,7 @@ interface PostRepository {
 
     suspend fun createComment(postId : String,comment:String) : SimpleResources
 
+    suspend fun likeParent(parentId : String,parentType : Int) : SimpleResources
+    suspend fun unlikeParent(parentId : String,parentType : Int) : SimpleResources
+
 }

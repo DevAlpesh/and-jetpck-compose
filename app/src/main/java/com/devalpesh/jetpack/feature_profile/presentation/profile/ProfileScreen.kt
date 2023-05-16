@@ -178,7 +178,9 @@ fun ProfileScreen(
                         profilePictureUrl = post?.profilePictureUrl ?: "",
                         description = post?.description ?: "",
                         likeCount = post?.likeCount ?: 0,
-                        commentCount = post?.commentCount ?: 0
+                        commentCount = post?.commentCount ?: 0,
+                        userId = post?.userId ?: "",
+                        isLiked = post?.isLiked ?: false
                     ),
                     showProfileImage = false,
                     onPostClick = {
