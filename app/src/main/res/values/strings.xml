@@ -82,4 +82,5 @@
     <string name="txt_icon_send">Icons send</string>
     <string name="txt_enter_comment">Enter Comment</string>
     <string name="txt_comment_success">Successfully posted comment.</string>
+    <string name="txt_liked_by">Like by</string>
 </resources>

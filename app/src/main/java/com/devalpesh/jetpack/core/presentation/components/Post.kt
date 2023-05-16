@@ -29,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -57,7 +56,8 @@ fun Post(
     post: Post,
     modifier: Modifier = Modifier,
     showProfileImage: Boolean = true,
-    onPostClick: () -> Unit = {}
+    onPostClick: () -> Unit = {},
+    onLikeClick: () -> Unit
 ) {
     Box(
         modifier = modifier
@@ -94,9 +94,7 @@ fun Post(
             ) {
                 ActionRow(
                     modifier = Modifier.fillMaxWidth(),
-                    onLikeClick = {
-
-                    },
+                    onLikeClick = onLikeClick,
                     onCommentClick = {
 
                     },
@@ -118,7 +116,7 @@ fun Post(
                             )
                         ) {
                             append(
-                                LocalContext.current.getString(R.string.txt_read_more)
+                                " " + LocalContext.current.getString(R.string.txt_read_more)
                             )
                         }
                     },
@@ -169,7 +167,7 @@ fun Post(
 fun EngagementButton(
     modifier: Modifier = Modifier,
     isLiked: Boolean = false,
-    onLikeClick: (Boolean) -> Unit,
+    onLikeClick: () -> Unit,
     onCommentClick: () -> Unit,
     onShareClick: () -> Unit,
     iconSize: Dp = 30.dp,
@@ -180,9 +178,7 @@ fun EngagementButton(
         modifier = modifier
     ) {
         IconButton(
-            onClick = {
-                onLikeClick(!isLiked)
-            },
+            onClick = onLikeClick,
             modifier = Modifier.size(iconSize)
         ) {
             Icon(
@@ -230,7 +226,7 @@ fun EngagementButton(
 fun ActionRow(
     modifier: Modifier,
     isLiked: Boolean = false,
-    onLikeClick: (Boolean) -> Unit,
+    onLikeClick: () -> Unit,
     onCommentClick: () -> Unit,
     onShareClick: () -> Unit,
     onUsernameClick: (String) -> Unit,

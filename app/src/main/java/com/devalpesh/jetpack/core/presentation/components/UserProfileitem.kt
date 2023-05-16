@@ -16,7 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.devalpesh.jetpack.core.domain.models.User
+import com.devalpesh.jetpack.core.domain.models.UserItem
 import com.devalpesh.jetpack.core.presentation.ui.theme.IconSizeMedium
 import com.devalpesh.jetpack.core.presentation.ui.theme.ProfilePictureSizeSmall
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
@@ -25,11 +25,12 @@ import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun UserProfileItem(
-    user: User,
+    user: UserItem,
     modifier: Modifier = Modifier,
     actionIcon: @Composable () -> Unit = {},
     onItemClick: () -> Unit = {},
-    onActionItemClick: () -> Unit = {}
+    onActionItemClick: () -> Unit = {},
+    ownUserId: String = ""
 ) {
 
     Card(
@@ -60,6 +61,7 @@ fun UserProfileItem(
                 modifier = Modifier
                     .fillMaxHeight()
                     .fillMaxWidth(0.8f)
+                    .weight(1f)
             ) {
                 Text(
                     text = user.username,
@@ -69,19 +71,21 @@ fun UserProfileItem(
                 )
                 Spacer(modifier = Modifier.height(SpaceMedium))
                 Text(
-                    text = user.description,
+                    text = user.bio,
                     style = MaterialTheme.typography.body2,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 2
                 )
             }
             Spacer(modifier = Modifier.width(SpaceSmall))
-            IconButton(
-                onClick = onActionItemClick,
-                modifier = Modifier
-                    .size(IconSizeMedium)
-            ) {
-                actionIcon()
+            if (user.userId != ownUserId) {
+                IconButton(
+                    onClick = onActionItemClick,
+                    modifier = Modifier
+                        .size(IconSizeMedium)
+                ) {
+                    actionIcon()
+                }
             }
         }
     }

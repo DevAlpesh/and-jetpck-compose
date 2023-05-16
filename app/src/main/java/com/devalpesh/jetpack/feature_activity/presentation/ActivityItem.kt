@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.domain.models.Activity
-import com.devalpesh.jetpack.core.domain.util.ActivityType
+import com.devalpesh.jetpack.core.util.ActivityType
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
 import com.devalpesh.jetpack.core.presentation.util.Screen
 

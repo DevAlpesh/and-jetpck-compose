@@ -8,18 +8,24 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.devalpesh.jetpack.core.domain.use_case.GetOwnUserIdUseCase
 import com.devalpesh.jetpack.core.presentation.util.UiEvent
+import com.devalpesh.jetpack.core.util.Event
+import com.devalpesh.jetpack.core.util.ParentType
 import com.devalpesh.jetpack.core.util.Resource
 import com.devalpesh.jetpack.core.util.UiText
+import com.devalpesh.jetpack.feature_post.domain.use_case.PostUseCases
+import com.devalpesh.jetpack.feature_post.presentation.person_list.PostEvent
 import com.devalpesh.jetpack.feature_profile.domain.use_case.ProfileUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val profileUseCases: ProfileUseCases,
+    private val postUseCases: PostUseCases,
     private val getOwnUserId: GetOwnUserIdUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -30,7 +36,7 @@ class ProfileViewModel @Inject constructor(
     private val _state = mutableStateOf(ProfileState())
     val state: State<ProfileState> = _state
 
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    private val _eventFlow = MutableSharedFlow<Event>()
     val eventFlow = _eventFlow.asSharedFlow()
 
 
@@ -52,6 +58,40 @@ class ProfileViewModel @Inject constructor(
             is ProfileEvent.GetProfile -> {
 
             }
+
+            is ProfileEvent.LikePost -> {
+                viewModelScope.launch {
+                    toggleLikeForParent(
+                        parentId = event.postId,
+                        isLiked = false
+                    )
+                }
+
+            }
+        }
+    }
+
+    private fun toggleLikeForParent(
+        parentId: String,
+        isLiked: Boolean
+    ) {
+        viewModelScope.launch {
+
+            val result = postUseCases.toggleLikeForParent(
+                parentId = parentId,
+                parentType = ParentType.Post.type,
+                isLiked = isLiked
+            )
+
+            when (result) {
+                is Resource.Success -> {
+                    _eventFlow.emit(PostEvent.OnLiked)
+                }
+
+                is Resource.Error -> {
+
+                }
+            }
         }
     }
 
@@ -61,7 +101,7 @@ class ProfileViewModel @Inject constructor(
                 isLoading = true
             )
             when (val result = profileUseCases.getProfile(
-                userId?: getOwnUserId()
+                userId ?: getOwnUserId()
             )) {
                 is Resource.Success -> {
                     _state.value = _state.value.copy(

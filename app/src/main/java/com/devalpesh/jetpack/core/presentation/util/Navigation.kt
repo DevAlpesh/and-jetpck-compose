@@ -16,6 +16,7 @@ import com.devalpesh.jetpack.feature_auth.presentation.splash.SplashScreen
 import com.devalpesh.jetpack.feature_chat.presentation.chat.ChatScreen
 import com.devalpesh.jetpack.feature_post.presentation.create_post.CreatePostScreen
 import com.devalpesh.jetpack.feature_post.presentation.main_feed.MainFeedScreen
+import com.devalpesh.jetpack.feature_post.presentation.person_list.PersonListScreen
 import com.devalpesh.jetpack.feature_post.presentation.post_detail.PostDetailScreen
 import com.devalpesh.jetpack.feature_profile.presentation.edit_profile.EditProfileScreen
 import com.devalpesh.jetpack.feature_profile.presentation.profile.ProfileScreen
@@ -107,18 +108,33 @@ fun Navigation(
             )
         }
         composable(
-            route = Screen.PostDetailScreen.route+"/{postId}",
+            route = Screen.PersonListScreen.route + "/{parentId}",
+            arguments = listOf(
+                navArgument("parentId") {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            PersonListScreen(
+                scaffoldState = scaffoldState,
+                onNavigate = navController::navigate,
+                navigateUp = navController::navigateUp
+            )
+        }
+        composable(
+            route = Screen.PostDetailScreen.route + "/{postId}",
             arguments = listOf(
                 navArgument(
                     name = "postId"
-                ){
+                ) {
                     type = NavType.StringType
                 }
             )
         ) {
             PostDetailScreen(
                 navigateUp = navController::navigateUp,
-                scaffoldState = scaffoldState
+                scaffoldState = scaffoldState,
+                onNavigate = navController::navigate
             )
         }
     }

@@ -1,4 +1,4 @@
-package com.devalpesh.jetpack.feature_profile.domain.repository
+package com.devalpesh.jetpack.core.domain.repository
 
 import android.net.Uri
 import androidx.paging.PagingData

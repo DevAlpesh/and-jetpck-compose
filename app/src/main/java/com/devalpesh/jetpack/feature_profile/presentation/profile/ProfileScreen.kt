@@ -46,6 +46,7 @@ import com.devalpesh.jetpack.core.presentation.util.Screen
 import com.devalpesh.jetpack.core.presentation.util.UiEvent
 import com.devalpesh.jetpack.core.presentation.util.asString
 import com.devalpesh.jetpack.core.util.toPx
+import com.devalpesh.jetpack.feature_post.presentation.person_list.PostEvent
 import com.devalpesh.jetpack.feature_profile.presentation.profile.components.BannerSection
 import com.devalpesh.jetpack.feature_profile.presentation.profile.components.ProfileHeaderSection
 import kotlinx.coroutines.flow.collectLatest
@@ -108,6 +109,7 @@ fun ProfileScreen(
     val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
+        viewModel.setExpandedRation(1f)
         viewModel.getProfile(userId)
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
@@ -117,12 +119,8 @@ fun ProfileScreen(
                     )
                 }
 
-                is UiEvent.Navigate -> {
-
-                }
-
-                UiEvent.NavigateUp -> {
-
+                is PostEvent.OnLiked -> {
+                    posts.refresh()
                 }
             }
         }
@@ -186,6 +184,9 @@ fun ProfileScreen(
                     onPostClick = {
                         onNavigate(Screen.PostDetailScreen.route + "/${post?.id}")
                     },
+                    onLikeClick = {
+                        viewModel.onEvent(ProfileEvent.LikePost(post?.id ?: ""))
+                    }
                 )
             }
         }

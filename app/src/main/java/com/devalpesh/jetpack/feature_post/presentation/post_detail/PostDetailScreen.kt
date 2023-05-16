@@ -2,6 +2,7 @@ package com.devalpesh.jetpack.feature_post.presentation.post_detail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -46,6 +47,7 @@ import com.devalpesh.jetpack.core.presentation.ui.theme.ProfilePictureSizeMedium
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceLarge
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
+import com.devalpesh.jetpack.core.presentation.util.Screen
 import com.devalpesh.jetpack.core.presentation.util.UiEvent
 import com.devalpesh.jetpack.core.presentation.util.asString
 import kotlinx.coroutines.flow.collectLatest
@@ -54,6 +56,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun PostDetailScreen(
     scaffoldState: ScaffoldState,
     navigateUp: () -> Unit = {},
+    onNavigate: (String) -> Unit = {},
     viewModel: PostDetailsViewModel = hiltViewModel()
 ) {
 
@@ -158,6 +161,9 @@ fun PostDetailScreen(
                                         fontWeight = FontWeight.Bold,
                                         style = MaterialTheme.typography.body2,
                                         fontSize = 16.sp,
+                                        modifier = Modifier.clickable {
+                                            onNavigate(Screen.PersonListScreen.route + "/${post.id}")
+                                        }
                                     )
                                 }
                             }
@@ -190,6 +196,9 @@ fun PostDetailScreen(
                     comment = comment,
                     onLikeClick = {
                         viewModel.onEvent(PostDetailsEvent.LikeComment(comment.id))
+                    },
+                    onLikeByClick = {
+                        onNavigate(Screen.PersonListScreen.route + "/${comment.id}")
                     }
                 )
             }

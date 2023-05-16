@@ -2,7 +2,7 @@ package com.devalpesh.jetpack.feature_post.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.devalpesh.jetpack.core.data.remote.PostApi
+import com.devalpesh.jetpack.feature_post.data.remote.PostApi
 import com.devalpesh.jetpack.core.domain.models.Post
 import com.devalpesh.jetpack.core.util.Constants
 import retrofit2.HttpException

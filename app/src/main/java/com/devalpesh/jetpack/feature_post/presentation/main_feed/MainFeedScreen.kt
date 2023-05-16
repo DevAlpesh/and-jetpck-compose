@@ -14,6 +14,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +29,8 @@ import com.devalpesh.jetpack.core.domain.models.Post
 import com.devalpesh.jetpack.core.presentation.components.Post
 import com.devalpesh.jetpack.core.presentation.components.StandardToolbar
 import com.devalpesh.jetpack.core.presentation.util.Screen
+import com.devalpesh.jetpack.feature_post.presentation.person_list.PostEvent
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -41,6 +44,16 @@ fun MainFeedScreen(
     val posts = viewModel.posts.collectAsLazyPagingItems()
     val state = viewModel.state.value
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is PostEvent.OnLiked -> {
+                    posts.refresh()
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -88,6 +101,9 @@ fun MainFeedScreen(
                         ),
                         onPostClick = {
                             onNavigate(Screen.PostDetailScreen.route + "/${post?.id}")
+                        },
+                        onLikeClick = {
+                            viewModel.onEvent(MainFeedEvent.LikePost(post?.id ?: ""))
                         }
                     )
                 }

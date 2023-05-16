@@ -1,6 +1,6 @@
 package com.devalpesh.jetpack.feature_auth.domain.use_case
 
-import com.devalpesh.jetpack.core.domain.util.ValidationUtil
+import com.devalpesh.jetpack.core.util.ValidationUtil
 import com.devalpesh.jetpack.feature_auth.domain.models.RegisterResult
 import com.devalpesh.jetpack.feature_auth.domain.repository.AuthRepository
 

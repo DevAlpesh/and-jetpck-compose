@@ -1,7 +1,6 @@
-package com.devalpesh.jetpack.core.domain.util
+package com.devalpesh.jetpack.core.util
 
 import android.util.Patterns
-import com.devalpesh.jetpack.core.util.Constants
 import com.devalpesh.jetpack.feature_auth.presentation.util.AuthError
 
 object ValidationUtil {

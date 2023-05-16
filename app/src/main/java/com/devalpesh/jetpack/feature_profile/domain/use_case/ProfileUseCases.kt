@@ -1,5 +1,6 @@
 package com.devalpesh.jetpack.feature_profile.domain.use_case
 
+import com.devalpesh.jetpack.core.domain.use_case.ToggleFollowStateForUserUseCase
 import com.devalpesh.jetpack.feature_profile.data.repository.GetSkillUseCase
 
 data class ProfileUseCases(

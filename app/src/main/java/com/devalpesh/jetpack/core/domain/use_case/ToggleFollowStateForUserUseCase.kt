@@ -1,7 +1,7 @@
-package com.devalpesh.jetpack.feature_profile.domain.use_case
+package com.devalpesh.jetpack.core.domain.use_case
 
-import com.devalpesh.jetpack.core.util.SimpleResources
-import com.devalpesh.jetpack.feature_profile.domain.repository.ProfileRepository
+import  com.devalpesh.jetpack.core.util.SimpleResources
+import com.devalpesh.jetpack.core.domain.repository.ProfileRepository
 
 class ToggleFollowStateForUserUseCase(
     private val repository: ProfileRepository

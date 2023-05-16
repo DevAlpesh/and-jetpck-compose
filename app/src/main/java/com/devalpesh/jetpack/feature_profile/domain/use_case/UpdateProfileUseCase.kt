@@ -6,7 +6,7 @@ import com.devalpesh.jetpack.core.util.Resource
 import com.devalpesh.jetpack.core.util.SimpleResources
 import com.devalpesh.jetpack.core.util.UiText
 import com.devalpesh.jetpack.feature_profile.domain.model.UpdateProfileData
-import com.devalpesh.jetpack.feature_profile.domain.repository.ProfileRepository
+import com.devalpesh.jetpack.core.domain.repository.ProfileRepository
 import com.devalpesh.jetpack.feature_profile.domain.util.ProfileConstants
 
 class UpdateProfileUseCase(

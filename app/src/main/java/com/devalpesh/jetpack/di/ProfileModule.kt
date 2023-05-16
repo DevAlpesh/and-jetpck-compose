@@ -1,16 +1,17 @@
 package com.devalpesh.jetpack.di
 
-import com.devalpesh.jetpack.core.data.remote.PostApi
+import com.devalpesh.jetpack.feature_post.data.remote.PostApi
 import com.devalpesh.jetpack.feature_profile.data.remote.ProfileApi
 import com.devalpesh.jetpack.feature_profile.data.repository.GetSkillUseCase
-import com.devalpesh.jetpack.feature_profile.data.repository.ProfileRepositoryImpl
-import com.devalpesh.jetpack.feature_profile.domain.repository.ProfileRepository
+import com.devalpesh.jetpack.core.data.repository.ProfileRepositoryImpl
+import com.devalpesh.jetpack.core.domain.repository.ProfileRepository
+import com.devalpesh.jetpack.core.domain.use_case.GetOwnUserIdUseCase
 import com.devalpesh.jetpack.feature_profile.domain.use_case.GetPostForProfileUseCase
 import com.devalpesh.jetpack.feature_profile.domain.use_case.GetProfileUseCase
 import com.devalpesh.jetpack.feature_profile.domain.use_case.ProfileUseCases
 import com.devalpesh.jetpack.feature_profile.domain.use_case.SearchUserUseCase
 import com.devalpesh.jetpack.feature_profile.domain.use_case.SetSkillSelectedUseCase
-import com.devalpesh.jetpack.feature_profile.domain.use_case.ToggleFollowStateForUserUseCase
+import com.devalpesh.jetpack.core.domain.use_case.ToggleFollowStateForUserUseCase
 import com.devalpesh.jetpack.feature_profile.domain.use_case.UpdateProfileUseCase
 import com.google.gson.Gson
 import dagger.Module
@@ -60,5 +61,13 @@ object ProfileModule {
             searchUser = SearchUserUseCase(repository),
             toggleFollowStateForUser = ToggleFollowStateForUserUseCase(repository)
         )
+    }
+
+    @Provides
+    @Singleton
+    fun provideToggleFollowStateForUserUseCase(
+        repository: ProfileRepository
+    ): ToggleFollowStateForUserUseCase {
+        return ToggleFollowStateForUserUseCase(repository)
     }
 }

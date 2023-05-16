@@ -1,4 +1,4 @@
-package com.devalpesh.jetpack.core.domain.util
+package com.devalpesh.jetpack.core.util
 
 import java.text.SimpleDateFormat
 import java.util.*

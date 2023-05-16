@@ -1,6 +1,7 @@
 package com.devalpesh.jetpack.feature_post.presentation.post_detail
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,7 +39,8 @@ import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
 fun Comment(
     modifier: Modifier,
     comment: Comment,
-    onLikeClick: (Boolean) -> Unit = {}
+    onLikeClick: (Boolean) -> Unit = {},
+    onLikeByClick : ()->Unit={}
 ) {
     Card(
         modifier = modifier,
@@ -98,6 +100,9 @@ fun Comment(
                         style = MaterialTheme.typography.body2,
                         color = MaterialTheme.colors.onBackground,
                         modifier = Modifier.fillMaxWidth()
+                            .clickable {
+                                onLikeByClick()
+                            }
                     )
                 }
 

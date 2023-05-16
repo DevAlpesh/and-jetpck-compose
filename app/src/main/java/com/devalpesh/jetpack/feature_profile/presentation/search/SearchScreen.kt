@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.domain.models.User
+import com.devalpesh.jetpack.core.domain.models.UserItem
 import com.devalpesh.jetpack.core.presentation.components.StandardTextField
 import com.devalpesh.jetpack.core.presentation.components.StandardToolbar
 import com.devalpesh.jetpack.core.presentation.components.UserProfileItem
@@ -76,15 +77,7 @@ fun SearchScreen(
                 ) {
                     items(state.userItem) { user ->
                         UserProfileItem(
-                            user = User(
-                                userId = user.userId,
-                                profilePictureUrl = user.profilePictureUrl,
-                                username = user.username,
-                                description = user.bio,
-                                followerCount = 0,
-                                followingCount = 0,
-                                postCount = 0
-                            ),
+                            user = user,
                             actionIcon = {
                                 Icon(
                                     imageVector = if (user.isFollowing) {

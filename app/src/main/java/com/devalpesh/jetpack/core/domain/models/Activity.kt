@@ -1,6 +1,6 @@
 package com.devalpesh.jetpack.core.domain.models
 
-import com.devalpesh.jetpack.core.domain.util.ActivityType
+import com.devalpesh.jetpack.core.util.ActivityType
 
 data class Activity(
     val userId: String,

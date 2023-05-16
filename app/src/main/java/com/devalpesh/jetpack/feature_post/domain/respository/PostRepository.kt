@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.paging.PagingData
 import com.devalpesh.jetpack.core.domain.models.Comment
 import com.devalpesh.jetpack.core.domain.models.Post
+import com.devalpesh.jetpack.core.domain.models.UserItem
 import com.devalpesh.jetpack.core.util.Resource
 import com.devalpesh.jetpack.core.util.SimpleResources
 import kotlinx.coroutines.flow.Flow
@@ -22,5 +23,7 @@ interface PostRepository {
 
     suspend fun likeParent(parentId : String,parentType : Int) : SimpleResources
     suspend fun unlikeParent(parentId : String,parentType : Int) : SimpleResources
+
+    suspend fun getLikesForParent(parentId: String) : Resource<List<UserItem>>
 
 }

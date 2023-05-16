@@ -1,4 +1,4 @@
-package com.devalpesh.jetpack.feature_profile.data.repository
+package com.devalpesh.jetpack.core.data.repository
 
 import android.net.Uri
 import androidx.core.net.toFile
@@ -6,21 +6,20 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.devalpesh.jetpack.R
-import com.devalpesh.jetpack.core.data.remote.PostApi
+import com.devalpesh.jetpack.feature_post.data.remote.PostApi
 import com.devalpesh.jetpack.core.domain.models.Post
 import com.devalpesh.jetpack.core.domain.models.UserItem
 import com.devalpesh.jetpack.core.util.Constants
 import com.devalpesh.jetpack.core.util.Resource
 import com.devalpesh.jetpack.core.util.SimpleResources
 import com.devalpesh.jetpack.core.util.UiText
-import com.devalpesh.jetpack.core.data.paging.ActivitySource
 import com.devalpesh.jetpack.feature_post.data.paging.PostSource
 import com.devalpesh.jetpack.feature_profile.data.remote.ProfileApi
 import com.devalpesh.jetpack.feature_profile.data.remote.request.FollowUpdateRequest
 import com.devalpesh.jetpack.feature_profile.domain.model.Profile
 import com.devalpesh.jetpack.feature_profile.domain.model.Skill
 import com.devalpesh.jetpack.feature_profile.domain.model.UpdateProfileData
-import com.devalpesh.jetpack.feature_profile.domain.repository.ProfileRepository
+import com.devalpesh.jetpack.core.domain.repository.ProfileRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody

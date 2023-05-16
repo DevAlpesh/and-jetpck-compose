@@ -2,7 +2,7 @@ package com.devalpesh.jetpack.feature_activity.data.remote.dto
 
 import android.annotation.SuppressLint
 import com.devalpesh.jetpack.core.domain.models.Activity
-import com.devalpesh.jetpack.core.domain.util.ActivityType
+import com.devalpesh.jetpack.core.util.ActivityType
 import java.text.SimpleDateFormat
 import java.util.Locale
 
