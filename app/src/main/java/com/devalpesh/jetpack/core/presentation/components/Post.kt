@@ -95,6 +95,7 @@ fun Post(
                 ActionRow(
                     modifier = Modifier.fillMaxWidth(),
                     onLikeClick = onLikeClick,
+                    isLiked = post.isLiked,
                     onCommentClick = {
 
                     },
@@ -104,7 +105,7 @@ fun Post(
                     onUsernameClick = {
 
                     },
-                    username = "post.username",
+                    username = post.username,
                 )
                 Spacer(modifier = Modifier.height(SpaceSmall))
                 Text(
@@ -131,7 +132,7 @@ fun Post(
                 ) {
                     Text(
                         text = stringResource(
-                            id = R.string.like_by_x_peoper,
+                            id = R.string.x_likes,
                             post.likeCount
                         ),
                         fontWeight = FontWeight.Bold,

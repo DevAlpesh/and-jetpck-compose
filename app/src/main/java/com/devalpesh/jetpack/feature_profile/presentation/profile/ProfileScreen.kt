@@ -41,6 +41,7 @@ import com.devalpesh.jetpack.core.domain.models.Post
 import com.devalpesh.jetpack.core.domain.models.User
 import com.devalpesh.jetpack.core.presentation.components.Post
 import com.devalpesh.jetpack.core.presentation.ui.theme.ProfilePictureSizeLarge
+import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceLarge
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
 import com.devalpesh.jetpack.core.presentation.util.Screen
@@ -169,10 +170,6 @@ fun ProfileScreen(
                 if (i >= pagingState.items.size - 1 && !pagingState.endReached && !pagingState.isLoading) {
                     viewModel.loadNextPost()
                 }
-                Spacer(
-                    modifier = Modifier
-                        .height(SpaceMedium)
-                )
                 Post(
                     post = post,
                     showProfileImage = false,
@@ -183,6 +180,9 @@ fun ProfileScreen(
                         viewModel.onEvent(ProfileEvent.LikePost(post.id))
                     }
                 )
+            }
+            item {
+                Spacer(modifier = Modifier.height(90.dp))
             }
         }
         Column(

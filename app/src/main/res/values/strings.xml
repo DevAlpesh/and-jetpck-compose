@@ -20,7 +20,7 @@
     <string name="txt_comment">Comment</string>
     <string name="txt_share">Share</string>
     <string name="txt_read_more">Read more.</string>
-    <string name="like_by_x_peoper">Like by %d People</string>
+    <string name="x_likes">%d Likes</string>
     <string name="x_comment">%d Comments</string>
     <string name="txt_home">Home</string>
     <string name="txt_chat">Chat</string>

@@ -29,7 +29,6 @@ class CropActivityResultContract(
 
     override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
         if (intent == null) {
-            println("INTENT IS NULL")
             return null
         }
         if (resultCode == RESULT_ERROR) {

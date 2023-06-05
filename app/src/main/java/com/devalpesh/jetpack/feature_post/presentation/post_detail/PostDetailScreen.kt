@@ -155,7 +155,7 @@ fun PostDetailScreen(
                                     Spacer(modifier = Modifier.height(SpaceMedium))
                                     Text(
                                         text = stringResource(
-                                            id = R.string.like_by_x_peoper,
+                                            id = R.string.x_likes,
                                             post.likeCount
                                         ),
                                         fontWeight = FontWeight.Bold,

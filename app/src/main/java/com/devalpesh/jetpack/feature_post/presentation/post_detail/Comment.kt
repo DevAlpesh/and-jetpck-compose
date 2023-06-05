@@ -95,7 +95,7 @@ fun Comment(
                     )
                     Spacer(modifier = Modifier.width(SpaceMedium))
                     Text(
-                        text = stringResource(id = R.string.like_by_x_peoper, comment.likeCount),
+                        text = stringResource(id = R.string.x_likes, comment.likeCount),
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.body2,
                         color = MaterialTheme.colors.onBackground,
