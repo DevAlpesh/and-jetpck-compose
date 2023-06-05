@@ -2,18 +2,13 @@ package com.devalpesh.jetpack.core.data.repository
 
 import android.net.Uri
 import androidx.core.net.toFile
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.feature_post.data.remote.PostApi
 import com.devalpesh.jetpack.core.domain.models.Post
 import com.devalpesh.jetpack.core.domain.models.UserItem
-import com.devalpesh.jetpack.core.util.Constants
 import com.devalpesh.jetpack.core.util.Resource
 import com.devalpesh.jetpack.core.util.SimpleResources
 import com.devalpesh.jetpack.core.util.UiText
-import com.devalpesh.jetpack.feature_post.data.paging.PostSource
 import com.devalpesh.jetpack.feature_profile.data.remote.ProfileApi
 import com.devalpesh.jetpack.feature_profile.data.remote.request.FollowUpdateRequest
 import com.devalpesh.jetpack.feature_profile.domain.model.Profile
@@ -21,7 +16,6 @@ import com.devalpesh.jetpack.feature_profile.domain.model.Skill
 import com.devalpesh.jetpack.feature_profile.domain.model.UpdateProfileData
 import com.devalpesh.jetpack.core.domain.repository.ProfileRepository
 import com.google.gson.Gson
-import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.HttpException
@@ -32,13 +26,33 @@ class ProfileRepositoryImpl(
     private val postApi: PostApi,
     private val gson: Gson
 ) : ProfileRepository {
-
-    override fun getPostPaged(userId: String): Flow<PagingData<Post>> {
-        return Pager(PagingConfig(pageSize = Constants.DEFAULT_PAGE_SIZE)) {
-            PostSource(postApi, PostSource.Source.Profile(userId))
-        }.flow
+    override suspend fun getPostPaged(
+        page: Int,
+        pagSize: Int,
+        userId: String
+    ): Resource<List<Post>> {
+        return try {
+            val posts = postApi.getPostForProfile(
+                userId = userId,
+                page = page,
+                pageSize = pagSize
+            )
+            Resource.Success(
+                data = posts
+            )
+        } catch (e: IOException) {
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.txt_error_couldnt_reach_server)
+            )
+        } catch (e: HttpException) {
+            Resource.Error(
+                uiText = UiText.StringResource(R.string.txt_error_oops_something_went_wrong)
+            )
+        }
     }
-//645a343d652ef937262061dc
+
+
+    //645a343d652ef937262061dc
     override suspend fun getProfile(userId: String): Resource<Profile> {
         return try {
             val response = profileApi.getProfile(userId)
@@ -150,9 +164,9 @@ class ProfileRepositoryImpl(
             val response = profileApi.followUser(
                 request = FollowUpdateRequest(userId)
             )
-            if (response.success){
+            if (response.success) {
                 Resource.Success(Unit)
-            }else{
+            } else {
                 response.message?.let { msg ->
                     Resource.Error(UiText.DynamicString(msg))
                 } ?: Resource.Error(UiText.StringResource(R.string.txt_error_unknow))
@@ -173,9 +187,9 @@ class ProfileRepositoryImpl(
             val response = profileApi.unfollowUser(
                 userId = userId
             )
-            if (response.success){
+            if (response.success) {
                 Resource.Success(Unit)
-            }else{
+            } else {
                 response.message?.let { msg ->
                     Resource.Error(UiText.DynamicString(msg))
                 } ?: Resource.Error(UiText.StringResource(R.string.txt_error_unknow))

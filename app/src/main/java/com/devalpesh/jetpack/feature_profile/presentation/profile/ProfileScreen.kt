@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
@@ -60,7 +61,7 @@ fun ProfileScreen(
     profilePictureSize: Dp = ProfilePictureSizeLarge
 ) {
 
-    val posts = viewModel.posts.collectAsLazyPagingItems()
+    val pagingState = viewModel.pagingState.value
 
     val lazyListState = rememberLazyListState()
     val toolbarState = viewModel.toolbarStates.value
@@ -120,7 +121,7 @@ fun ProfileScreen(
                 }
 
                 is PostEvent.OnLiked -> {
-                    posts.refresh()
+
                 }
             }
         }
@@ -163,29 +164,23 @@ fun ProfileScreen(
                     )
                 }
             }
-            items(posts) { post ->
+            items(pagingState.items.size) { i ->
+                val post = pagingState.items[i]
+                if (i >= pagingState.items.size - 1 && !pagingState.endReached && !pagingState.isLoading) {
+                    viewModel.loadNextPost()
+                }
                 Spacer(
                     modifier = Modifier
                         .height(SpaceMedium)
                 )
                 Post(
-                    post = Post(
-                        id = post?.id ?: "",
-                        username = post?.username ?: "",
-                        imageUrl = post?.imageUrl ?: "",
-                        profilePictureUrl = post?.profilePictureUrl ?: "",
-                        description = post?.description ?: "",
-                        likeCount = post?.likeCount ?: 0,
-                        commentCount = post?.commentCount ?: 0,
-                        userId = post?.userId ?: "",
-                        isLiked = post?.isLiked ?: false
-                    ),
+                    post = post,
                     showProfileImage = false,
                     onPostClick = {
-                        onNavigate(Screen.PostDetailScreen.route + "/${post?.id}")
+                        onNavigate(Screen.PostDetailScreen.route + "/${post.id}")
                     },
                     onLikeClick = {
-                        viewModel.onEvent(ProfileEvent.LikePost(post?.id ?: ""))
+                        viewModel.onEvent(ProfileEvent.LikePost(post.id))
                     }
                 )
             }
