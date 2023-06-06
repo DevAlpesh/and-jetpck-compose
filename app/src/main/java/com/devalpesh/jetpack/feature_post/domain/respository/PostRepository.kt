@@ -11,19 +11,20 @@ import kotlinx.coroutines.flow.Flow
 import java.io.File
 
 interface PostRepository {
-    val posts: Flow<PagingData<Post>>
 
-    suspend fun createPost(description: String, imageUri : Uri): SimpleResources
+    suspend fun getPostForFollows(page: Int, pageSize: Int) : Resource<List<Post>>
 
-    suspend fun getPostDetails(postId : String) : Resource<Post>
+    suspend fun createPost(description: String, imageUri: Uri): SimpleResources
 
-    suspend fun getCommentsForPost(postId: String) : Resource<List<Comment>>
+    suspend fun getPostDetails(postId: String): Resource<Post>
 
-    suspend fun createComment(postId : String,comment:String) : SimpleResources
+    suspend fun getCommentsForPost(postId: String): Resource<List<Comment>>
 
-    suspend fun likeParent(parentId : String,parentType : Int) : SimpleResources
-    suspend fun unlikeParent(parentId : String,parentType : Int) : SimpleResources
+    suspend fun createComment(postId: String, comment: String): SimpleResources
 
-    suspend fun getLikesForParent(parentId: String) : Resource<List<UserItem>>
+    suspend fun likeParent(parentId: String, parentType: Int): SimpleResources
+    suspend fun unlikeParent(parentId: String, parentType: Int): SimpleResources
+
+    suspend fun getLikesForParent(parentId: String): Resource<List<UserItem>>
 
 }
