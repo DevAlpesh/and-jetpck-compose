@@ -95,6 +95,9 @@ fun MainFeedScreen(
                         },
                         onCommentClick = {
                             onNavigate(Screen.PostDetailScreen.route + "/${post.id}?shouldShowKeyboard=true")
+                        },
+                        onUsernameClick = {
+                            onNavigate(Screen.ProfileScreen.route + "?userId=${post.userId}")
                         }
                     )
                     if (i < pagingState.items.size - 1) {

@@ -58,6 +58,7 @@ fun Post(
     showProfileImage: Boolean = true,
     onPostClick: () -> Unit = {},
     onCommentClick: () -> Unit={},
+    onUsernameClick: (String) -> Unit={},
     onLikeClick: () -> Unit
 ) {
     Box(
@@ -101,9 +102,7 @@ fun Post(
                     onShareClick = {
 
                     },
-                    onUsernameClick = {
-
-                    },
+                    onUsernameClick = onUsernameClick,
                     username = post.username,
                 )
                 Spacer(modifier = Modifier.height(SpaceSmall))
@@ -230,7 +229,7 @@ fun ActionRow(
     onCommentClick: () -> Unit,
     onShareClick: () -> Unit,
     onUsernameClick: (String) -> Unit,
-    username: String,
+    username: String
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
