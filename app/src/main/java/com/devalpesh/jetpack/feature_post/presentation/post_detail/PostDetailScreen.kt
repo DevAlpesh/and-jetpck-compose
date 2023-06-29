@@ -27,10 +27,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -50,22 +52,33 @@ import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
 import com.devalpesh.jetpack.core.presentation.util.Screen
 import com.devalpesh.jetpack.core.presentation.util.UiEvent
 import com.devalpesh.jetpack.core.presentation.util.asString
+import com.devalpesh.jetpack.core.presentation.util.showKeyboard
 import kotlinx.coroutines.flow.collectLatest
+
 
 @Composable
 fun PostDetailScreen(
     scaffoldState: ScaffoldState,
     navigateUp: () -> Unit = {},
     onNavigate: (String) -> Unit = {},
-    viewModel: PostDetailsViewModel = hiltViewModel()
+    viewModel: PostDetailsViewModel = hiltViewModel(),
+    shouldShowKeyboard: Boolean = false
 ) {
 
     val state = viewModel.state.value
     val commentTextFieldState = viewModel.commentTextStateFieldState.value
 
+    val focusRequester = remember {
+        FocusRequester()
+    }
+
     val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
+        if (shouldShowKeyboard) {
+            context.showKeyboard()
+            focusRequester.requestFocus()
+        }
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is UiEvent.ShowSnackbar -> {
@@ -73,7 +86,6 @@ fun PostDetailScreen(
                         message = event.uiText.asString(context)
                     )
                 }
-
                 else -> {}
             }
         }
@@ -136,7 +148,8 @@ fun PostDetailScreen(
                                             viewModel.onEvent(PostDetailsEvent.LikePost)
                                         },
                                         onCommentClick = {
-
+                                            context.showKeyboard()
+                                            focusRequester.requestFocus()
                                         },
                                         onShareClick = {
 
@@ -218,7 +231,8 @@ fun PostDetailScreen(
                 modifier = Modifier
                     .weight(1f),
                 backgroundColor = MaterialTheme.colors.background,
-                hint = stringResource(id = R.string.txt_enter_comment)
+                hint = stringResource(id = R.string.txt_enter_comment),
+                focusRequester = focusRequester
             )
 
             if (viewModel.commentState.value.isLoading) {

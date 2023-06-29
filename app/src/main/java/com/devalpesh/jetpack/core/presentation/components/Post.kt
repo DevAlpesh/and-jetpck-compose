@@ -57,6 +57,7 @@ fun Post(
     modifier: Modifier = Modifier,
     showProfileImage: Boolean = true,
     onPostClick: () -> Unit = {},
+    onCommentClick: () -> Unit={},
     onLikeClick: () -> Unit
 ) {
     Box(
@@ -96,16 +97,14 @@ fun Post(
                     modifier = Modifier.fillMaxWidth(),
                     onLikeClick = onLikeClick,
                     isLiked = post.isLiked,
-                    onCommentClick = {
-
-                    },
+                    onCommentClick = onCommentClick,
                     onShareClick = {
 
                     },
                     onUsernameClick = {
 
                     },
-                    username = "post.username",
+                    username = post.username,
                 )
                 Spacer(modifier = Modifier.height(SpaceSmall))
                 Text(

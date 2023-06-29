@@ -13,6 +13,7 @@ import com.devalpesh.jetpack.core.util.DefaultPaginator
 import com.devalpesh.jetpack.core.util.DefaultPostLiker
 import com.devalpesh.jetpack.core.util.Event
 import com.devalpesh.jetpack.core.util.ParentType
+import com.devalpesh.jetpack.core.util.PostLiker
 import com.devalpesh.jetpack.core.util.Resource
 import com.devalpesh.jetpack.core.util.UiText
 import com.devalpesh.jetpack.feature_post.domain.use_case.PostUseCases
@@ -29,7 +30,7 @@ class ProfileViewModel @Inject constructor(
     private val postUseCases: PostUseCases,
     private val getOwnUserId: GetOwnUserIdUseCase,
     private val savedStateHandle: SavedStateHandle,
-    private val postLiker: DefaultPostLiker
+    private val postLiker: PostLiker
 ) : ViewModel() {
 
     private val _toolbarStates = mutableStateOf(ProfileToolbarState())
@@ -111,16 +112,16 @@ class ProfileViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             postLiker.toggleLike(
-                posts= pagingState.value.items,
+                posts = pagingState.value.items,
                 parentId = parentId,
-                onRequest = {isLiked->
+                onRequest = { isLiked ->
                     postUseCases.toggleLikeForParent(
                         parentId = parentId,
                         parentType = ParentType.Post.type,
                         isLiked = isLiked
                     )
                 },
-                onStateUpdated = {posts ->
+                onStateUpdated = { posts ->
                     _pagingState.value = pagingState.value.copy(
                         items = posts
                     )

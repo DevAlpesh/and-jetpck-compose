@@ -11,8 +11,7 @@ data class DefaultPaginator<T>(
 
     override suspend fun loadNextItems() {
         onLoadUpdated(true)
-        val result = onRequest(page)
-        when (result) {
+        when (val result = onRequest(page)) {
             is Resource.Success -> {
                 val items = result.data ?: emptyList()
                 page++

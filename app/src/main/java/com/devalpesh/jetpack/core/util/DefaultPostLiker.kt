@@ -1,9 +1,8 @@
 package com.devalpesh.jetpack.core.util
 
 import com.devalpesh.jetpack.core.domain.models.Post
-import javax.inject.Inject
 
-class DefaultPostLiker @Inject constructor() : PostLiker {
+class DefaultPostLiker : PostLiker {
     override suspend fun toggleLike(
         posts: List<Post>,
         parentId: String,

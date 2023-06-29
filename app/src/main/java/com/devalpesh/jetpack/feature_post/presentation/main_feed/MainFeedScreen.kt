@@ -17,24 +17,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.LoadState
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
 import com.devalpesh.jetpack.R
-import com.devalpesh.jetpack.core.domain.models.Post
 import com.devalpesh.jetpack.core.presentation.components.Post
 import com.devalpesh.jetpack.core.presentation.components.StandardToolbar
+import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceLarge
 import com.devalpesh.jetpack.core.presentation.util.Screen
 import com.devalpesh.jetpack.feature_post.presentation.person_list.PostEvent
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @Composable
 fun MainFeedScreen(
@@ -97,8 +92,14 @@ fun MainFeedScreen(
                         },
                         onLikeClick = {
                             viewModel.onEvent(MainFeedEvent.LikePost(post.id))
+                        },
+                        onCommentClick = {
+                            onNavigate(Screen.PostDetailScreen.route + "/${post.id}?shouldShowKeyboard=true")
                         }
                     )
+                    if (i < pagingState.items.size - 1) {
+                        Spacer(modifier = Modifier.height(SpaceLarge))
+                    }
                 }
                 item {
                     Spacer(modifier = Modifier.height(90.dp))
