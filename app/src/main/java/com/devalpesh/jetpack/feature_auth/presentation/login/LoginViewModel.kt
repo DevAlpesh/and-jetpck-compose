@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devalpesh.jetpack.core.domain.states.StandardTextFieldStates
-import com.devalpesh.jetpack.core.presentation.util.Screen
 import com.devalpesh.jetpack.core.presentation.util.UiEvent
 import com.devalpesh.jetpack.core.util.Resource
 import com.devalpesh.jetpack.core.util.UiText
@@ -41,6 +40,7 @@ class LoginViewModel @Inject constructor(
                     text = event.email
                 )
             }
+
             is LoginEvent.EnteredPassword -> {
                 _passwordState.value = _passwordState.value.copy(
                     text = event.password
@@ -91,10 +91,9 @@ class LoginViewModel @Inject constructor(
             }
             when (loginResult.result) {
                 is Resource.Success -> {
-                    _eventFlow.emit(
-                        UiEvent.Navigate(Screen.MainFeedScreen.route)
-                    )
+                    _eventFlow.emit(UiEvent.OnLogin)
                 }
+
                 is Resource.Error -> {
                     _eventFlow.emit(
                         UiEvent.ShowSnackbar(
@@ -102,6 +101,7 @@ class LoginViewModel @Inject constructor(
                         )
                     )
                 }
+
                 else -> Unit
             }
         }

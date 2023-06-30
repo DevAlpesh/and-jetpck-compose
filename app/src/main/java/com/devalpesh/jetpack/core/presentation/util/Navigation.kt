@@ -9,7 +9,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import coil.request.ImageRequest
 import com.devalpesh.jetpack.feature_activity.presentation.ActivityScreen
 import com.devalpesh.jetpack.feature_auth.presentation.login.LoginScreen
 import com.devalpesh.jetpack.feature_auth.presentation.register.RegisterScreen
@@ -42,7 +41,16 @@ fun Navigation(
         composable(Screen.LoginScreen.route) {
             LoginScreen(
                 onNavigate = navController::navigate,
-                scaffoldState = scaffoldState
+                scaffoldState = scaffoldState,
+                onLogin = {
+                    navController.navigate(
+                        route = Screen.MainFeedScreen.route,
+                    ) {
+                        popUpTo(Screen.LoginScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                }
             )
         }
         composable(Screen.RegisterScreen.route) {
@@ -80,7 +88,16 @@ fun Navigation(
             ProfileScreen(
                 userId = it.arguments?.getString("userId"),
                 onNavigate = navController::navigate,
-                scaffoldState = scaffoldState
+                scaffoldState = scaffoldState,
+                onLogout = {
+                    navController.navigate(
+                        route = Screen.LoginScreen.route,
+                    ) {
+                        popUpTo(0) {
+                            inclusive = true
+                        }
+                    }
+                }
             )
         }
         composable(

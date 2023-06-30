@@ -1,18 +1,25 @@
 package com.devalpesh.jetpack.feature_profile.presentation.profile
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ScaffoldState
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -29,8 +36,10 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.SvgDecoder
@@ -39,7 +48,6 @@ import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.domain.models.User
 import com.devalpesh.jetpack.core.presentation.components.Post
 import com.devalpesh.jetpack.core.presentation.ui.theme.ProfilePictureSizeLarge
-import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceLarge
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceMedium
 import com.devalpesh.jetpack.core.presentation.ui.theme.SpaceSmall
 import com.devalpesh.jetpack.core.presentation.util.Screen
@@ -57,7 +65,8 @@ fun ProfileScreen(
     userId: String? = null,
     onNavigate: (String) -> Unit = {},
     viewModel: ProfileViewModel = hiltViewModel(),
-    profilePictureSize: Dp = ProfilePictureSizeLarge
+    profilePictureSize: Dp = ProfilePictureSizeLarge,
+    onLogout: () -> Unit = {}
 ) {
 
     val pagingState = viewModel.pagingState.value
@@ -159,6 +168,9 @@ fun ProfileScreen(
                         isOwnProfile = profile.isOwnProfile,
                         onEditClick = {
                             onNavigate(Screen.EditProfileScreen.route + "/${profile.userId}")
+                        },
+                        onLogoutClick = {
+                            viewModel.onEvent(ProfileEvent.ShowLogoutDialog)
                         }
                     )
                 }
@@ -247,6 +259,47 @@ fun ProfileScreen(
                             shape = CircleShape
                         )
                 )
+            }
+        }
+        if (state.isLogoutDialogVisible) {
+            Dialog(onDismissRequest = {
+                viewModel.onEvent(ProfileEvent.DismissLogoutDialog)
+            }) {
+                Column(
+                    modifier = Modifier
+                        .background(
+                            MaterialTheme.colors.surface,
+                            shape = MaterialTheme.shapes.medium
+                        )
+                        .padding(SpaceMedium)
+                ) {
+                    Text(text = stringResource(id = R.string.txt_do_you_want_logout))
+                    Spacer(modifier = Modifier.height(SpaceSmall))
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier.align(Alignment.End)
+                    ) {
+                        Text(
+                            modifier = Modifier.clickable {
+                                viewModel.onEvent(ProfileEvent.DismissLogoutDialog)
+                            },
+                            fontWeight = FontWeight.Bold,
+                            text = stringResource(id = R.string.txt_no).uppercase(),
+                            color = MaterialTheme.colors.onBackground
+                        )
+                        Spacer(modifier = Modifier.width(SpaceMedium))
+                        Text(
+                            modifier = Modifier.clickable {
+                                viewModel.onEvent(ProfileEvent.DismissLogoutDialog)
+                                viewModel.onEvent(ProfileEvent.Logout)
+                                onLogout()
+                            },
+                            fontWeight = FontWeight.Bold,
+                            text = stringResource(id = R.string.txt_yes).uppercase(),
+                            color = MaterialTheme.colors.primary
+                        )
+                    }
+                }
             }
         }
     }

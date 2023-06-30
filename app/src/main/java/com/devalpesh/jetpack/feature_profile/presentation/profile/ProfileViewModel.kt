@@ -10,7 +10,6 @@ import com.devalpesh.jetpack.core.domain.use_case.GetOwnUserIdUseCase
 import com.devalpesh.jetpack.core.presentation.PagingState
 import com.devalpesh.jetpack.core.presentation.util.UiEvent
 import com.devalpesh.jetpack.core.util.DefaultPaginator
-import com.devalpesh.jetpack.core.util.DefaultPostLiker
 import com.devalpesh.jetpack.core.util.Event
 import com.devalpesh.jetpack.core.util.ParentType
 import com.devalpesh.jetpack.core.util.PostLiker
@@ -86,8 +85,20 @@ class ProfileViewModel @Inject constructor(
 
     fun onEvent(event: ProfileEvent) {
         when (event) {
-            is ProfileEvent.GetProfile -> {
+            is ProfileEvent.DismissLogoutDialog -> {
+                _state.value = state.value.copy(
+                    isLogoutDialogVisible = false
+                )
+            }
 
+            is ProfileEvent.Logout -> {
+                profileUseCases.logout()
+            }
+
+            is ProfileEvent.ShowLogoutDialog -> {
+                _state.value = state.value.copy(
+                    isLogoutDialogVisible = true
+                )
             }
 
             is ProfileEvent.LikePost -> {

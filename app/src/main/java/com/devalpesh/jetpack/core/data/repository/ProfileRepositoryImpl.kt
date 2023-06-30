@@ -1,5 +1,6 @@
 package com.devalpesh.jetpack.core.data.repository
 
+import android.content.SharedPreferences
 import android.net.Uri
 import androidx.core.net.toFile
 import com.devalpesh.jetpack.R
@@ -15,6 +16,7 @@ import com.devalpesh.jetpack.feature_profile.domain.model.Profile
 import com.devalpesh.jetpack.feature_profile.domain.model.Skill
 import com.devalpesh.jetpack.feature_profile.domain.model.UpdateProfileData
 import com.devalpesh.jetpack.core.domain.repository.ProfileRepository
+import com.devalpesh.jetpack.core.util.Constants
 import com.google.gson.Gson
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -24,7 +26,8 @@ import java.io.IOException
 class ProfileRepositoryImpl(
     private val profileApi: ProfileApi,
     private val postApi: PostApi,
-    private val gson: Gson
+    private val gson: Gson,
+    private val sharedPreferences: SharedPreferences
 ) : ProfileRepository {
     override suspend fun getPostPaged(
         page: Int,
@@ -203,5 +206,11 @@ class ProfileRepositoryImpl(
                 uiText = UiText.StringResource(R.string.txt_error_oops_something_went_wrong)
             )
         }
+    }
+
+    override fun logout() {
+        sharedPreferences.edit()
+            .remove(Constants.KEY_JWT_TOKEN)
+            .apply()
     }
 }

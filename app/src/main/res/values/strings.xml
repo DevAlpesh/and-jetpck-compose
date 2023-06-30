@@ -83,4 +83,8 @@
     <string name="txt_enter_comment">Enter Comment</string>
     <string name="txt_comment_success">Successfully posted comment.</string>
     <string name="txt_liked_by">Like by</string>
+    <string name="txt_logout">Logout</string>
+    <string name="txt_do_you_want_logout">Do you want to logut?</string>
+    <string name="txt_yes">Yes</string>
+    <string name="txt_no">No</string>
 </resources>

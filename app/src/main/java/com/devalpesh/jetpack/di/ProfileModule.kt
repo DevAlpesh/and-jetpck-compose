@@ -1,5 +1,6 @@
 package com.devalpesh.jetpack.di
 
+import android.content.SharedPreferences
 import com.devalpesh.jetpack.feature_post.data.remote.PostApi
 import com.devalpesh.jetpack.feature_profile.data.remote.ProfileApi
 import com.devalpesh.jetpack.feature_profile.data.repository.GetSkillUseCase
@@ -12,6 +13,7 @@ import com.devalpesh.jetpack.feature_profile.domain.use_case.ProfileUseCases
 import com.devalpesh.jetpack.feature_profile.domain.use_case.SearchUserUseCase
 import com.devalpesh.jetpack.feature_profile.domain.use_case.SetSkillSelectedUseCase
 import com.devalpesh.jetpack.core.domain.use_case.ToggleFollowStateForUserUseCase
+import com.devalpesh.jetpack.feature_profile.domain.use_case.LogoutUseCase
 import com.devalpesh.jetpack.feature_profile.domain.use_case.UpdateProfileUseCase
 import com.google.gson.Gson
 import dagger.Module
@@ -44,9 +46,10 @@ object ProfileModule {
     fun provideProfileRepository(
         profileApi: ProfileApi,
         postApi: PostApi,
-        gson: Gson
+        gson: Gson,
+        sharedPreferences : SharedPreferences
     ): ProfileRepository {
-        return ProfileRepositoryImpl(profileApi, postApi, gson)
+        return ProfileRepositoryImpl(profileApi, postApi, gson, sharedPreferences)
     }
 
     @Provides
@@ -59,7 +62,8 @@ object ProfileModule {
             setSkillSelected = SetSkillSelectedUseCase(),
             getPostsForProfile = GetPostForProfileUseCase(repository),
             searchUser = SearchUserUseCase(repository),
-            toggleFollowStateForUser = ToggleFollowStateForUserUseCase(repository)
+            toggleFollowStateForUser = ToggleFollowStateForUserUseCase(repository),
+            logout = LogoutUseCase(repository)
         )
     }
 
