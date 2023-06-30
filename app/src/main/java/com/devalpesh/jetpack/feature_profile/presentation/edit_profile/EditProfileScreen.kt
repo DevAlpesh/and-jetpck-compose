@@ -44,6 +44,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.presentation.components.Chip
 import com.devalpesh.jetpack.core.presentation.components.StandardTextField
@@ -147,7 +149,10 @@ fun EditProfileScreen(
                 ),
                 profileImage = rememberAsyncImagePainter(
                     model = viewModel.profilePictureUri.value
-                        ?: profileState.profile?.profilePictureUrl
+                        ?: ImageRequest.Builder(LocalContext.current)
+                            .decoderFactory(SvgDecoder.Factory())
+                            .data(profileState.profile?.profilePictureUrl)
+                            .build()
                 ),
                 profilePictureSize = profilePictureSize,
                 onBannerClick = {

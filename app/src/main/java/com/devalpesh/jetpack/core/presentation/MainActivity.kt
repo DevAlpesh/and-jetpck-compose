@@ -6,20 +6,18 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.fragment.app.FragmentManager.BackStackEntry
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import coil.request.ImageRequest
 import com.devalpesh.jetpack.core.presentation.components.StandardScaffold
 import com.devalpesh.jetpack.core.presentation.ui.theme.AndjetpackTheme
 import com.devalpesh.jetpack.core.presentation.util.Navigation
 import com.devalpesh.jetpack.core.presentation.util.Screen
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

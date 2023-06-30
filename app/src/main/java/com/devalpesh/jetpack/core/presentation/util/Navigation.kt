@@ -9,6 +9,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import coil.request.ImageRequest
 import com.devalpesh.jetpack.feature_activity.presentation.ActivityScreen
 import com.devalpesh.jetpack.feature_auth.presentation.login.LoginScreen
 import com.devalpesh.jetpack.feature_auth.presentation.register.RegisterScreen

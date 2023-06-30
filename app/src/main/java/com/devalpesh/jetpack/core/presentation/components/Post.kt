@@ -41,6 +41,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.devalpesh.jetpack.R
 import com.devalpesh.jetpack.core.domain.models.Post
 import com.devalpesh.jetpack.core.presentation.ui.theme.HintGray
@@ -57,8 +59,8 @@ fun Post(
     modifier: Modifier = Modifier,
     showProfileImage: Boolean = true,
     onPostClick: () -> Unit = {},
-    onCommentClick: () -> Unit={},
-    onUsernameClick: (String) -> Unit={},
+    onCommentClick: () -> Unit = {},
+    onUsernameClick: (String) -> Unit = {},
     onLikeClick: () -> Unit
 ) {
     Box(
@@ -151,7 +153,12 @@ fun Post(
         }
         if (showProfileImage) {
             Image(
-                painter = rememberAsyncImagePainter(model = post.profilePictureUrl),
+                painter = rememberAsyncImagePainter(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .decoderFactory(SvgDecoder.Factory())
+                        .data(post.profilePictureUrl)
+                        .build()
+                ),
                 contentDescription = "Profile Picture",
                 modifier = Modifier
                     .size(ProfilePictureSizeMedium)

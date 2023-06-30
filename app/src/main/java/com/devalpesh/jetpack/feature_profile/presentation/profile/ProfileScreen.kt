@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
@@ -33,11 +32,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
 import coil.compose.rememberAsyncImagePainter
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.devalpesh.jetpack.R
-import com.devalpesh.jetpack.core.domain.models.Post
 import com.devalpesh.jetpack.core.domain.models.User
 import com.devalpesh.jetpack.core.presentation.components.Post
 import com.devalpesh.jetpack.core.presentation.ui.theme.ProfilePictureSizeLarge
@@ -221,7 +219,12 @@ fun ProfileScreen(
                     bannerUrl = profile.bannerUrl
                 )
                 Image(
-                    painter = rememberAsyncImagePainter(profile.profilePictureUrl),
+                    painter = rememberAsyncImagePainter(
+                        model = ImageRequest.Builder(context)
+                            .decoderFactory(SvgDecoder.Factory())
+                            .data(profile.profilePictureUrl)
+                            .build(),
+                    ),
                     contentDescription = stringResource(id = R.string.txt_profile_image),
                     modifier = Modifier
                         .align(CenterHorizontally)

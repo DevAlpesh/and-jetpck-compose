@@ -12,10 +12,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.devalpesh.jetpack.core.domain.models.UserItem
 import com.devalpesh.jetpack.core.presentation.ui.theme.IconSizeMedium
 import com.devalpesh.jetpack.core.presentation.ui.theme.ProfilePictureSizeSmall
@@ -50,7 +53,12 @@ fun UserProfileItem(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Image(
-                painter = rememberAsyncImagePainter(model = user.profilePictureUrl),
+                painter = rememberAsyncImagePainter(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .decoderFactory(SvgDecoder.Factory())
+                        .data(user.profilePictureUrl)
+                        .build()
+                ),
                 contentDescription = null,
                 modifier = Modifier
                     .size(ProfilePictureSizeSmall)
